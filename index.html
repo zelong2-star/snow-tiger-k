@@ -179,9 +179,15 @@ button{cursor:pointer}
 .ban.err{border-color:var(--warn)}
 .toast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom,0px));transform:translate(-50%,12px);z-index:30;padding:10px 18px;border-radius:99px;background:var(--navy);color:var(--bg);font-weight:700;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:calc(100% - 32px);text-align:center}
 .toast.on{opacity:1;transform:translate(-50%,0)}
+.fl .sw{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px}
+.fl .rg{display:grid;gap:4px}
+.fl input.tg{-webkit-appearance:none;appearance:none;width:56px;min-height:0;height:32px;padding:0;border:0;border-radius:16px;background:var(--seg);position:relative;flex:none;transition:background .15s}
+.fl input.tg::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgb(0 0 0 / .3);transition:transform .15s}
+.fl input.tg:checked{background:var(--field)}
+.fl input.tg:checked::after{transform:translateX(24px)}
+.fl input.rgi{padding:0;min-height:32px;border:0;background:transparent;accent-color:var(--field)}
+button,a,select,input{touch-action:manipulation}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
-
-/* 설치형 앱: 상단 안전 영역 */
 :root{padding-top:env(safe-area-inset-top,0px)}
 [hidden]{display:none!important}
 </style>
@@ -353,7 +359,7 @@ function viewHome(){
       '<div class="rc" aria-label="최근 경기 결과"><span>최근</span>'+recent.map(function(g){var r=result(g);return '<i class="'+(r==='승'?'w':'')+'">'+r+'</i>'}).join('')+'</div>';
   }
   var rows=teamRows(S.lb),max=Math.max.apply(null,rows.map(function(r){return r.v}))||1;
-  return '<header class="mast"><span class="logo" aria-hidden="true">'+BALL+'</span><h1>SNOW TIGER <em>K</em></h1>'+
+  return '<header class="mast"><span class="logo" aria-hidden="true">'+badge(s.myTeam,32)+'</span><h1>SNOW TIGER <em>K</em></h1>'+
     '<button class="me" type="button" data-act="pf" aria-expanded="'+S.pf+'" aria-controls="pf"><span class="face">'+FACE+'</span>'+esc(s.name)+
     '<svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4"/></svg></button></header>'+banner()+
     (S.pf?'<dl class="pf" id="pf"><div><dt>이름</dt><dd>'+esc(s.name)+'</dd></div><div><dt>나이</dt><dd>'+s.age+'세</dd></div><div><dt>구단</dt><dd>'+badge(s.myTeam)+esc(s.myTeam)+'</dd></div></dl>':'')+
@@ -401,7 +407,7 @@ function viewToday(){
     '<div class="pad"><button class="btn" type="button" data-act="bump" data-d="-1" aria-label="선택한 칸 1점 빼기">−</button><button class="btn" type="button" data-act="bump" data-d="1" aria-label="선택한 칸 1점 더하기">+</button></div></section>'+
     '<section class="card"><h3>안타 · 홈런<small>숫자를 눌러 바로 쓸 수 있어요</small></h3><div class="two">'+stp('me','hit',esc(who)+' 안타')+stp('me','hr',esc(who)+' 홈런')+stp('dad','hit','아빠 안타')+stp('dad','hr','아빠 홈런')+'</div></section>'+
     '<div class="res" id="res">'+resHtml(d,a,b)+'</div>'+
-    '<button class="btn primary" type="button" data-act="save" style="width:100%;margin-top:14px"'+(ro?' disabled':'')+'>경기 끝! 저장</button>'+
+    '<button class="btn primary" type="button" data-act="save" data-nosfx style="width:100%;margin-top:14px"'+(ro?' disabled':'')+'>경기 끝! 저장</button>'+
     (S.draft?'<button class="btn ghost" type="button" data-act="reset" style="width:100%;margin-top:8px">처음부터 다시</button>':'');
 }
 function patchTotals(){
@@ -435,7 +441,7 @@ function viewLog(){
     if(open){
       h+='<div class="det">'+scoreTable(g);
       if(S.del===g.id){
-        h+='<p>이 경기를 지울까요? 지우면 되돌릴 수 없어요.</p><div class="acts"><button class="btn danger" type="button" data-act="delok" data-id="'+esc(g.id)+'">지우기</button><button class="btn ghost" type="button" data-act="delno">취소</button></div>';
+        h+='<p>이 경기를 지울까요? 지우면 되돌릴 수 없어요.</p><div class="acts"><button class="btn danger" type="button" data-act="delok" data-nosfx data-id="'+esc(g.id)+'">지우기</button><button class="btn ghost" type="button" data-act="delno">취소</button></div>';
       }else if(!S.readOnly){
         h+='<div class="acts"><button class="btn ghost" type="button" data-act="del" data-id="'+esc(g.id)+'">이 경기 지우기</button></div>';
       }
@@ -473,13 +479,15 @@ function viewSet(){
     '<label>내 구단<select data-f="sMy">'+teamOpts(s.myTeam)+'</select></label>'+
     '<label>아빠 구단<select data-f="sDad">'+teamOpts(s.dadTeam)+'</select></label>'+
     '<label>기본 이닝 수<select data-f="sInn">'+innOpts(s.innings)+'</select></label></div>'+
-    '<p class="hint">새 경기를 시작할 때 처음 보이는 구단과 이닝 수예요. 경기마다 바꿀 수 있어요.</p></section>'+
+    '<p class="hint">내 구단을 고르면 앱 색깔도 그 구단 느낌으로 바뀌어요. 새 경기를 시작할 때 처음 보이는 구단과 이닝 수이기도 해요.</p></section>'+
+    soundCard()+
     '<section class="card"><h3>저장 위치</h3><p style="margin:0;font-size:14.5px">'+where+'</p></section>';
 }
 
 /* ---------- 그리기 ---------- */
 function route(){var r=(location.hash||'#home').slice(1);return ROUTES.indexOf(r)>=0?r:'home'}
 function render(){
+  applyTheme();
   var r=route(),h;
   h=r==='home'?viewHome():r==='log'?viewLog():r==='today'?viewToday():r==='hit'?viewHit():viewSet();
   $app.innerHTML=h;
@@ -503,6 +511,7 @@ $app.addEventListener('click',function(e){
   var act=b.getAttribute('data-act');
   if(act==='pf'){S.pf=!S.pf;render()}
   else if(act==='set'){S[b.getAttribute('data-key')]=b.getAttribute('data-v');render()}
+  else if(act==='sfx'){prefs.sfx=b.getAttribute('data-v');savePrefs();render();playSfx(prefs.sfx);buzz([12])}
   else if(act==='bump'){
     var d=+b.getAttribute('data-d'),sel=S.sel;
     editDraft(function(x){x.inn[sel.w][sel.i]=clamp(x.inn[sel.w][sel.i]+d,0,30)});
@@ -515,24 +524,30 @@ $app.addEventListener('click',function(e){
     if(S.readOnly)return;
     var g=JSON.parse(JSON.stringify(getDraft()));g.id=newId();g.createdAt=Date.now();
     addGame(g);clearDraft();S.sel={w:'me',i:0};S.open=g.id;S.period='week';
-    toast('저장했어요!');
+    toast('저장했어요!');feedback('fanfare');
     if(location.hash==='#log')render();else location.hash='#log';
   }
   else if(act==='reset'){clearDraft();S.sel={w:'me',i:0};render()}
   else if(act==='open'){var id=b.getAttribute('data-id');S.open=S.open===id?null:id;S.del=null;render()}
   else if(act==='del'){S.del=b.getAttribute('data-id');render()}
   else if(act==='delno'){S.del=null;render()}
-  else if(act==='delok'){removeGame(b.getAttribute('data-id'));S.del=null;S.open=null;toast('지웠어요');render()}
+  else if(act==='delok'){removeGame(b.getAttribute('data-id'));S.del=null;S.open=null;toast('지웠어요');feedback('thud');render()}
 });
 $app.addEventListener('change',function(e){
+  var pk=e.target.getAttribute&&e.target.getAttribute('data-p');
+  if(pk){
+    if(pk==='vol'){prefs.vol=clamp(num(e.target.value)/100,0,1);savePrefs();playSfx(prefs.sfx)}
+    else{prefs[pk]=!!e.target.checked;savePrefs();if(pk==='sound'&&prefs.sound)playSfx(prefs.sfx);if(pk==='haptic'&&prefs.haptic)buzz([20])}
+    return;
+  }
   var f=e.target.getAttribute&&e.target.getAttribute('data-f');if(!f)return;
   var v=e.target.value;
   if(f==='date'){if(parse(v))editDraft(function(x){x.date=v})}
-  else if(f==='meTeam'){editDraft(function(x){x.meTeam=teamOk(v,x.meTeam)})}
+  else if(f==='meTeam'){S.settings.myTeam=teamOk(v,S.settings.myTeam);saveSettings();editDraft(function(x){x.meTeam=teamOk(v,x.meTeam)})}
   else if(f==='dadTeam'){editDraft(function(x){x.dadTeam=teamOk(v,x.dadTeam)})}
   else if(f==='innings'){var nn=clamp(Math.round(num(v))||9,1,9);editDraft(function(x){x.innings=nn})}
   else if(f==='sInn'){S.settings.innings=clamp(Math.round(num(v))||9,1,9);saveSettings()}
-  else if(f==='sMy'){S.settings.myTeam=teamOk(v,S.settings.myTeam);saveSettings()}
+  else if(f==='sMy'){S.settings.myTeam=teamOk(v,S.settings.myTeam);saveSettings();render()}
   else if(f==='sDad'){S.settings.dadTeam=teamOk(v,S.settings.dadTeam);saveSettings()}
   else if(f==='age'){S.settings.age=clamp(Math.round(num(v))||9,1,99);saveSettings()}
   else if(f==='name'){S.settings.name=(v.trim()||'설호').slice(0,12);saveSettings()}
@@ -559,6 +574,144 @@ $app.addEventListener('focusout',function(e){
   var d=getDraft(),w=t.getAttribute('data-w');
   t.value=t.matches('.cell')?d.inn[w][+t.getAttribute('data-i')]:d[t.getAttribute('data-k')][w];
 });
+
+/* ---------- 소리와 진동 ---------- */
+var prefs={sound:true,sfx:'bat',vol:0.7,haptic:true};
+try{
+  var pj=JSON.parse(localStorage.getItem('stk-prefs')||'null');
+  if(pj){
+    prefs.sound=pj.sound!==false;
+    prefs.sfx=['bat','mitt','clap'].indexOf(pj.sfx)>=0?pj.sfx:'bat';
+    prefs.vol=clamp(pj.vol===undefined?0.7:num(pj.vol),0,1);
+    prefs.haptic=pj.haptic!==false;
+  }
+}catch(e){}
+function savePrefs(){try{localStorage.setItem('stk-prefs',JSON.stringify(prefs))}catch(e){}}
+function sfxName(v){return v==='bat'?'딱! 타격음':v==='mitt'?'팡! 글러브':'짝짝 응원'}
+function soundCard(){
+  return '<section class="card"><h3>소리와 진동<small>이 기기에만 적용돼요</small></h3><div class="fl">'+
+    '<label class="sw"><span>효과음</span><input class="tg" type="checkbox" role="switch" data-p="sound"'+(prefs.sound?' checked':'')+'></label>'+
+    '<div class="st"><span class="k">효과음 고르기</span><div class="seg" role="group" aria-label="효과음 종류">'+
+    ['bat','mitt','clap'].map(function(v){return '<button type="button" data-act="sfx" data-v="'+v+'" data-nosfx aria-pressed="'+(prefs.sfx===v)+'">'+sfxName(v)+'</button>'}).join('')+'</div></div>'+
+    '<label class="rg"><span>소리 크기</span><input class="rgi" type="range" min="0" max="100" step="5" data-p="vol" value="'+Math.round(prefs.vol*100)+'"></label>'+
+    '<label class="sw"><span>진동</span><input class="tg" type="checkbox" role="switch" data-p="haptic"'+(prefs.haptic?' checked':'')+'></label>'+
+    '</div><p class="hint">버튼을 누를 때마다 소리와 진동이 나요. 경기를 저장하면 응원 나팔 소리가 나요. 진동은 안드로이드 폰에서 가장 잘 느껴지고, 아이폰은 기종과 버전에 따라 약하거나 없을 수 있어요.</p></section>';
+}
+
+var AC=null,MG=null,NB=null;
+function ac(){
+  if(!AC){
+    var C=window.AudioContext||window.webkitAudioContext;if(!C)return null;
+    try{AC=new C()}catch(e){return null}
+  }
+  if(AC.state==='suspended'){try{AC.resume()}catch(e){}}
+  return AC;
+}
+function master(a){
+  if(!MG){MG=a.createGain();MG.connect(a.destination)}
+  MG.gain.value=prefs.vol;return MG;
+}
+function noiseBuf(a){
+  if(!NB){NB=a.createBuffer(1,Math.floor(a.sampleRate*0.5),a.sampleRate);var d=NB.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1}
+  return NB;
+}
+function env(g,t,peak,dur){
+  g.gain.setValueAtTime(0.0001,t);
+  g.gain.exponentialRampToValueAtTime(peak,t+0.004);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+}
+function burst(a,t,o){
+  var src=a.createBufferSource();src.buffer=noiseBuf(a);
+  var f=a.createBiquadFilter();f.type=o.type;f.frequency.value=o.f;f.Q.value=o.q||1;
+  var g=a.createGain();env(g,t,o.v,o.d);
+  src.connect(f);f.connect(g);g.connect(master(a));src.start(t);src.stop(t+o.d+0.05);
+}
+function tone(a,t,o){
+  var os=a.createOscillator();os.type=o.type||'sine';
+  os.frequency.setValueAtTime(o.f,t);
+  if(o.f2)os.frequency.exponentialRampToValueAtTime(o.f2,t+o.d);
+  var g=a.createGain();env(g,t,o.v,o.d);
+  os.connect(g);g.connect(master(a));os.start(t);os.stop(t+o.d+0.05);
+}
+function playSfx(name){
+  var a=ac();if(!a)return;
+  var t=a.currentTime+0.005;
+  try{
+    if(name==='bat'){            /* 딱! 배트에 공이 맞는 소리 */
+      burst(a,t,{type:'bandpass',f:2400,q:1.1,v:0.9,d:0.07});
+      burst(a,t,{type:'highpass',f:4500,v:0.35,d:0.03});
+      tone(a,t,{f:230,f2:90,v:0.7,d:0.09});
+    }else if(name==='mitt'){     /* 팡! 글러브에 공이 들어가는 소리 */
+      burst(a,t,{type:'lowpass',f:950,v:0.9,d:0.09});
+      burst(a,t,{type:'bandpass',f:1800,q:2,v:0.25,d:0.03});
+      tone(a,t,{f:150,f2:55,v:0.9,d:0.13});
+    }else if(name==='clap'){     /* 짝짝 응원 박수 */
+      burst(a,t,{type:'bandpass',f:1500,q:0.8,v:0.8,d:0.05});
+      burst(a,t+0.1,{type:'bandpass',f:1700,q:0.8,v:0.8,d:0.05});
+    }else if(name==='fanfare'){  /* 응원 나팔: 돌격! */
+      burst(a,t,{type:'bandpass',f:2400,q:1.1,v:0.8,d:0.07});
+      var n=[[392,0.1],[523,0.1],[659,0.1],[784,0.32]],at=t+0.1;
+      n.forEach(function(x){tone(a,at,{type:'square',f:x[0],v:0.2,d:x[1]});at+=x[1]+0.01});
+    }else if(name==='thud'){     /* 쿵 */
+      tone(a,t,{f:130,f2:48,v:0.8,d:0.16});
+    }
+  }catch(e){}
+}
+var hl=document.createElement('label');
+hl.setAttribute('aria-hidden','true');
+hl.style.cssText='position:fixed;left:-120px;top:-120px;opacity:0;pointer-events:none';
+var hi=document.createElement('input');hi.type='checkbox';hi.setAttribute('switch','');hl.appendChild(hi);
+document.body.appendChild(hl);
+function buzz(p){
+  if(navigator.vibrate){try{navigator.vibrate(p)}catch(e){}return}
+  var at=0;p.forEach(function(v,i){if(i%2===0)setTimeout(function(){try{hl.click()}catch(e){}},at);at+=v});
+}
+function feedback(kind){
+  if(prefs.sound)playSfx(kind==='tap'?prefs.sfx:kind);
+  if(prefs.haptic)buzz(kind==='fanfare'?[30,40,30,40,70]:kind==='thud'?[45]:[12]);
+}
+['pointerdown','touchend','click'].forEach(function(n){document.addEventListener(n,function(){ac()},{capture:true,passive:true})});
+document.addEventListener('pointerdown',function(e){
+  var t=e.target&&e.target.closest&&e.target.closest('button,a.tab,select,input,label.sw');
+  if(!t||t.hasAttribute('data-nosfx')||t.matches('input[type="range"]'))return;
+  feedback('tap');
+},true);
+$app.addEventListener('input',function(e){
+  var t=e.target;
+  if(t.matches&&t.matches('[data-p="vol"]')){prefs.vol=clamp(num(t.value)/100,0,1);if(MG)MG.gain.value=prefs.vol}
+});
+
+/* ---------- 구단 테마 ---------- */
+var THEMES={
+  '롯데':{f:'#0b2a6f',fd:'#7ea2ff',a:'#e4002b',ai:'#ffffff',ad:'#ff5a74',aid:'#2a0008'},
+  '기아':{f:'#c8102e',fd:'#ff5a6e',a:'#111111',ai:'#ffffff',ad:'#f0f0f0',aid:'#111111'},
+  'KT':{f:'#151515',fd:'#e2e2e2',a:'#e4002b',ai:'#ffffff',ad:'#ff5a74',aid:'#2a0008'},
+  '삼성':{f:'#074ca1',fd:'#5aa2ff',a:'#b8c2d0',ai:'#0b2447',ad:'#c8d1de',aid:'#0b2447'},
+  'LG':{f:'#b5003c',fd:'#ff4d8d',a:'#1b1b1b',ai:'#ffffff',ad:'#eeeeee',aid:'#111111'},
+  '키움':{f:'#820024',fd:'#e0607f',a:'#e8b04a',ai:'#3a2600',ad:'#f0c060',aid:'#3a2600'},
+  'SSG':{f:'#ce0e2d',fd:'#ff4d5e',a:'#f2a900',ai:'#3a2600',ad:'#f5b82e',aid:'#3a2600'},
+  '두산':{f:'#1a1a4a',fd:'#8c9cff',a:'#8ea2e8',ai:'#0b0b2a',ad:'#aab6f5',aid:'#0b0b2a'},
+  '한화':{f:'#cf520a',fd:'#ff8a3d',a:'#1a2a5c',ai:'#ffffff',ad:'#7f93e6',aid:'#0b0b2a'},
+  'NC':{f:'#1b2f5e',fd:'#8fa8e0',a:'#c7a76c',ai:'#1a1200',ad:'#d9bd86',aid:'#1a1200'}};
+function themeCss(team){
+  var t=THEMES[team];if(!t)return '';
+  var light='--field:'+t.f+';--on-field:#ffffff;--gold:'+t.a+';--gold-ink:'+t.ai+
+    ';--navy:color-mix(in srgb,var(--field) 55%,#000);--field-soft:color-mix(in srgb,var(--field) 12%,var(--surface));--field-rule:color-mix(in srgb,var(--field) 45%,var(--surface));--gold-soft:color-mix(in srgb,var(--gold) 16%,var(--surface));--bg:color-mix(in srgb,var(--field) 5%,#f4f5f4);--seg:color-mix(in srgb,var(--field) 10%,#e6e8e6);';
+  var dark='--field:'+t.fd+';--on-field:#0a0f12;--gold:'+t.ad+';--gold-ink:'+t.aid+
+    ';--navy:color-mix(in srgb,var(--field) 30%,#fff);--field-soft:color-mix(in srgb,var(--field) 14%,var(--surface));--field-rule:color-mix(in srgb,var(--field) 40%,var(--surface));--gold-soft:color-mix(in srgb,var(--gold) 14%,var(--surface));--bg:color-mix(in srgb,var(--field) 6%,#090b0a);--seg:color-mix(in srgb,var(--field) 12%,#131715);';
+  return ':root{'+light+'}@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){'+dark+'}}:root[data-theme="dark"]{'+dark+'}';
+}
+var themeKey='';
+function applyTheme(){
+  var team=S.settings.myTeam;if(team===themeKey)return;themeKey=team;
+  var el=document.getElementById('team-theme');
+  if(!el){el=document.createElement('style');el.id='team-theme';document.head.appendChild(el)}
+  el.textContent=themeCss(team);
+  var m=document.querySelector('meta[name="theme-color"]');
+  if(!m){m=document.createElement('meta');m.name='theme-color';document.head.appendChild(m)}
+  m.content=(THEMES[team]||THEMES['롯데']).f;
+}
+
 window.addEventListener('hashchange',function(){window.scrollTo(0,0);render()});
 
 /* ---------- 시작 ---------- */
