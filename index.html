@@ -187,6 +187,8 @@ button{cursor:pointer}
 .fl input.tg:checked::after{transform:translateX(24px)}
 .fl input.rgi{padding:0;min-height:32px;border:0;background:transparent;accent-color:var(--field)}
 button,a,select,input{touch-action:manipulation}
+html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+input,textarea{-webkit-user-select:text;user-select:text}
 .lb.st li{grid-template-columns:24px 80px minmax(0,1fr) 52px}
 .lb .rec{font-size:13px;color:var(--muted);white-space:nowrap}
 .lb .rec b{font:700 15px/1 var(--num);color:var(--ink);display:inline}
@@ -245,7 +247,7 @@ button,a,select,input{touch-action:manipulation}
 <script>
 (function(){
 'use strict';
-var APP_VER='1.2.0',APP_DATE='2026-11-08';
+var APP_VER='1.2.1',APP_DATE='2026-11-08';
 var TEAMS=['롯데','기아','KT','삼성','LG','키움','SSG','두산','한화','NC'];
 var TSTYLE={
   '롯데':['롯','#0b2a6f','#ffffff','#e4002b'],'기아':['기','#c8102e','#ffffff','#8f0b21'],
@@ -884,6 +886,8 @@ function importText(t){
 }
 
 /* ---------- 업데이트 ---------- */
+document.addEventListener('contextmenu',function(e){if(!(e.target.closest&&e.target.closest('input,textarea')))e.preventDefault()});
+document.addEventListener('selectstart',function(e){var t=e.target&&(e.target.nodeType===3?e.target.parentNode:e.target);if(!(t&&t.closest&&t.closest('input,textarea')))e.preventDefault()});
 var updBusy=false;
 function updMsg(t){var m=document.getElementById('updMsg');if(m)m.textContent=t}
 function checkUpdate(manual){
