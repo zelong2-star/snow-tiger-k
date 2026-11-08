@@ -187,6 +187,16 @@ button{cursor:pointer}
 .fl input.tg:checked::after{transform:translateX(24px)}
 .fl input.rgi{padding:0;min-height:32px;border:0;background:transparent;accent-color:var(--field)}
 button,a,select,input{touch-action:manipulation}
+.lb.st li{grid-template-columns:24px 80px minmax(0,1fr) 52px}
+.lb .rec{font-size:13px;color:var(--muted);white-space:nowrap}
+.lb .rec b{font:700 15px/1 var(--num);color:var(--ink);display:inline}
+.info{margin:8px 0 0;display:grid;gap:0}
+.info div{display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);font-size:14.5px}
+.info div:first-child{border-top:0}
+.info dt{color:var(--muted)}.info dd{margin:0;font-weight:700;font-variant-numeric:tabular-nums}
+.maker{text-align:center;margin:18px 0 8px;color:var(--muted);font-size:14px}
+.maker b{font-family:var(--disp,inherit);color:var(--navy);font-size:17px;margin-left:4px}
+.maker small{display:block;font-size:11.5px;margin-top:3px;letter-spacing:.04em}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 :root{padding-top:env(safe-area-inset-top,0px)}
 [hidden]{display:none!important}
@@ -208,6 +218,7 @@ button,a,select,input{touch-action:manipulation}
 <script>
 (function(){
 'use strict';
+var APP_VER='1.1.0',APP_DATE='2026-11-08';
 var TEAMS=['롯데','기아','KT','삼성','LG','키움','SSG','두산','한화','NC'];
 var TSTYLE={
   '롯데':['롯','#0b2a6f','#ffffff','#e4002b'],'기아':['기','#c8102e','#ffffff','#8f0b21'],
@@ -243,7 +254,7 @@ function norm(id,o){
   function pair(x){return {me:clamp(Math.round(num(x&&x.me)),0,99),dad:clamp(Math.round(num(x&&x.dad)),0,99)}}
   return {id:id,date:typeof o.date==='string'&&parse(o.date)?o.date:today(),
     meTeam:teamOk(o.meTeam,'롯데'),dadTeam:teamOk(o.dadTeam,'LG'),
-    inn:{me:arr(o.inn&&o.inn.me),dad:arr(o.inn&&o.inn.dad)},hit:pair(o.hit),hr:pair(o.hr),
+    inn:{me:arr(o.inn&&o.inn.me),dad:arr(o.inn&&o.inn.dad)},hit:pair(o.hit),hr:pair(o.hr),ab:pair(o.ab),
     innings:clamp(Math.round(num(o.innings))||9,1,9),
     createdAt:num(o.createdAt)};
 }
@@ -271,14 +282,15 @@ function inPeriod(g,p){
 }
 function periodGames(p){return S.games.filter(function(g){return inPeriod(g,p)})}
 function tally(list){
-  var o={w:0,l:0,d:0,hitMe:0,hitDad:0,hrMe:0,hrDad:0};
+  var o={w:0,l:0,d:0,hitMe:0,hitDad:0,hrMe:0,hrDad:0,abMe:0,habMe:0};
   list.forEach(function(g){
     var r=result(g);if(r==='승')o.w++;else if(r==='패')o.l++;else o.d++;
-    o.hitMe+=g.hit.me;o.hitDad+=g.hit.dad;o.hrMe+=g.hr.me;o.hrDad+=g.hr.dad;
+    if(g.ab.me>0){o.abMe+=Math.max(g.ab.me,g.hit.me);o.habMe+=g.hit.me}o.hitMe+=g.hit.me;o.hitDad+=g.hit.dad;o.hrMe+=g.hr.me;o.hrDad+=g.hr.dad;
   });
   return o;
 }
 
+function avg(h,ab){return ab>0?(h>=ab?'1.000':'.'+('00'+Math.round(h/ab*1000)).slice(-3)):'-'}
 /* ---------- 저장 ---------- */
 function enqueue(fn){
   chain=chain.then(fn).then(function(){if(S.err){S.err='';softRender()}},function(){S.err='저장하지 못했어요. 잠시 뒤에 다시 해 보세요.';render()});
@@ -358,24 +370,41 @@ function viewHome(){
     right='<div class="vs"><span class="tm">'+badge(a)+esc(a)+'</span><em>VS</em><span class="tm">'+badge(b)+esc(b)+'</span></div>'+
       '<div class="rc" aria-label="최근 경기 결과"><span>최근</span>'+recent.map(function(g){var r=result(g);return '<i class="'+(r==='승'?'w':'')+'">'+r+'</i>'}).join('')+'</div>';
   }
-  var rows=teamRows(S.lb),max=Math.max.apply(null,rows.map(function(r){return r.v}))||1;
   return '<header class="mast"><span class="logo" aria-hidden="true">'+badge(s.myTeam,32)+'</span><h1>SNOW TIGER <em>K</em></h1>'+
     '<button class="me" type="button" data-act="pf" aria-expanded="'+S.pf+'" aria-controls="pf"><span class="face">'+FACE+'</span>'+esc(s.name)+
     '<svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4"/></svg></button></header>'+banner()+
     (S.pf?'<dl class="pf" id="pf"><div><dt>이름</dt><dd>'+esc(s.name)+'</dd></div><div><dt>나이</dt><dd>'+s.age+'세</dd></div><div><dt>구단</dt><dd>'+badge(s.myTeam)+esc(s.myTeam)+'</dd></div></dl>':'')+
     '<section class="ticket" aria-label="나의 전적 요약"><div class="ring" role="img" aria-label="승률 '+rate+'퍼센트"><svg viewBox="0 0 92 92"><circle class="tr" cx="46" cy="46" r="34" fill="none" stroke-width="10"/><circle class="pg" cx="46" cy="46" r="34" fill="none" stroke-width="10" stroke-linecap="round" stroke-dasharray="'+dash+' 213.6"/></svg><b>'+rate+'%<small>승률</small></b></div><div>'+right+'</div></section>'+
-    '<section class="card" aria-label="구단 순위"><h3>구단 순위<small>설호가 고른 구단의 누적</small></h3>'+
-    seg('lb',[['hit','안타'],['hr','홈런']],S.lb,'기록 종류')+
-    '<ol class="lb">'+rows.map(function(r,i){
-      return '<li><span class="rk">'+(i+1)+'</span><span class="tm">'+badge(r.t,24)+esc(r.t)+'</span><span class="bar"><i style="width:'+(r.v?Math.max(4,r.v/max*100):0)+'%"></i></span><b>'+r.v+'</b></li>';
-    }).join('')+'</ol></section>';
+    rankCards();
 }
-function teamRows(kind){
-  var m={};TEAMS.forEach(function(t){m[t]=0});
-  S.games.forEach(function(g){m[g.meTeam]+=g[kind].me});
-  var rows=TEAMS.map(function(t,i){return {t:t,v:m[t],i:i}});
-  rows.sort(function(x,y){return y.v-x.v||x.i-y.i});
-  return rows;
+function teamStats(){
+  var m={};TEAMS.forEach(function(t,i){m[t]={t:t,i:i,g:0,w:0,l:0,d:0,h:0,hr:0,ab:0,hab:0}});
+  S.games.forEach(function(g){
+    var r=result(g);
+    ['me','dad'].forEach(function(w){
+      var x=m[w==='me'?g.meTeam:g.dadTeam],mine=r==='무'?'d':(r==='승')===(w==='me')?'w':'l';
+      x.g++;x[mine]++;x.h+=g.hit[w];x.hr+=g.hr[w];
+      if(g.ab[w]>0){x.ab+=Math.max(g.ab[w],g.hit[w]);x.hab+=g.hit[w]}
+    });
+  });
+  return TEAMS.map(function(t){var x=m[t];x.pct=(x.w+x.l)?x.w/(x.w+x.l):-1;x.avg=x.ab>0?x.hab/x.ab:-1;return x});
+}
+function rankCards(){
+  var st=teamStats();
+  function sorted(fn){return st.slice().sort(function(a,b){return fn(b)-fn(a)||b.w-a.w||a.l-b.l||a.i-b.i})}
+  function li(i,x,mid,val){return '<li><span class="rk">'+(i+1)+'</span><span class="tm">'+badge(x.t,24)+esc(x.t)+'</span>'+mid+'<b>'+val+'</b></li>'}
+  function bars(key,fmt,fn){
+    var rows=sorted(fn),max=Math.max.apply(null,rows.map(fn))||1;
+    return '<ol class="lb">'+rows.map(function(x,i){var v=fn(x);
+      return li(i,x,'<span class="bar"><i style="width:'+(v>0?Math.max(4,v/max*100):0)+'%"></i></span>',fmt(x))}).join('')+'</ol>';
+  }
+  var c1='<ol class="lb st">'+sorted(function(x){return x.pct}).map(function(x,i){
+    return li(i,x,'<span class="rec"><b>'+x.w+'</b>승 <b>'+x.l+'</b>패 <b>'+x.d+'</b>무</span>',x.pct<0?'-':avg(x.w,x.w+x.l))}).join('')+'</ol>';
+  function card(t,sub,body){return '<section class="card" aria-label="'+t+'"><h3>'+t+'<small>'+sub+'</small></h3>'+body+'</section>'}
+  return card('구단 순위','승률 순 · 설호와 아빠가 고른 구단 모두',c1)+
+    card('팀 타율 순위','안타 ÷ 타수 · 타수를 적은 경기만',bars('avg',function(x){return avg(x.hab,x.ab)},function(x){return x.avg}))+
+    card('팀 안타 순위','안타 누적',bars('h',function(x){return x.h},function(x){return x.h}))+
+    card('팀 홈런 순위','홈런 누적',bars('hr',function(x){return x.hr},function(x){return x.hr}));
 }
 
 function resHtml(d,a,b){
@@ -405,7 +434,7 @@ function viewToday(){
     '<section class="card"><h3>이닝별 점수</h3><table class="sb" aria-label="이닝별 점수">'+cols(n)+head+line('me',esc(who),d.meTeam)+line('dad','아빠',d.dadTeam)+'</table>'+
     '<p class="hint">H는 안타, R은 득점이에요. 점수 칸을 눌러 숫자를 바로 쓰거나, 아래 − + 로 바꿔요.</p>'+
     '<div class="pad"><button class="btn" type="button" data-act="bump" data-d="-1" aria-label="선택한 칸 1점 빼기">−</button><button class="btn" type="button" data-act="bump" data-d="1" aria-label="선택한 칸 1점 더하기">+</button></div></section>'+
-    '<section class="card"><h3>안타 · 홈런<small>숫자를 눌러 바로 쓸 수 있어요</small></h3><div class="two">'+stp('me','hit',esc(who)+' 안타')+stp('me','hr',esc(who)+' 홈런')+stp('dad','hit','아빠 안타')+stp('dad','hr','아빠 홈런')+'</div></section>'+
+    '<section class="card"><h3>타수 · 안타 · 홈런<small>숫자를 눌러 바로 쓸 수 있어요</small></h3><div class="two">'+stp('me','ab',esc(who)+' 타수')+stp('dad','ab','아빠 타수')+stp('me','hit',esc(who)+' 안타')+stp('dad','hit','아빠 안타')+stp('me','hr',esc(who)+' 홈런')+stp('dad','hr','아빠 홈런')+'</div><p class="hint">타수는 공격에서 타석에 선 횟수예요. 타수를 적어야 타율(안타 ÷ 타수)이 계산돼요.</p></section>'+
     '<div class="res" id="res">'+resHtml(d,a,b)+'</div>'+
     '<button class="btn primary" type="button" data-act="save" data-nosfx style="width:100%;margin-top:14px"'+(ro?' disabled':'')+'>경기 끝! 저장</button>'+
     (S.draft?'<button class="btn ghost" type="button" data-act="reset" style="width:100%;margin-top:8px">처음부터 다시</button>':'');
@@ -429,7 +458,9 @@ function scoreTable(g){
     for(var i=0;i<n;i++)tr+='<td><span>'+g.inn[w][i]+'</span></td>';
     return tr+'<td class="hs"><b>'+g.hit[w]+'</b></td><td class="tot"><b>'+runs(g,w)+'</b></td></tr>';
   }
-  return '<table class="sb ro">'+cols(n)+head+row('me',esc(S.settings.name),g.meTeam)+row('dad','아빠',g.dadTeam)+'</table>';
+  function ln(w,name){return g.ab[w]>0?name+' '+Math.max(g.ab[w],g.hit[w])+'타수 '+g.hit[w]+'안타 · 타율 '+avg(g.hit[w],Math.max(g.ab[w],g.hit[w])):''}
+  var tl=[ln('me',esc(S.settings.name)),ln('dad','아빠')].filter(Boolean).join('<br>');
+  return '<table class="sb ro">'+cols(n)+head+row('me',esc(S.settings.name),g.meTeam)+row('dad','아빠',g.dadTeam)+'</table>'+(tl?'<p class="hint">'+tl+'</p>':'');
 }
 function periodSeg(){return seg('period',[['week','이번 주'],['month','이번 달'],['year','올해']],S.period,'기간')}
 
@@ -450,7 +481,7 @@ function viewLog(){
     return h+'</div>';
   }).join('');
   return '<header class="mast"><h2>나의 <em>기록</em></h2></header>'+banner()+periodSeg()+
-    '<div class="sum"><div><b>'+t.w+'승 '+t.l+'패</b><span>전적'+(t.d?' (무 '+t.d+')':'')+'</span></div><div><b>'+t.hitMe+'</b><span>안타</span></div><div><b>'+t.hrMe+'</b><span>홈런</span></div></div>'+
+    '<div class="sum four"><div><b>'+t.w+'승 '+t.l+'패</b><span>전적'+(t.d?' (무 '+t.d+')':'')+'</span></div><div><b>'+avg(t.habMe,t.abMe)+'</b><span>팀 타율</span></div><div><b>'+t.hitMe+'</b><span>안타</span></div><div><b>'+t.hrMe+'</b><span>홈런</span></div></div>'+
     '<section class="card"><h3>경기 목록<small>'+list.length+'경기</small></h3>'+
     (list.length?rows:'<p class="empty">'+(S.ready?'이 기간에는 경기가 없어요.<br>오늘 기록 탭에서 경기를 남겨 보세요.':'기록을 불러오는 중이에요…')+'</p>')+'</section>';
 }
@@ -481,7 +512,10 @@ function viewSet(){
     '<label>기본 이닝 수<select data-f="sInn">'+innOpts(s.innings)+'</select></label></div>'+
     '<p class="hint">내 구단을 고르면 앱 색깔도 그 구단 느낌으로 바뀌어요. 새 경기를 시작할 때 처음 보이는 구단과 이닝 수이기도 해요.</p></section>'+
     soundCard()+
-    '<section class="card"><h3>저장 위치</h3><p style="margin:0;font-size:14.5px">'+where+'</p></section>';
+    '<section class="card"><h3>앱 정보</h3><dl class="info"><div><dt>버전</dt><dd>v'+APP_VER+'</dd></div><div><dt>업데이트 일자</dt><dd>'+APP_DATE.replace(/-/g,'.')+'</dd></div></dl>'+
+    '<button class="btn" type="button" data-act="upd" data-nosfx style="width:100%;margin-top:10px" id="updBtn">업데이트 확인</button><p class="hint" id="updMsg" role="status">새 버전이 나오면 받아서 바로 바꿔 드려요.</p></section>'+
+    '<section class="card"><h3>저장 위치</h3><p style="margin:0;font-size:14.5px">'+where+'</p></section>'+
+    '<footer class="maker">만든 사람 <b>설호</b><small>SNOW TIGER K · v'+APP_VER+'</small></footer>';
 }
 
 /* ---------- 그리기 ---------- */
@@ -511,6 +545,7 @@ $app.addEventListener('click',function(e){
   var act=b.getAttribute('data-act');
   if(act==='pf'){S.pf=!S.pf;render()}
   else if(act==='set'){S[b.getAttribute('data-key')]=b.getAttribute('data-v');render()}
+  else if(act==='upd'){checkUpdate(true)}
   else if(act==='sfx'){prefs.sfx=b.getAttribute('data-v');savePrefs();render();playSfx(prefs.sfx);buzz([12])}
   else if(act==='bump'){
     var d=+b.getAttribute('data-d'),sel=S.sel;
@@ -711,6 +746,34 @@ function applyTheme(){
   if(!m){m=document.createElement('meta');m.name='theme-color';document.head.appendChild(m)}
   m.content=(THEMES[team]||THEMES['롯데']).f;
 }
+
+/* ---------- 업데이트 ---------- */
+var updBusy=false;
+function updMsg(t){var m=document.getElementById('updMsg');if(m)m.textContent=t}
+function checkUpdate(manual){
+  if(updBusy)return;
+  if(!('serviceWorker' in navigator)||location.protocol==='file:'){
+    if(manual){updMsg('이 화면은 항상 최신 버전으로 열려요. (v'+APP_VER+')');feedback('fanfare')}
+    return;
+  }
+  updBusy=true;if(manual)updMsg('확인하는 중이에요…');
+  navigator.serviceWorker.getRegistration().then(function(reg){
+    if(!reg){updBusy=false;if(manual)updMsg('홈 화면에 설치한 앱에서 업데이트할 수 있어요.');return}
+    var done=false;
+    function found(){
+      if(done)return;done=true;updMsg('새 버전을 받았어요! 다시 시작할게요…');feedback('fanfare');
+      setTimeout(function(){location.reload()},900);
+    }
+    reg.addEventListener('updatefound',function(){
+      var w=reg.installing;if(!w)return;
+      w.addEventListener('statechange',function(){if(w.state==='activated'||w.state==='installed')setTimeout(found,300)});
+    });
+    reg.update().then(function(){
+      setTimeout(function(){updBusy=false;if(!done&&manual&&!reg.installing){updMsg('지금이 최신 버전이에요. (v'+APP_VER+')');feedback('fanfare')}},1500);
+    },function(){updBusy=false;if(manual)updMsg('인터넷에 연결되어 있는지 확인해 주세요.')});
+  },function(){updBusy=false});
+}
+setTimeout(function(){checkUpdate(false)},4000);
 
 window.addEventListener('hashchange',function(){window.scrollTo(0,0);render()});
 
