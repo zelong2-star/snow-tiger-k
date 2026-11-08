@@ -247,10 +247,10 @@ input,textarea{-webkit-user-select:text;user-select:text}
 <script>
 (function(){
 'use strict';
-var APP_VER='1.2.1',APP_DATE='2026-11-08';
+var APP_VER='1.2.2',APP_DATE='2026-11-08';
 var TEAMS=['롯데','기아','KT','삼성','LG','키움','SSG','두산','한화','NC'];
 var TSTYLE={
-  '롯데':['롯','#0b2a6f','#ffffff','#e4002b'],'기아':['기','#c8102e','#ffffff','#8f0b21'],
+  '롯데':['롯','#d71920','#ffffff','#111111'],'기아':['기','#c8102e','#ffffff','#8f0b21'],
   'KT':['KT','#1b1b1b','#ffffff','#e5e5e5'],'삼성':['삼','#1c6fc9','#ffffff','#0d4a96'],
   'LG':['LG','#b5003c','#ffffff','#7d0029'],'키움':['키','#7a1f3a','#ffffff','#52132a'],
   'SSG':['SSG','#f2a900','#3a2600','#b97f00'],'두산':['두','#131230','#ffffff','#5b5b8c'],
@@ -674,6 +674,7 @@ $app.addEventListener('click',function(e){
   else if(act==='delok'){removeGame(b.getAttribute('data-id'));S.del=null;S.open=null;toast('지웠어요');feedback('thud');render()}
 });
 $app.addEventListener('change',function(e){
+  if(e.target.tagName==='SELECT')feedback('tap');
   if(e.target.getAttribute&&e.target.getAttribute('data-bk')==='file'){
     var fl=e.target.files&&e.target.files[0];if(!fl)return;
     var fr=new FileReader();fr.onload=function(){var ta=document.getElementById('bk');if(ta)ta.value=String(fr.result||'');importText(String(fr.result||''))};
@@ -818,7 +819,7 @@ function feedback(kind){
 ['pointerdown','touchend','click'].forEach(function(n){document.addEventListener(n,function(){ac()},{capture:true,passive:true})});
 document.addEventListener('pointerdown',function(e){
   var t=e.target&&e.target.closest&&e.target.closest('button,a.tab,select,input,label.sw');
-  if(!t||t.hasAttribute('data-nosfx')||t.matches('input[type="range"]'))return;
+  if(!t||t.hasAttribute('data-nosfx')||t.matches('select,input[type="range"]'))return;
   feedback('tap');
 },true);
 $app.addEventListener('input',function(e){
@@ -828,7 +829,7 @@ $app.addEventListener('input',function(e){
 
 /* ---------- 구단 테마 ---------- */
 var THEMES={
-  '롯데':{f:'#0b2a6f',fd:'#7ea2ff',a:'#e4002b',ai:'#ffffff',ad:'#ff5a74',aid:'#2a0008'},
+  '롯데':{f:'#d71920',fd:'#ff5a60',a:'#111111',ai:'#ffffff',ad:'#f2f2f2',aid:'#111111'},
   '기아':{f:'#c8102e',fd:'#ff5a6e',a:'#111111',ai:'#ffffff',ad:'#f0f0f0',aid:'#111111'},
   'KT':{f:'#151515',fd:'#e2e2e2',a:'#e4002b',ai:'#ffffff',ad:'#ff5a74',aid:'#2a0008'},
   '삼성':{f:'#074ca1',fd:'#5aa2ff',a:'#b8c2d0',ai:'#0b2447',ad:'#c8d1de',aid:'#0b2447'},
