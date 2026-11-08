@@ -252,7 +252,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
 <script>
 (function(){
 'use strict';
-var APP_VER='1.2.4',APP_DATE='2026-11-08';
+var APP_VER='1.3.0',APP_DATE='2026-11-08';
 var TEAMS=['롯데','기아','KT','삼성','LG','키움','SSG','두산','한화','NC'];
 var TSTYLE={
   '롯데':['롯','#101d35','#ffffff','#d71920'],'기아':['기','#c8102e','#ffffff','#8f0b21'],
@@ -264,7 +264,7 @@ var DAYS=['일','월','화','수','목','금','토'];
 var ROUTES=['home','log','today','hit','set'];
 var S={settings:{name:'설호',age:9,myTeam:'롯데',dadTeam:'LG',innings:9},games:[],draft:null,
   ready:false,slow:false,mode:'mem',readOnly:false,err:'',
-  pf:false,lb:'hit',period:'week',hk:'hit',sel:{w:'me',i:0},open:null,del:null};
+  pf:false,lb:'hit',period:'week',who:'me',hk:'hit',sel:{w:'me',i:0},open:null,del:null};
 var $app=document.getElementById('app');
 var db=null,chain=Promise.resolve(),draftTimer=0,setTimer=0,toastTimer=0;
 
@@ -314,6 +314,9 @@ function inPeriod(g,p){
   if(p==='month')return g.date.slice(0,7)===t.slice(0,7);
   return g.date.slice(0,4)===t.slice(0,4);
 }
+function swapG(g){var c=JSON.parse(JSON.stringify(g));c.meTeam=g.dadTeam;c.dadTeam=g.meTeam;['inn','hit','hr','ab'].forEach(function(k){c[k]={me:g[k].dad,dad:g[k].me}});return c}
+function viewList(l){return S.who==='dad'?l.map(swapG):l}
+function nm(w){return (w==='me')!==(S.who==='dad')?S.settings.name:'아빠'}
 function periodGames(p){return S.games.filter(function(g){return inPeriod(g,p)})}
 function tally(list){
   var o={w:0,l:0,d:0,hitMe:0,hitDad:0,hrMe:0,hrDad:0,abMe:0,habMe:0,rs:0,ra:0};
@@ -544,13 +547,13 @@ function scoreTable(g){
     return tr+'<td class="hs"><b>'+g.hit[w]+'</b></td><td class="tot"><b>'+runs(g,w)+'</b></td></tr>';
   }
   function ln(w,name){return g.ab[w]>0?name+' '+Math.max(g.ab[w],g.hit[w])+'타수 '+g.hit[w]+'안타 · 타율 '+avg(g.hit[w],Math.max(g.ab[w],g.hit[w])):''}
-  var tl=[ln('me',esc(S.settings.name)),ln('dad','아빠')].filter(Boolean).join('<br>');
-  return '<table class="sb ro">'+cols(n)+head+row('me',esc(S.settings.name),g.meTeam)+row('dad','아빠',g.dadTeam)+'</table>'+(tl?'<p class="hint">'+tl+'</p>':'');
+  var tl=[ln('me',esc(nm('me'))),ln('dad',esc(nm('dad')))].filter(Boolean).join('<br>');
+  return '<table class="sb ro">'+cols(n)+head+row('me',esc(nm('me')),g.meTeam)+row('dad',esc(nm('dad')),g.dadTeam)+'</table>'+(tl?'<p class="hint">'+tl+'</p>':'');
 }
 function periodSeg(){return seg('period',[['week','이번 주'],['month','이번 달'],['year','올해']],S.period,'기간')}
 
 function viewLog(){
-  var list=periodGames(S.period),t=tally(list);
+  var list=viewList(periodGames(S.period)),t=tally(list);
   var rows=list.map(function(g){
     var r=result(g),open=S.open===g.id,cls=r==='승'?'':r==='패'?' l':' d';
     var h='<div class="g"><button type="button" data-act="open" data-id="'+esc(g.id)+'" aria-expanded="'+open+'"><span class="r'+cls+'">'+r+'</span><span class="d">'+dlabel(g.date)+'<small class="vsr">'+badge(g.meTeam,22)+esc(g.meTeam)+' VS '+badge(g.dadTeam,22)+esc(g.dadTeam)+' · '+g.innings+'이닝</small></span><span class="s">'+runs(g,'me')+' : '+runs(g,'dad')+'</span></button>';
@@ -565,7 +568,7 @@ function viewLog(){
     }
     return h+'</div>';
   }).join('');
-  return '<header class="mast"><h2>나의 <em>기록</em></h2></header>'+banner()+periodSeg()+
+  return '<header class="mast"><h2>'+(S.who==='dad'?'아빠':'나')+'의 <em>기록</em></h2></header>'+banner()+seg('who',[['me',esc(S.settings.name)],['dad','아빠']],S.who,'기록 보기 대상')+'<div style="height:8px"></div>'+periodSeg()+
     '<div class="sum four"><div><b>'+t.w+'승 '+t.l+'패</b><span>전적'+(t.d?' (무 '+t.d+')':'')+'</span></div><div><b>'+avg(t.habMe,t.abMe)+'</b><span>팀 타율</span></div><div><b>'+t.hitMe+'</b><span>안타</span></div><div><b>'+t.hrMe+'</b><span>홈런</span></div>'+
     '<div><b>'+t.rs+'</b><span>득점 · 경기당 '+(list.length?(t.rs/list.length).toFixed(1):'0')+'</span></div><div><b>'+t.ra+'</b><span>실점 · 득실 '+(t.rs-t.ra>0?'+':'')+(t.rs-t.ra)+'</span></div></div>'+
     recordsCard()+myTeamCard(list)+(S.period==='year'?monthChart():'')+
@@ -574,9 +577,9 @@ function viewLog(){
 }
 
 function recordsCard(){
-  var b=bests(S.games),has=S.games.length;
+  var b=bests(viewList(S.games)),has=S.games.length;
   function c(v,l,d){return '<div><b>'+(has?v:'-')+'</b><span>'+l+(has&&d?'<br><small>'+dshort(d)+'</small>':'')+'</span></div>'}
-  return '<section class="card"><h3>개인 최고 기록<small>전체 경기 중 '+esc(S.settings.name)+'</small></h3><div class="best">'+
+  return '<section class="card"><h3>개인 최고 기록<small>전체 경기 중 '+esc(nm('me'))+'</small></h3><div class="best">'+
     c(b.rs.v,'한 경기 득점',b.rs.d)+c(b.h.v,'한 경기 안타',b.h.d)+c(b.hr.v,'한 경기 홈런',b.hr.d)+'</div></section>';
 }
 function myTeamCard(list){
@@ -588,13 +591,13 @@ function myTeamCard(list){
     return '<li><span class="tm">'+badge(k,24)+esc(k)+'</span><span class="rec"><b>'+t.w+'</b>승 <b>'+t.l+'</b>패'+(t.d?' <b>'+t.d+'</b>무':'')+'<br><small>'+m[k].length+'경기 · 안타 '+t.hitMe+' · 홈런 '+t.hrMe+'</small></span>'+
       '<span class="mv"><b>'+(dec?avg(t.w,dec):'-')+'</b><small>승률</small></span><span class="mv"><b>'+avg(t.habMe,t.abMe)+'</b><small>타율</small></span></li>';
   }).join('');
-  return '<section class="card" aria-label="내가 고른 구단별 성적"><h3>내가 고른 구단별 성적<small>'+esc(S.settings.name)+' 기준</small></h3>'+
+  return '<section class="card" aria-label="고른 구단별 성적"><h3>'+(S.who==='dad'?'아빠가':'내가')+' 고른 구단별 성적<small>'+esc(nm('me'))+' 기준</small></h3>'+
     (rows?'<ol class="lb mt">'+rows+'</ol>':'<p class="empty">'+(S.ready?'이 기간에는 경기가 없어요.':'기록을 불러오는 중이에요…')+'</p>')+'</section>';
 }
 function monthChart(){
   var yr=today().slice(0,4),cols='',any=false;
   for(var m=1;m<=12;m++){
-    var t=tally(S.games.filter(function(g){return g.date.slice(0,7)===yr+'-'+p2(m)})),dec=t.w+t.l,pct=dec?Math.round(t.w*100/dec):-1;
+    var t=tally(viewList(S.games).filter(function(g){return g.date.slice(0,7)===yr+'-'+p2(m)})),dec=t.w+t.l,pct=dec?Math.round(t.w*100/dec):-1;
     if(t.w+t.l+t.d)any=true;
     cols+='<div class="mc"><span class="pv">'+(pct<0?'':pct)+'</span><span class="mb"><i style="height:'+(pct<0?0:Math.max(pct,3))+'%"></i></span><span class="ml">'+m+'</span></div>';
   }
