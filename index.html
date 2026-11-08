@@ -189,6 +189,11 @@ button{cursor:pointer}
 button,a,select,input{touch-action:manipulation}
 html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
 input,textarea{-webkit-user-select:text;user-select:text}
+.lb.mt li{grid-template-columns:86px minmax(0,1fr) 48px 48px;padding:8px 0}
+.lb.mt .rec small{font-size:11px}
+.lb.mt .mv{text-align:right}
+.lb.mt .mv b{display:block;font:700 18px/1 var(--num);color:var(--navy)}
+.lb.mt .mv small{font-size:10.5px;color:var(--muted)}
 .lb.st li{grid-template-columns:24px 80px minmax(0,1fr) 52px}
 .lb .rec{font-size:13px;color:var(--muted);white-space:nowrap}
 .lb .rec b{font:700 15px/1 var(--num);color:var(--ink);display:inline}
@@ -247,7 +252,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
 <script>
 (function(){
 'use strict';
-var APP_VER='1.2.2',APP_DATE='2026-11-08';
+var APP_VER='1.2.3',APP_DATE='2026-11-08';
 var TEAMS=['롯데','기아','KT','삼성','LG','키움','SSG','두산','한화','NC'];
 var TSTYLE={
   '롯데':['롯','#d71920','#ffffff','#111111'],'기아':['기','#c8102e','#ffffff','#8f0b21'],
@@ -563,7 +568,7 @@ function viewLog(){
   return '<header class="mast"><h2>나의 <em>기록</em></h2></header>'+banner()+periodSeg()+
     '<div class="sum four"><div><b>'+t.w+'승 '+t.l+'패</b><span>전적'+(t.d?' (무 '+t.d+')':'')+'</span></div><div><b>'+avg(t.habMe,t.abMe)+'</b><span>팀 타율</span></div><div><b>'+t.hitMe+'</b><span>안타</span></div><div><b>'+t.hrMe+'</b><span>홈런</span></div>'+
     '<div><b>'+t.rs+'</b><span>득점 · 경기당 '+(list.length?(t.rs/list.length).toFixed(1):'0')+'</span></div><div><b>'+t.ra+'</b><span>실점 · 득실 '+(t.rs-t.ra>0?'+':'')+(t.rs-t.ra)+'</span></div></div>'+
-    recordsCard()+(S.period==='year'?monthChart():'')+
+    recordsCard()+myTeamCard(list)+(S.period==='year'?monthChart():'')+
     '<section class="card"><h3>경기 목록<small>'+list.length+'경기</small></h3>'+
     (list.length?rows:'<p class="empty">'+(S.ready?'이 기간에는 경기가 없어요.<br>오늘 기록 탭에서 경기를 남겨 보세요.':'기록을 불러오는 중이에요…')+'</p>')+'</section>';
 }
@@ -573,6 +578,18 @@ function recordsCard(){
   function c(v,l,d){return '<div><b>'+(has?v:'-')+'</b><span>'+l+(has&&d?'<br><small>'+dshort(d)+'</small>':'')+'</span></div>'}
   return '<section class="card"><h3>개인 최고 기록<small>전체 경기 중 '+esc(S.settings.name)+'</small></h3><div class="best">'+
     c(b.rs.v,'한 경기 득점',b.rs.d)+c(b.h.v,'한 경기 안타',b.h.d)+c(b.hr.v,'한 경기 홈런',b.hr.d)+'</div></section>';
+}
+function myTeamCard(list){
+  var m={};
+  list.forEach(function(g){var x=m[g.meTeam]||(m[g.meTeam]=[]);x.push(g)});
+  var keys=Object.keys(m).sort(function(a,b){return m[b].length-m[a].length||TEAMS.indexOf(a)-TEAMS.indexOf(b)});
+  var rows=keys.map(function(k){
+    var t=tally(m[k]),dec=t.w+t.l;
+    return '<li><span class="tm">'+badge(k,24)+esc(k)+'</span><span class="rec"><b>'+t.w+'</b>승 <b>'+t.l+'</b>패'+(t.d?' <b>'+t.d+'</b>무':'')+'<br><small>'+m[k].length+'경기 · 안타 '+t.hitMe+' · 홈런 '+t.hrMe+'</small></span>'+
+      '<span class="mv"><b>'+(dec?avg(t.w,dec):'-')+'</b><small>승률</small></span><span class="mv"><b>'+avg(t.habMe,t.abMe)+'</b><small>타율</small></span></li>';
+  }).join('');
+  return '<section class="card" aria-label="내가 고른 구단별 성적"><h3>내가 고른 구단별 성적<small>'+esc(S.settings.name)+' 기준</small></h3>'+
+    (rows?'<ol class="lb mt">'+rows+'</ol>':'<p class="empty">'+(S.ready?'이 기간에는 경기가 없어요.':'기록을 불러오는 중이에요…')+'</p>')+'</section>';
 }
 function monthChart(){
   var yr=today().slice(0,4),cols='',any=false;
