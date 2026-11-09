@@ -170,6 +170,11 @@ td.sel .it{color:var(--ink)}
 .pop .pr.cur .pi{font-weight:700}
 .pop .pi svg{width:20px;height:20px;fill:none;stroke:var(--done);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
 .pop .pe{padding:22px 10px;text-align:center;color:var(--muted);font-size:14px}
+.pop .pxr{display:flex;gap:4px;padding:6px 10px;border-top:1px solid var(--line)}
+.pop .pxr label{flex:1;display:flex;align-items:center;gap:8px;min-height:44px;padding:0 8px;border-radius:10px;font:600 14px var(--f-b);cursor:pointer}
+.pop .pxr label:hover{background:var(--chip-bg)}
+.pop .pxr input{width:22px;height:22px;accent-color:#DD032F;margin:0}
+.pop .pxr label.off{opacity:.4;cursor:default}
 .pop .pf{display:flex;border-top:1px solid var(--line);background:var(--bg)}
 .pop .pf button{flex:1;appearance:none;border:0;background:transparent;color:var(--ink);font:600 14px var(--f-b);min-height:50px;cursor:pointer;padding:0 8px}
 .pop .pf button+button{border-left:1px solid var(--line)}
@@ -1155,17 +1160,31 @@ function popHtml(){
       return '<div class="pr'+(n===cur?' cur':'')+'" data-nm="'+esc(n)+'"><button type="button" class="pi" data-act="popitem" data-nm="'+esc(n)+'"><span class="pn">'+esc(n)+'</span>'+(used[n]?'<span class="pw">↔ '+esc(used[n])+'</span>':'')+(n===cur?CK:'')+'</button><select class="pj" data-nm="'+esc(n)+'" aria-label="'+esc(n)+' 분야 바꾸기">'+subjOpts(SUBJ[n]||'기타')+'</select></div>';
     }).join('')+'</div>';
   });
+  var fm=(DAYS[pp.d].x||{})[pp.s]||0;
   h+='<div class="pe" hidden>찾는 항목이 없어요. 아래 “항목 목록”에서 추가할 수 있어요.</div></div>'+
+    '<div class="pxr"><label'+(cur?'':' class="off"')+'><input type="checkbox" data-fx="1"'+(fm&1?' checked':'')+(cur?'':' disabled')+'>2루타 필수</label><label'+(cur?'':' class="off"')+'><input type="checkbox" data-fx="2"'+(fm&2?' checked':'')+(cur?'':' disabled')+'>3루타 필수</label></div>'+
     '<div class="pf"><button type="button" data-act="popitem" data-nm=""'+(cur?'':' disabled style="opacity:.4"')+'>비우기</button><button type="button" data-act="popopt">항목 목록</button><button type="button" data-act="popsubj">분야 목록</button><button type="button" data-act="popdetail">자세히</button></div>';
   if(isSync(pp.s)&&pp.d<=4)h+='<div class="pn2">월~금 거실구장 칸은 함께 바뀌어요.</div>';
   return h+'</div>';
 }
 function showPop(){
+  var dup=document.querySelector('.pop');if(dup)dup.remove();
   var pp=S.pop,td=document.querySelector('td[data-d="'+pp.d+'"][data-s="'+pp.s+'"]');
   var box=document.createElement('div');box.innerHTML=popHtml();var el=box.firstChild;
   document.body.appendChild(el);
   el.addEventListener('click',function(e){weekClick(e)});
   el.addEventListener('change',function(e){
+    var fxb=e.target.closest('input[data-fx]');
+    if(fxb&&S.pop){
+      var pp=S.pop,bit=+fxb.dataset.fx;
+      syncTargets(pp.d,pp.s).forEach(function(t){
+        var day=DAYS[t],x=day.x||(day.x={}),m=x[pp.s]||0;
+        if(!day.s[pp.s])return;
+        m=fxb.checked?(m|bit):(m&~bit);
+        if(m)x[pp.s]=m;else delete x[pp.s];
+      });
+      saveSched();refreshPop();return;
+    }
     var sj=e.target.closest('select.pj');if(!sj)return;
     SUBJ[sj.dataset.nm]=sj.value;saveSched();refreshPop();
   });
@@ -1192,13 +1211,13 @@ function showPop(){
 }
 function refreshPop(){
   var old=document.querySelector('.pop');if(!old||!S.pop)return;
-  var st=old.querySelector('.pl').scrollTop,q=old.querySelector('.psi').value,l=old.style.left,t=old.style.top;
-  old.remove();showPop();
+  var st=old.querySelector('.pl').scrollTop,q=old.querySelector('.psi').value,ms=main.scrollTop;
+  render();
   var el=document.querySelector('.pop');if(!el)return;
-  el.style.animation='none';el.style.left=l;el.style.top=t;
+  el.style.animation='none';
   var si=el.querySelector('.psi');
   if(q){si.value=q;si.dispatchEvent(new Event('input'))}
-  el.querySelector('.pl').scrollTop=st;
+  el.querySelector('.pl').scrollTop=st;main.scrollTop=ms;
 }
 function closePop(){S.pop=null;var o=document.querySelector('.pop');if(o)o.remove()}
 function applyPick(d,sid,name){
@@ -1206,13 +1225,12 @@ function applyPick(d,sid,name){
   targets.forEach(function(t){
     var day=DAYS[t],x=day.x||(day.x={}),old=day.s[sid],q=null;
     if(name)SLOTS.forEach(function(sl){if(sl.id!==sid&&day.s[sl.id]===name)q=sl.id});
-    if(q){ /* 같은 요일 다른 칸에 이미 있으면 서로 자리를 바꾼다 */
-      var fa=x[sid]||0,fb=x[q]||0;
+    if(q){ /* 같은 요일 다른 칸에 이미 있으면 서로 자리를 바꾼다 (2루타·3루타 표시는 칸에 그대로 남는다) */
       day.s[q]=old;day.s[sid]=name;
-      if(old&&fa)x[q]=fa;else delete x[q];
-      if(fb)x[sid]=fb;else delete x[sid];
+      if(!old)delete x[q];
     }else{
-      day.s[sid]=name;delete x[sid];
+      day.s[sid]=name;
+      if(!name)delete x[sid];
     }
   });
   saveSched();closePop();render();
@@ -1556,8 +1574,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:34};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:35};
 var UPD_LOG=[
+  ['v35','팝업에서 2루타·3루타 필수 체크 바로 설정'],
   ['v34','팝업에서 분야(과목) 목록 바로 열기'],
   ['v33','팝업에서 항목마다 분야(과목)를 바로 변경'],
   ['v32','수정 모드 점선 제거·선택한 칸만 강조, 항목 팝업 새 디자인(검색 추가)'],
