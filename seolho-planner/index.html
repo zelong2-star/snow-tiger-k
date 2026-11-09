@@ -158,12 +158,16 @@ td.sel .it{color:var(--ink)}
 .pop .psi:focus{outline:2px solid var(--done);outline-offset:0;border-color:transparent}
 .pop .pl{overflow:auto;padding:2px 8px 8px;flex:1;overscroll-behavior:contain}
 .pop .pg{position:sticky;top:0;z-index:1;background:var(--panel);font:700 12px var(--f-b);color:var(--muted);padding:12px 10px 6px;letter-spacing:.04em}
-.pop .pi{display:flex;align-items:center;gap:8px;width:100%;text-align:left;min-height:46px;padding:8px 12px;border:0;border-radius:11px;background:transparent;color:var(--ink);font:500 16px var(--f-b);cursor:pointer;position:relative}
-.pop .pi:hover{background:var(--chip-bg)}
+.pop .pr{display:flex;align-items:center;gap:6px;border-radius:11px;position:relative;padding-right:6px}
+.pop .pr:hover{background:var(--chip-bg)}
+.pop .pr.cur{background:var(--done-bg)}
+.pop .pr.cur::before{content:'';position:absolute;left:0;top:9px;bottom:9px;width:4px;border-radius:2px;background:var(--done)}
+.pop .pi{display:flex;align-items:center;gap:8px;flex:1;min-width:0;text-align:left;min-height:46px;padding:8px 6px 8px 12px;border:0;border-radius:11px;background:transparent;color:var(--ink);font:500 16px var(--f-b);cursor:pointer}
+.pop .pj{appearance:none;-webkit-appearance:none;flex:none;height:34px;max-width:96px;border:1px solid var(--line);border-radius:17px;background:var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2353617E' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 9px center;color:var(--muted);font:600 12px var(--f-b);padding:0 24px 0 10px;cursor:pointer}
+.pop .pj:focus-visible{outline:2px solid var(--done)}
 .pop .pi .pn{flex:1;min-width:0}
 .pop .pi .pw{font-size:12px;color:var(--muted);background:var(--bg);border-radius:8px;padding:2px 8px}
-.pop .pi.cur{background:var(--done-bg);font-weight:700}
-.pop .pi.cur::before{content:'';position:absolute;left:0;top:9px;bottom:9px;width:4px;border-radius:2px;background:var(--done)}
+.pop .pr.cur .pi{font-weight:700}
 .pop .pi svg{width:20px;height:20px;fill:none;stroke:var(--done);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
 .pop .pe{padding:22px 10px;text-align:center;color:var(--muted);font-size:14px}
 .pop .pf{display:flex;border-top:1px solid var(--line);background:var(--bg)}
@@ -1148,7 +1152,7 @@ function popHtml(){
   axes().concat(Object.keys(by)).forEach(function(g,i,a){
     if(a.indexOf(g)!==i||!by[g])return;
     h+='<div class="pgrp"><div class="pg">'+esc(g)+'</div>'+by[g].map(function(n){
-      return '<button type="button" class="pi'+(n===cur?' cur':'')+'" data-act="popitem" data-nm="'+esc(n)+'"><span class="pn">'+esc(n)+'</span>'+(used[n]?'<span class="pw">↔ '+esc(used[n])+'</span>':'')+(n===cur?CK:'')+'</button>';
+      return '<div class="pr'+(n===cur?' cur':'')+'" data-nm="'+esc(n)+'"><button type="button" class="pi" data-act="popitem" data-nm="'+esc(n)+'"><span class="pn">'+esc(n)+'</span>'+(used[n]?'<span class="pw">↔ '+esc(used[n])+'</span>':'')+(n===cur?CK:'')+'</button><select class="pj" data-nm="'+esc(n)+'" aria-label="'+esc(n)+' 분야 바꾸기">'+subjOpts(SUBJ[n]||'기타')+'</select></div>';
     }).join('')+'</div>';
   });
   h+='<div class="pe" hidden>찾는 항목이 없어요. 아래 “목록 편집”에서 추가할 수 있어요.</div></div>'+
@@ -1161,12 +1165,16 @@ function showPop(){
   var box=document.createElement('div');box.innerHTML=popHtml();var el=box.firstChild;
   document.body.appendChild(el);
   el.addEventListener('click',function(e){weekClick(e)});
+  el.addEventListener('change',function(e){
+    var sj=e.target.closest('select.pj');if(!sj)return;
+    SUBJ[sj.dataset.nm]=sj.value;saveSched();refreshPop();
+  });
   var si=el.querySelector('.psi');
   if(si)si.addEventListener('input',function(){
     var q=this.value.trim().toLowerCase(),any=false;
     el.querySelectorAll('.pgrp').forEach(function(g){
       var vis=0;
-      g.querySelectorAll('.pi').forEach(function(b){var ok=!q||b.dataset.nm.toLowerCase().indexOf(q)>=0;b.hidden=!ok;if(ok)vis++});
+      g.querySelectorAll('.pr').forEach(function(b){var ok=!q||b.dataset.nm.toLowerCase().indexOf(q)>=0;b.hidden=!ok;if(ok)vis++});
       g.hidden=!vis;if(vis)any=true;
     });
     var pe=el.querySelector('.pe');if(pe)pe.hidden=any;
@@ -1179,8 +1187,18 @@ function showPop(){
   var top=Math.min(Math.max(8,r.top-24),Math.max(8,window.innerHeight-hh-8));
   if(left<r.right&&left+w>r.left){top=r.bottom+8;if(top+hh>window.innerHeight-8)top=Math.max(8,r.top-hh-8)}
   el.style.left=left+'px';el.style.top=top+'px';
-  var curb=el.querySelector('.pi.cur'),pl=el.querySelector('.pl');
+  var curb=el.querySelector('.pr.cur'),pl=el.querySelector('.pl');
   if(curb&&pl)pl.scrollTop=Math.max(0,curb.getBoundingClientRect().top-pl.getBoundingClientRect().top+pl.scrollTop-90);
+}
+function refreshPop(){
+  var old=document.querySelector('.pop');if(!old||!S.pop)return;
+  var st=old.querySelector('.pl').scrollTop,q=old.querySelector('.psi').value,l=old.style.left,t=old.style.top;
+  old.remove();showPop();
+  var el=document.querySelector('.pop');if(!el)return;
+  el.style.animation='none';el.style.left=l;el.style.top=t;
+  var si=el.querySelector('.psi');
+  if(q){si.value=q;si.dispatchEvent(new Event('input'))}
+  el.querySelector('.pl').scrollTop=st;
 }
 function closePop(){S.pop=null;var o=document.querySelector('.pop');if(o)o.remove()}
 function applyPick(d,sid,name){
@@ -1537,8 +1555,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:32};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:33};
 var UPD_LOG=[
+  ['v33','팝업에서 항목마다 분야(과목)를 바로 변경'],
   ['v32','수정 모드 점선 제거·선택한 칸만 강조, 항목 팝업 새 디자인(검색 추가)'],
   ['v30','주간 표 칸마다 고를 수 있는 항목 목록(수정·추가·삭제)'],
   ['v29','주간 표 수정 시 항목을 목록에서 골라 넣기'],
