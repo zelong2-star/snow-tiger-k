@@ -121,8 +121,11 @@ input,select{width:100%;height:46px;border:1px solid var(--line);border-radius:1
 .btn2.on{background:var(--navy);color:var(--on-navy);border-color:var(--navy)}
 .brow{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
 .brow .btn{margin-top:6px}
-td.ed{cursor:pointer;outline:2px dashed var(--chip-ink);outline-offset:-3px}
-td.sel{background:var(--chip-bg)}
+td.ed{cursor:pointer;transition:background .12s}
+td.ed:hover{background:var(--chip-bg)}
+td.sel,td.sel.tdy{background:var(--done-bg);box-shadow:inset 0 0 0 2.5px var(--done);font-weight:700;position:relative}
+td.sel .it{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){td.ed{transition:none}}
 .err{color:var(--red);font-size:13px;margin:8px 0 0}
 .ok{color:var(--green);font-size:13px;margin:8px 0 0}
 .gate{max-width:360px;margin:40px auto}
@@ -141,16 +144,33 @@ td.sel{background:var(--chip-bg)}
 .go{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .tg{display:inline-block;font-size:12px;font-weight:700;background:var(--amber-bg);color:var(--amber);border-radius:999px;padding:1px 8px;margin:2px 3px 0 0;white-space:nowrap;line-height:1.5}
 .row .tg{margin-left:8px;font-size:12px}
-.pop{position:fixed;z-index:60;width:min(340px,92vw);max-height:72vh;display:flex;flex-direction:column;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 34px rgba(0,0,0,.4)}
-.pop .ph{padding:10px 14px;border-bottom:1px solid var(--line);font-weight:700;display:flex;justify-content:space-between;gap:8px;align-items:center}
-.pop .pl{overflow:auto;padding:6px;flex:1}
-.pop .pg{font-size:12px;color:var(--muted);padding:8px 8px 2px}
-.pop .pi{display:block;width:100%;text-align:left;min-height:44px;padding:8px 12px;border:0;background:transparent;color:var(--ink);font:500 16px var(--f-b);border-radius:8px;cursor:pointer}
+.pop{position:fixed;z-index:60;width:min(360px,94vw);max-height:min(76vh,640px);display:flex;flex-direction:column;background:var(--panel);color:var(--ink);border-radius:18px;overflow:hidden;box-shadow:0 0 0 1px rgba(5,24,47,.10),0 18px 48px rgba(5,24,47,.38);animation:popin .14s ease-out}
+@keyframes popin{from{opacity:0;transform:translateY(-6px) scale(.98)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.pop{animation:none}}
+.pop .ph{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 12px 12px 18px;background:var(--navy);color:var(--on-navy)}
+.pop .pk{font-size:12px;opacity:.75;letter-spacing:.02em}
+.pop .pt{font:700 20px/1.2 var(--f-d);margin-top:2px}
+.pop .px{appearance:none;border:0;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:16px;cursor:pointer}
+.pop .px:hover{background:rgba(255,255,255,.22)}
+.pop .ps{position:relative;padding:10px 12px 6px}
+.pop .ps svg{position:absolute;left:24px;top:50%;margin-top:-6px;width:18px;height:18px;fill:none;stroke:var(--muted);stroke-width:2;stroke-linecap:round}
+.pop .psi{width:100%;height:44px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);font:500 16px var(--f-b);padding:0 12px 0 40px}
+.pop .psi:focus{outline:2px solid var(--done);outline-offset:0;border-color:transparent}
+.pop .pl{overflow:auto;padding:2px 8px 8px;flex:1;overscroll-behavior:contain}
+.pop .pg{position:sticky;top:0;z-index:1;background:var(--panel);font:700 12px var(--f-b);color:var(--muted);padding:12px 10px 6px;letter-spacing:.04em}
+.pop .pi{display:flex;align-items:center;gap:8px;width:100%;text-align:left;min-height:46px;padding:8px 12px;border:0;border-radius:11px;background:transparent;color:var(--ink);font:500 16px var(--f-b);cursor:pointer;position:relative}
 .pop .pi:hover{background:var(--chip-bg)}
+.pop .pi .pn{flex:1;min-width:0}
+.pop .pi .pw{font-size:12px;color:var(--muted);background:var(--bg);border-radius:8px;padding:2px 8px}
 .pop .pi.cur{background:var(--done-bg);font-weight:700}
-.pop .pi:disabled{opacity:.4;cursor:default}
-.pop .pf{display:flex;gap:6px;padding:8px;border-top:1px solid var(--line);flex-wrap:wrap}
-.pop .pf button{margin:0;height:40px;font-size:14px;padding:0 12px}
+.pop .pi.cur::before{content:'';position:absolute;left:0;top:9px;bottom:9px;width:4px;border-radius:2px;background:var(--done)}
+.pop .pi svg{width:20px;height:20px;fill:none;stroke:var(--done);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.pop .pe{padding:22px 10px;text-align:center;color:var(--muted);font-size:14px}
+.pop .pf{display:flex;border-top:1px solid var(--line);background:var(--bg)}
+.pop .pf button{flex:1;appearance:none;border:0;background:transparent;color:var(--ink);font:600 14px var(--f-b);min-height:50px;cursor:pointer;padding:0 8px}
+.pop .pf button+button{border-left:1px solid var(--line)}
+.pop .pf button:hover{background:var(--chip-bg)}
+.pop .pn2{padding:8px 16px 10px;font-size:12px;color:var(--muted);background:var(--bg)}
 .subs{display:flex;flex-wrap:wrap;gap:8px;margin:-2px 0 10px 58px}
 .sub{appearance:none;min-height:46px;padding:0 18px;border-radius:23px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font:600 16px var(--f-b);cursor:pointer}
 .sub.d{background:var(--done);border-color:var(--done);color:var(--on-done)}
@@ -1104,7 +1124,7 @@ function renderWeek(c){
       '<p class="lbl" style="margin:10px 0 0">이름을 바꾸면 그 과목의 항목도 함께 바뀌어요. 칸을 비우면 과목이 삭제되고, 그 과목의 항목은 "기타"로 옮겨져요.</p>'+
       '<div class="brow"><button type="button" class="btn" data-act="subsave">저장</button><button type="button" class="btn2" data-act="subclose">취소</button></div><p class="err" id="sjerr" hidden></p></div>';
   }else if(S.edit){
-    top='<div class="warn" style="margin:0 0 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span>고칠 칸을 눌러 주세요. 항목, 장소, 시간 모두 점선으로 표시된 칸이에요.</span><button type="button" class="btn2" data-act="subopen" style="margin:0">과목 목록 수정</button></div>';
+    top='<div class="warn" style="margin:0 0 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span>고칠 칸을 눌러 주세요. 항목, 장소, 시간 칸을 모두 누를 수 있어요.</span><button type="button" class="btn2" data-act="subopen" style="margin:0">과목 목록 수정</button></div>';
   }
   main.innerHTML='<div class="head"><div><h1>주간 표</h1><div class="date">'+(S.edit?'고칠 칸을 눌러 수정하세요.':'오늘 칸은 연한 분홍색, 끝낸 항목은 빨간 체크예요.')+'</div></div>'+
     '<button class="btn2'+(S.edit?' on':'')+'" type="button" data-act="'+(S.edit?'stop':'edit')+'">'+(S.edit?'수정 끝내기':'수정')+'</button></div>'+top+'<div class="tw"><table>'+h+'</table></div>';
@@ -1121,16 +1141,19 @@ function popHtml(){
   var pp=S.pop,sl=SLOTS[SLOT_IDX[pp.s]],cur=DAYS[pp.d].s[pp.s],used={};
   SLOTS.forEach(function(q){var v=DAYS[pp.d].s[q.id];if(v&&q.id!==pp.s)used[v]=(q.g===3?'마무리':q.t)});
   var by={};Object.keys(SUBJ).forEach(function(n){var g=SUBJ[n]||'기타';(by[g]=by[g]||[]).push(n)});
-  var h='<div class="pop" role="dialog" aria-label="항목 선택"><div class="ph"><span>'+DOW[pp.d]+'요일 '+esc(GROUPS[sl.g])+(sl.g===3?'':' '+esc(sl.t))+'</span><button type="button" class="btn2" data-act="popclose" style="margin:0;height:36px;padding:0 12px" aria-label="닫기">✕</button></div><div class="pl">';
-  h+='<button type="button" class="pi'+(cur?'':' cur')+'" data-act="popitem" data-nm="" style="color:var(--muted)">(빈 칸으로 비우기)</button>';
+  var CK='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  var h='<div class="pop" role="dialog" aria-label="항목 선택"><div class="ph"><div><div class="pk">'+DOW[pp.d]+'요일 · '+esc(GROUPS[sl.g])+'</div><div class="pt">'+esc(sl.g===3?'마무리 운동':sl.t)+'</div></div>'+
+    '<button type="button" class="px" data-act="popclose" aria-label="닫기">✕</button></div>'+
+    '<div class="ps"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input type="search" class="psi" placeholder="항목 검색" aria-label="항목 검색" autocomplete="off"></div><div class="pl">';
   axes().concat(Object.keys(by)).forEach(function(g,i,a){
     if(a.indexOf(g)!==i||!by[g])return;
-    h+='<div class="pg">'+esc(g)+'</div>'+by[g].map(function(n){
-      return '<button type="button" class="pi'+(n===cur?' cur':'')+'" data-act="popitem" data-nm="'+esc(n)+'">'+(n===cur?'✓ ':'')+esc(n)+(used[n]?' <small style="color:var(--muted)">('+esc(used[n])+'과 바꾸기)</small>':'')+'</button>';
-    }).join('');
+    h+='<div class="pgrp"><div class="pg">'+esc(g)+'</div>'+by[g].map(function(n){
+      return '<button type="button" class="pi'+(n===cur?' cur':'')+'" data-act="popitem" data-nm="'+esc(n)+'"><span class="pn">'+esc(n)+'</span>'+(used[n]?'<span class="pw">↔ '+esc(used[n])+'</span>':'')+(n===cur?CK:'')+'</button>';
+    }).join('')+'</div>';
   });
-  h+='</div><div class="pf"><button type="button" class="btn2" data-act="popopt">목록 수정·추가</button><button type="button" class="btn2" data-act="popdetail">2루타·과목 등 자세히</button></div>';
-  if(isSync(pp.s)&&pp.d<=4)h+='<div class="lbl" style="padding:0 12px 10px">월~금 거실구장 칸은 함께 바뀌어요.</div>';
+  h+='<div class="pe" hidden>찾는 항목이 없어요. 아래 “목록 편집”에서 추가할 수 있어요.</div></div>'+
+    '<div class="pf"><button type="button" data-act="popitem" data-nm=""'+(cur?'':' disabled style="opacity:.4"')+'>비우기</button><button type="button" data-act="popopt">목록 편집</button><button type="button" data-act="popdetail">자세히</button></div>';
+  if(isSync(pp.s)&&pp.d<=4)h+='<div class="pn2">월~금 거실구장 칸은 함께 바뀌어요.</div>';
   return h+'</div>';
 }
 function showPop(){
@@ -1138,13 +1161,26 @@ function showPop(){
   var box=document.createElement('div');box.innerHTML=popHtml();var el=box.firstChild;
   document.body.appendChild(el);
   el.addEventListener('click',function(e){weekClick(e)});
+  var si=el.querySelector('.psi');
+  if(si)si.addEventListener('input',function(){
+    var q=this.value.trim().toLowerCase(),any=false;
+    el.querySelectorAll('.pgrp').forEach(function(g){
+      var vis=0;
+      g.querySelectorAll('.pi').forEach(function(b){var ok=!q||b.dataset.nm.toLowerCase().indexOf(q)>=0;b.hidden=!ok;if(ok)vis++});
+      g.hidden=!vis;if(vis)any=true;
+    });
+    var pe=el.querySelector('.pe');if(pe)pe.hidden=any;
+  });
   var r=td?td.getBoundingClientRect():{left:40,right:40,top:80,bottom:80},w=el.offsetWidth,hh=el.offsetHeight;
-  var left=Math.min(Math.max(8,r.left),window.innerWidth-w-8);
-  var top=r.bottom+6;
-  if(top+hh>window.innerHeight-8)top=r.top-hh-6;
-  if(top<8)top=Math.max(8,Math.min(window.innerHeight-hh-8,8));
+  /* 누른 칸이 가려지지 않도록 칸 옆(오른쪽, 자리가 없으면 왼쪽)에 띄운다 */
+  var left=r.right+10;
+  if(left+w>window.innerWidth-8)left=r.left-w-10;
+  if(left<8){left=Math.min(Math.max(8,r.left),window.innerWidth-w-8)}
+  var top=Math.min(Math.max(8,r.top-24),Math.max(8,window.innerHeight-hh-8));
+  if(left<r.right&&left+w>r.left){top=r.bottom+8;if(top+hh>window.innerHeight-8)top=Math.max(8,r.top-hh-8)}
   el.style.left=left+'px';el.style.top=top+'px';
-  var curb=el.querySelector('.pi.cur');if(curb&&curb.scrollIntoView){var pl=el.querySelector('.pl');pl.scrollTop=Math.max(0,curb.offsetTop-pl.offsetTop-80)}
+  var curb=el.querySelector('.pi.cur'),pl=el.querySelector('.pl');
+  if(curb&&pl)pl.scrollTop=Math.max(0,curb.getBoundingClientRect().top-pl.getBoundingClientRect().top+pl.scrollTop-90);
 }
 function closePop(){S.pop=null;var o=document.querySelector('.pop');if(o)o.remove()}
 function applyPick(d,sid,name){
@@ -1501,8 +1537,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:31};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:32};
 var UPD_LOG=[
+  ['v32','수정 모드 점선 제거·선택한 칸만 강조, 항목 팝업 새 디자인(검색 추가)'],
   ['v30','주간 표 칸마다 고를 수 있는 항목 목록(수정·추가·삭제)'],
   ['v29','주간 표 수정 시 항목을 목록에서 골라 넣기'],
   ['v28','세부 항목에 독서를 하면 ‘독서’, 다른 것만 하면 ‘교양’으로 집계'],
