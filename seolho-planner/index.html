@@ -141,6 +141,16 @@ td.sel{background:var(--chip-bg)}
 .go{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .tg{display:inline-block;font-size:12px;font-weight:700;background:var(--amber-bg);color:var(--amber);border-radius:999px;padding:1px 8px;margin:2px 3px 0 0;white-space:nowrap;line-height:1.5}
 .row .tg{margin-left:8px;font-size:12px}
+.pop{position:fixed;z-index:60;width:min(340px,92vw);max-height:72vh;display:flex;flex-direction:column;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 34px rgba(0,0,0,.4)}
+.pop .ph{padding:10px 14px;border-bottom:1px solid var(--line);font-weight:700;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.pop .pl{overflow:auto;padding:6px;flex:1}
+.pop .pg{font-size:12px;color:var(--muted);padding:8px 8px 2px}
+.pop .pi{display:block;width:100%;text-align:left;min-height:44px;padding:8px 12px;border:0;background:transparent;color:var(--ink);font:500 16px var(--f-b);border-radius:8px;cursor:pointer}
+.pop .pi:hover{background:var(--chip-bg)}
+.pop .pi.cur{background:var(--done-bg);font-weight:700}
+.pop .pi:disabled{opacity:.4;cursor:default}
+.pop .pf{display:flex;gap:6px;padding:8px;border-top:1px solid var(--line);flex-wrap:wrap}
+.pop .pf button{margin:0;height:40px;font-size:14px;padding:0 12px}
 .subs{display:flex;flex-wrap:wrap;gap:8px;margin:-2px 0 10px 58px}
 .sub{appearance:none;min-height:46px;padding:0 18px;border-radius:23px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font:600 16px var(--f-b);cursor:pointer}
 .sub.d{background:var(--done);border-color:var(--done);color:var(--on-done)}
@@ -268,7 +278,7 @@ var SUBJ_ORDER=['수학','국어','영어','한자','과학/사회','독서','�
 
 var S={checks:{},settings:{goal:60,reward:'롯데 경기 보러 가기',pin:'0000',tiers:null},tab:'home',profile:null,pedit:false,pgate:false,unlocked:false,store:'local',live:false,edit:false,ed:null,gate:false,subj:false,toast:''};
 var toastT=null,celeT=null;
-S.slotOpts={};S.optMode=false;S.per='all';S.po=0;S.meta={};S.vol=0.7;S.theme='park';S.haptic=true;S.voice=true;S.sound=true;S.cele=null;S.fixDate='';S.wkOff=0;S.bkmsg=null;
+S.pop=null;S.optMode=false;S.per='all';S.po=0;S.meta={};S.vol=0.7;S.theme='park';S.haptic=true;S.voice=true;S.sound=true;S.cele=null;S.fixDate='';S.wkOff=0;S.bkmsg=null;
 var DB=null,LS='seolho-planner-v1';
 S.profile=defProfile();
 var main=document.getElementById('main'),syncEl=document.getElementById('sync');
@@ -311,7 +321,7 @@ function syncTargets(d,id){return (d<=4&&isSync(id))?[0,1,2,3,4]:[d]}
 
 function subjArr(){return Object.keys(SUBJ).map(function(k){return {n:k,s:SUBJ[k]}})}
 function slotT(){var o={};SLOTS.forEach(function(sl){o[sl.id]=sl.t});return o}
-function schedDoc(){return {v:2,days:DAYS,subj:subjArr(),so:SUBJ_ORDER.slice(),g:GROUPS.slice(),t:slotT(),po:S.slotOpts}}
+function schedDoc(){return {v:2,days:DAYS,subj:subjArr(),so:SUBJ_ORDER.slice(),g:GROUPS.slice(),t:slotT()}}
 function applySched(x){
   if(!x||x.v!==2||!Array.isArray(x.days)||x.days.length!==7)return;
   DAYS=x.days.map(function(d,i){
@@ -322,7 +332,6 @@ function applySched(x){
   });
   if(Array.isArray(x.subj)){SUBJ={};x.subj.forEach(function(y){SUBJ[y.n]=y.s})}
   if(Array.isArray(x.so)){var so=x.so.filter(function(v){return typeof v==='string'&&v.trim()&&v!=='기타'}).map(function(v){return v.slice(0,8)});if(so.length)SUBJ_ORDER=so.slice(0,20)}
-  if(x.po&&typeof x.po==='object'){S.slotOpts={};SLOTS.forEach(function(sl){var a=x.po[sl.id];if(Array.isArray(a))S.slotOpts[sl.id]=a.filter(function(v,i){return typeof v==='string'&&v.trim()&&a.indexOf(v)===i}).map(function(v){return v.slice(0,30)}).slice(0,40)})}
   if(Array.isArray(x.g)&&x.g.length===4)x.g.forEach(function(v,i){if(typeof v==='string'&&v.trim())GROUPS[i]=v.slice(0,10)});
   if(x.t&&typeof x.t==='object')SLOTS.forEach(function(sl){var v=x.t[sl.id];if(typeof v==='string'&&v.trim())sl.t=v.slice(0,8)});
 }
@@ -1024,14 +1033,11 @@ function todayClick(e){
   }
 }
 
-/* 칸(시간대)마다 고를 수 있는 항목 목록. 처음에는 지금 표에 들어 있는 항목으로 채운다 */
-function defOpts(id){var o=[];DAYS.forEach(function(d){var v=d.s[id];if(v&&o.indexOf(v)<0)o.push(v)});return o}
-function optsOf(id){if(!Array.isArray(S.slotOpts[id]))S.slotOpts[id]=defOpts(id);return S.slotOpts[id]}
 function renderWeek(c){
   var h='<thead><tr><th>장소</th><th>시간</th>';
   DAYS.forEach(function(d,i){h+='<th class="'+(i>4?'we':'')+(i===c.ti?' tdy':'')+'">'+d.n+(i===c.ti?' (오늘)':'')+'</th>'});
   h+='</tr></thead><tbody>';
-  function cellCls(i,id){return (i===c.ti?'tdy':'')+(S.edit?' ed':'')+(S.edit&&S.ed&&S.ed.d===i&&S.ed.s===id?' sel':'')}
+  function cellCls(i,id){return (i===c.ti?'tdy':'')+(S.edit?' ed':'')+(S.edit&&((S.ed&&S.ed.d===i&&S.ed.s===id)||(S.pop&&S.pop.d===i&&S.pop.s===id))?' sel':'')}
   function attr(i,id){return S.edit?' data-d="'+i+'" data-s="'+id+'" tabindex="0"':''}
   SLOTS.forEach(function(sl,k){
     h+='<tr>';
@@ -1058,6 +1064,15 @@ function renderWeek(c){
   var top='',ed=S.ed;
   if(S.gate&&!S.unlocked){
     top='<form id="wpf" class="card gate" style="margin:0 0 14px;max-width:360px"><label for="wpin" style="margin-top:0">확인 번호 4자리</label><input id="wpin" type="password" inputmode="numeric" maxlength="4" autocomplete="off"><div class="brow"><button class="btn" type="submit">열기</button><button class="btn2" type="button" data-act="stop">취소</button></div><p class="err" id="wperr" hidden>번호가 달라요. 다시 입력해 주세요.</p></form>';
+  }else if(S.edit&&S.optMode){
+    var names=Object.keys(SUBJ),by={};
+    names.forEach(function(n){var g=SUBJ[n]||'기타';(by[g]=by[g]||[]).push(n)});
+    var ordered=[];axes().concat(Object.keys(by)).forEach(function(g,i,a){if(a.indexOf(g)===i&&by[g])by[g].forEach(function(n){ordered.push(n)})});
+    var orow=function(n){return '<div class="orow" style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><input class="oin" type="text" maxlength="30" data-old="'+esc(n)+'" value="'+esc(n)+'" aria-label="항목 이름" style="flex:2;min-width:150px"><select class="osj" aria-label="과목" style="flex:1;min-width:100px">'+subjOpts(SUBJ[n]||'기타')+'</select><button type="button" class="btn2" data-act="optdel" style="margin:0">삭제</button></div>'};
+    top='<div class="card" style="margin:0 0 14px"><h2>항목 목록 수정</h2><div id="orows">'+ordered.map(orow).join('')+'</div>'+
+      '<div class="brow"><button type="button" class="btn2" data-act="optadd">+ 항목 추가</button></div>'+
+      '<p class="lbl" style="margin:10px 0 0">이름을 바꾸면 표에 들어 있는 같은 항목과 지난 체크 기록도 함께 바뀌어요. 표에서 쓰고 있는 항목은 삭제해도 목록에만 사라지고 표에는 남아요. 과목은 통계(능력치)에 쓰여요.</p>'+
+      '<div class="brow"><button type="button" class="btn" data-act="optsave">저장</button><button type="button" class="btn2" data-act="optclose">닫기</button></div><p class="err" id="oerr" hidden></p></div>';
   }else if(S.edit&&ed){
     var body='',ttl;
     if(ed.k){
@@ -1071,9 +1086,7 @@ function renderWeek(c){
     }else{
       var sl=SLOTS[SLOT_IDX[ed.s]],cur=DAYS[ed.d].s[ed.s];
       ttl=DOW[ed.d]+'요일 '+GROUPS[sl.g]+(sl.g===3?'':' '+sl.t)+' 수정';
-      body='<div class="fl" style="margin-top:0;display:flex;justify-content:space-between;align-items:center;gap:8px"><span>이 칸에서 고를 수 있는 항목</span><button type="button" class="btn2" data-act="optedit" style="margin:0;height:38px">목록 편집·추가</button></div>'+
-        '<div class="subs" style="margin:8px 0 0" role="group" aria-label="항목 선택지">'+(function(){var used={};SLOTS.forEach(function(q){var v=DAYS[ed.d].s[q.id];if(v&&q.id!==ed.s)used[v]=1});var ol=optsOf(ed.s);return ol.length?ol.map(function(n,i){var on=n===cur;return '<button type="button" class="sub'+(on?' d':'')+'" data-pk="'+i+'"'+(used[n]?' disabled style="opacity:.4"':'')+'>'+esc(n)+'</button>'}).join(''):'<span class="lbl">아직 목록이 비었어요. 아래에 이름을 쓰고 저장하면 목록에 추가돼요.</span>'})()+'</div>'+
-        '<label class="fl" for="en">항목 이름 (목록에 없으면 직접 입력, 비우면 빈 칸)</label><input id="en" type="text" maxlength="30" value="'+esc(cur)+'">'+
+      body=      body='<label class="fl" for="en" style="margin-top:0">항목 이름 (비우면 빈 칸)</label><input id="en" type="text" maxlength="30" value="'+esc(cur)+'">'+
         '<label class="fl" for="es">과목</label><select id="es">'+subjOpts(SUBJ[cur]||'기타')+'</select>'+
         '<label class="fl" for="es2">새 과목으로 추가 (비워 두면 위 목록에서 선택한 과목)</label><input id="es2" type="text" maxlength="8" placeholder="예: 영어회화">'+
         '<label class="chk"><input type="checkbox" id="x2"'+((DAYS[ed.d].x||{})[ed.s]&1?' checked':'')+'>2루타 필수 요소</label>'+
@@ -1083,14 +1096,6 @@ function renderWeek(c){
         (!cur?'':ed.del?'<div class="warn" style="margin-top:10px">정말 삭제할까요? '+(isSync(ed.s)&&ed.d<=4?'월~금 거실구장 칸이 함께 비워져요.':'이 칸이 비워져요.')+' 이미 한 체크 기록은 남아요.</div><div class="brow"><button type="button" class="btn" data-act="delyes" style="background:var(--red);color:#fff">삭제하기</button><button type="button" class="btn2" data-act="delno">아니요</button></div>':'<div class="brow"><button type="button" class="btn2" data-act="del" style="color:var(--red)">🗑 이 항목 삭제</button></div>')+
         '<p class="lbl" style="margin:10px 0 0">'+(isSync(ed.s)&&ed.d<=4?'월~금 거실구장은 함께 바뀌어요. ':'')+'이름을 바꿔도 같은 요일의 지난 체크 기록은 이어져요. 과목은 같은 이름의 항목 전체에 적용돼요.</p>';
     }
-    if(S.optMode&&!ed.k&&ed.s!=='e'){
-      var slx=SLOTS[SLOT_IDX[ed.s]];
-      top='<div class="card" style="margin:0 0 14px"><h2>'+esc(GROUPS[slx.g])+(slx.g===3?'':' '+esc(slx.t))+' 칸의 항목 목록</h2><div id="orows">'+
-        optsOf(ed.s).map(function(n){return '<div class="orow" style="display:flex;gap:8px;margin-top:8px"><input class="oin" type="text" maxlength="30" data-old="'+esc(n)+'" value="'+esc(n)+'" aria-label="항목 이름"><button type="button" class="btn2" data-act="optdel" style="margin:0">삭제</button></div>'}).join('')+'</div>'+
-        '<div class="brow"><button type="button" class="btn2" data-act="optadd">+ 항목 추가</button></div>'+
-        '<p class="lbl" style="margin:10px 0 0">이름을 바꾸면 이 칸에 들어 있는 같은 항목과 지난 체크 기록도 함께 바뀌어요. 목록에서 삭제해도 이미 표에 들어간 항목은 그대로예요.</p>'+
-        '<div class="brow"><button type="button" class="btn" data-act="optsave">목록 저장</button><button type="button" class="btn2" data-act="optclose">돌아가기</button></div><p class="err" id="oerr" hidden></p></div>';
-    }else
     top='<div class="card" style="margin:0 0 14px"><h2>'+ttl+'</h2>'+body+'<div class="brow"><button type="button" class="btn" data-act="save">저장</button><button type="button" class="btn2" data-act="cancel">취소</button></div><p class="err" id="eerr" hidden></p></div>';
   }else if(S.edit&&S.subj){
     var sf='';
@@ -1103,6 +1108,7 @@ function renderWeek(c){
   }
   main.innerHTML='<div class="head"><div><h1>주간 표</h1><div class="date">'+(S.edit?'고칠 칸을 눌러 수정하세요.':'오늘 칸은 연한 분홍색, 끝낸 항목은 빨간 체크예요.')+'</div></div>'+
     '<button class="btn2'+(S.edit?' on':'')+'" type="button" data-act="'+(S.edit?'stop':'edit')+'">'+(S.edit?'수정 끝내기':'수정')+'</button></div>'+top+'<div class="tw"><table>'+h+'</table></div>';
+  if(S.edit&&S.pop&&!S.optMode)showPop();
   var wf=$('wpf');
   if(wf)wf.addEventListener('submit',function(e){
     e.preventDefault();
@@ -1111,30 +1117,78 @@ function renderWeek(c){
   });
 }
 
+function popHtml(){
+  var pp=S.pop,sl=SLOTS[SLOT_IDX[pp.s]],cur=DAYS[pp.d].s[pp.s],used={};
+  SLOTS.forEach(function(q){var v=DAYS[pp.d].s[q.id];if(v&&q.id!==pp.s)used[v]=(q.g===3?'마무리':q.t)});
+  var by={};Object.keys(SUBJ).forEach(function(n){var g=SUBJ[n]||'기타';(by[g]=by[g]||[]).push(n)});
+  var h='<div class="pop" role="dialog" aria-label="항목 선택"><div class="ph"><span>'+DOW[pp.d]+'요일 '+esc(GROUPS[sl.g])+(sl.g===3?'':' '+esc(sl.t))+'</span><button type="button" class="btn2" data-act="popclose" style="margin:0;height:36px;padding:0 12px" aria-label="닫기">✕</button></div><div class="pl">';
+  h+='<button type="button" class="pi'+(cur?'':' cur')+'" data-act="popitem" data-nm="" style="color:var(--muted)">(빈 칸으로 비우기)</button>';
+  axes().concat(Object.keys(by)).forEach(function(g,i,a){
+    if(a.indexOf(g)!==i||!by[g])return;
+    h+='<div class="pg">'+esc(g)+'</div>'+by[g].map(function(n){
+      return '<button type="button" class="pi'+(n===cur?' cur':'')+'" data-act="popitem" data-nm="'+esc(n)+'">'+(n===cur?'✓ ':'')+esc(n)+(used[n]?' <small style="color:var(--muted)">('+esc(used[n])+'과 바꾸기)</small>':'')+'</button>';
+    }).join('');
+  });
+  h+='</div><div class="pf"><button type="button" class="btn2" data-act="popopt">목록 수정·추가</button><button type="button" class="btn2" data-act="popdetail">2루타·과목 등 자세히</button></div>';
+  if(isSync(pp.s)&&pp.d<=4)h+='<div class="lbl" style="padding:0 12px 10px">월~금 거실구장 칸은 함께 바뀌어요.</div>';
+  return h+'</div>';
+}
+function showPop(){
+  var pp=S.pop,td=document.querySelector('td[data-d="'+pp.d+'"][data-s="'+pp.s+'"]');
+  var box=document.createElement('div');box.innerHTML=popHtml();var el=box.firstChild;
+  document.body.appendChild(el);
+  el.addEventListener('click',function(e){weekClick(e)});
+  var r=td?td.getBoundingClientRect():{left:40,right:40,top:80,bottom:80},w=el.offsetWidth,hh=el.offsetHeight;
+  var left=Math.min(Math.max(8,r.left),window.innerWidth-w-8);
+  var top=r.bottom+6;
+  if(top+hh>window.innerHeight-8)top=r.top-hh-6;
+  if(top<8)top=Math.max(8,Math.min(window.innerHeight-hh-8,8));
+  el.style.left=left+'px';el.style.top=top+'px';
+  var curb=el.querySelector('.pi.cur');if(curb&&curb.scrollIntoView){var pl=el.querySelector('.pl');pl.scrollTop=Math.max(0,curb.offsetTop-pl.offsetTop-80)}
+}
+function closePop(){S.pop=null;var o=document.querySelector('.pop');if(o)o.remove()}
+function applyPick(d,sid,name){
+  var targets=syncTargets(d,sid);
+  targets.forEach(function(t){
+    var day=DAYS[t],x=day.x||(day.x={}),old=day.s[sid],q=null;
+    if(name)SLOTS.forEach(function(sl){if(sl.id!==sid&&day.s[sl.id]===name)q=sl.id});
+    if(q){ /* 같은 요일 다른 칸에 이미 있으면 서로 자리를 바꾼다 */
+      var fa=x[sid]||0,fb=x[q]||0;
+      day.s[q]=old;day.s[sid]=name;
+      if(old&&fa)x[q]=fa;else delete x[q];
+      if(fb)x[sid]=fb;else delete x[sid];
+    }else{
+      day.s[sid]=name;delete x[sid];
+    }
+  });
+  saveSched();closePop();render();
+}
 function saveOpts(){
-  var ed=S.ed,er=$('oerr');if(!ed)return;
-  var rows=document.querySelectorAll('.oin'),list=[],ren=[],seen={};
+  var er=$('oerr'),rows=document.querySelectorAll('.orow'),list=[],ren=[],seen={},olds={};
   for(var i=0;i<rows.length;i++){
-    var o=rows[i].dataset.old,v=rows[i].value.trim();
+    var inp=rows[i].querySelector('.oin'),o=inp.dataset.old,v=inp.value.trim(),sj=rows[i].querySelector('.osj').value;
+    if(o)olds[o]=1;
     if(!v)continue;
     if(seen[v]){er.textContent='같은 이름이 두 번 있어요: '+v;er.hidden=false;return}
-    seen[v]=1;list.push(v);
+    seen[v]=1;list.push({n:v,s:sj});
     if(o&&o!==v)ren.push([o,v]);
   }
+  var oldKeys=Object.keys(SUBJ);
   ren.forEach(function(r){
     var oldN=r[0],newN=r[1],ts=[];
     DAYS.forEach(function(d,t){
-      if(d.s[ed.s]!==oldN)return;
-      for(var k=0;k<SLOTS.length;k++){if(SLOTS[k].id!==ed.s&&d.s[SLOTS[k].id]===newN)return}
-      d.s[ed.s]=newN;ts.push(t);
+      var hit=null;SLOTS.forEach(function(q){if(d.s[q.id]===oldN)hit=q.id});
+      if(!hit)return;
+      if(SLOTS.some(function(q){return d.s[q.id]===newN}))return;
+      d.s[hit]=newN;ts.push(t);
     });
     if(ts.length)migrateName(ts,oldN,newN);
-    if(SUBJ[oldN]&&!SUBJ[newN])SUBJ[newN]=SUBJ[oldN];
-    var still=DAYS.some(function(d){return SLOTS.some(function(q){return d.s[q.id]===oldN})});
-    if(!still&&SUBJ[oldN]&&SLOTS.every(function(q){return q.id===ed.s||optsOf(q.id).indexOf(oldN)<0}))delete SUBJ[oldN];
   });
-  list.forEach(function(n){if(!SUBJ[n])SUBJ[n]='기타'});
-  S.slotOpts[ed.s]=list;
+  var used={};DAYS.forEach(function(d){SLOTS.forEach(function(q){if(d.s[q.id])used[d.s[q.id]]=1})});
+  var next={};
+  list.forEach(function(x){next[x.n]=x.s});
+  oldKeys.forEach(function(k){if(!(k in next)&&used[k])next[k]=SUBJ[k]||'기타'});
+  SUBJ=next;
   saveSched();S.optMode=false;render();
 }
 function saveEditor(){
@@ -1169,7 +1223,7 @@ function saveEditor(){
   if(old0&&n&&old0!==n)migrateName(targets,old0,n);
   var xm=($('x2')&&$('x2').checked?1:0)|($('x3')&&$('x3').checked?2:0);
   targets.forEach(function(t){var fx=DAYS[t].x||(DAYS[t].x={});if(n&&xm)fx[ed.s]=xm;else delete fx[ed.s]});
-  if(n){SUBJ[n]=sj;var ol=optsOf(ed.s);if(ol.indexOf(n)<0)ol.push(n)}
+  if(n)SUBJ[n]=sj;
   saveSched();S.ed=null;S.optMode=false;render();
 }
 function saveSubjects(){
@@ -1207,21 +1261,26 @@ function swap(dir){
 }
 function weekClick(e){
   if(S.tab!=='week')return;
+  var inPop=e.target.closest('.pop');
+  if(S.pop&&!inPop&&!e.target.closest('td[data-s]'))closePop();
   var b=e.target.closest('button[data-act]');
   if(b){
     var a=b.dataset.act;
     if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();
+    if(a==='popclose'){closePop();return}
+    if(a==='popitem'){if(S.pop)applyPick(S.pop.d,S.pop.s,b.dataset.nm||'');return}
+    if(a==='popopt'){closePop();S.optMode=true;S.ed=null;render();main.scrollTop=0;return}
+    if(a==='popdetail'){if(S.pop){S.ed={d:S.pop.d,s:S.pop.s}}closePop();render();main.scrollTop=0;return}
     if(a==='edit'){if(S.unlocked)S.edit=true;else S.gate=true;render();return}
-    if(a==='stop'){S.edit=false;S.ed=null;S.gate=false;S.subj=false;S.optMode=false;render();return}
+    if(a==='stop'){S.edit=false;S.ed=null;S.gate=false;S.subj=false;S.optMode=false;closePop();render();return}
     if(a==='subopen'){S.subj=true;S.ed=null;render();return}
     if(a==='subclose'){S.subj=false;render();return}
     if(a==='subsave'){saveSubjects();return}
-    if(!S.ed)return;
-    if(a==='optedit'){S.optMode=true;render();main.scrollTop=0;return}
     if(a==='optclose'){S.optMode=false;render();return}
     if(a==='optdel'){var r0=b.closest('.orow');if(r0)r0.remove();return}
-    if(a==='optadd'){var box=$('orows');if(box){box.insertAdjacentHTML('beforeend','<div class="orow" style="display:flex;gap:8px;margin-top:8px"><input class="oin" type="text" maxlength="30" data-old="" placeholder="새 항목 이름" aria-label="새 항목 이름"><button type="button" class="btn2" data-act="optdel" style="margin:0">삭제</button></div>');var ins=box.querySelectorAll('.oin');ins[ins.length-1].focus()}return}
+    if(a==='optadd'){var box=$('orows');if(box){box.insertAdjacentHTML('beforeend','<div class="orow" style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><input class="oin" type="text" maxlength="30" data-old="" placeholder="새 항목 이름" aria-label="새 항목 이름" style="flex:2;min-width:150px"><select class="osj" aria-label="과목" style="flex:1;min-width:100px">'+subjOpts('기타')+'</select><button type="button" class="btn2" data-act="optdel" style="margin:0">삭제</button></div>');var ins=box.querySelectorAll('.oin');ins[ins.length-1].focus()}return}
     if(a==='optsave'){saveOpts();return}
+    if(!S.ed)return;
     if(a==='del'){S.ed.del=true;render();return}
     if(a==='delno'){S.ed.del=false;render();return}
     if(a==='delyes'){
@@ -1235,17 +1294,6 @@ function weekClick(e){
     if(a==='save'){saveEditor();return}
     return;
   }
-  var pb=e.target.closest('button[data-pk]');
-  if(pb&&S.ed&&S.ed.s&&!pb.disabled){
-    var nm2=optsOf(S.ed.s)[+pb.dataset.pk];if(!nm2)return;
-    var en=$('en'),es=$('es'),e2=$('es2');
-    if(en)en.value=nm2;
-    var sj0=SUBJ[nm2]||'기타';
-    if(es)for(var q=0;q<es.options.length;q++){if(es.options[q].text===sj0){es.selectedIndex=q;break}}
-    if(e2)e2.value='';
-    document.querySelectorAll('.sub[data-pk]').forEach(function(x){x.classList.toggle('d',x===pb)});
-    return;
-  }
   if(!S.edit)return;
   var tg=e.target.closest('td[data-gi]');
   if(tg){S.ed={k:'g',g:+tg.dataset.gi};render();main.scrollTop=0;return}
@@ -1253,8 +1301,9 @@ function weekClick(e){
   if(tt){S.ed={k:'t',s:tt.dataset.ts};render();main.scrollTop=0;return}
   var td=e.target.closest('td[data-s]');
   if(!td)return;
-  S.ed={d:+td.dataset.d,s:td.dataset.s};S.optMode=false;
-  render();main.scrollTop=0;
+  if(td.dataset.s==='e'){S.ed={d:+td.dataset.d,s:'e'};S.pop=null;S.optMode=false;render();main.scrollTop=0;return}
+  S.ed=null;S.optMode=false;S.pop={d:+td.dataset.d,s:td.dataset.s};
+  var st0=main.scrollTop;closePop();S.pop={d:+td.dataset.d,s:td.dataset.s};render();main.scrollTop=st0;
 }
 
 function weekReport(off,c){
@@ -1452,7 +1501,7 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:30};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:31};
 var UPD_LOG=[
   ['v30','주간 표 칸마다 고를 수 있는 항목 목록(수정·추가·삭제)'],
   ['v29','주간 표 수정 시 항목을 목록에서 골라 넣기'],
@@ -1542,7 +1591,7 @@ function render(){
 $('nav').addEventListener('click',function(e){
   var b=e.target.closest('button[data-t]');if(!b)return;
   if(b.dataset.t!==S.tab){S.unlocked=false;S.edit=false;S.ed=null;S.gate=false;S.pedit=false;S.pgate=false}
-  S.tab=b.dataset.t;
+  S.tab=b.dataset.t;closePop();S.optMode=false;
   if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();
   render();main.scrollTop=0;
 });
