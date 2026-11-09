@@ -1023,6 +1023,15 @@ function todayClick(e){
   }
 }
 
+function pickOpts(d,cur){
+  var used={};SLOTS.forEach(function(sl){var v=DAYS[d].s[sl.id];if(v&&v!==cur)used[v]=1});
+  var by={};Object.keys(SUBJ).forEach(function(n){var g=SUBJ[n]||'기타';(by[g]=by[g]||[]).push(n)});
+  var out='<option value="">목록에서 고르기…</option>';
+  axes().concat(Object.keys(by)).filter(function(g,i,a){return a.indexOf(g)===i&&by[g]}).forEach(function(g){
+    out+='<optgroup label="'+esc(g)+'">'+by[g].map(function(n){return '<option value="'+esc(n)+'"'+(used[n]?' disabled':'')+'>'+esc(n)+(used[n]?' (이 요일에 있음)':'')+'</option>'}).join('')+'</optgroup>';
+  });
+  return out;
+}
 function renderWeek(c){
   var h='<thead><tr><th>장소</th><th>시간</th>';
   DAYS.forEach(function(d,i){h+='<th class="'+(i>4?'we':'')+(i===c.ti?' tdy':'')+'">'+d.n+(i===c.ti?' (오늘)':'')+'</th>'});
@@ -1067,7 +1076,8 @@ function renderWeek(c){
     }else{
       var sl=SLOTS[SLOT_IDX[ed.s]],cur=DAYS[ed.d].s[ed.s];
       ttl=DOW[ed.d]+'요일 '+GROUPS[sl.g]+(sl.g===3?'':' '+sl.t)+' 수정';
-      body='<label class="fl" for="en" style="margin-top:0">항목 이름 (비우면 빈 칸)</label><input id="en" type="text" maxlength="30" value="'+esc(cur)+'">'+
+      body='<label class="fl" for="epick" style="margin-top:0">항목 고르기</label><select id="epick">'+pickOpts(ed.d,cur)+'</select>'+
+        '<label class="fl" for="en">항목 이름 (목록에 없으면 직접 입력, 비우면 빈 칸)</label><input id="en" type="text" maxlength="30" value="'+esc(cur)+'">'+
         '<label class="fl" for="es">과목</label><select id="es">'+subjOpts(SUBJ[cur]||'기타')+'</select>'+
         '<label class="fl" for="es2">새 과목으로 추가 (비워 두면 위 목록에서 선택한 과목)</label><input id="es2" type="text" maxlength="8" placeholder="예: 영어회화">'+
         '<label class="chk"><input type="checkbox" id="x2"'+((DAYS[ed.d].x||{})[ed.s]&1?' checked':'')+'>2루타 필수 요소</label>'+
@@ -1089,6 +1099,14 @@ function renderWeek(c){
   }
   main.innerHTML='<div class="head"><div><h1>주간 표</h1><div class="date">'+(S.edit?'고칠 칸을 눌러 수정하세요.':'오늘 칸은 연한 분홍색, 끝낸 항목은 빨간 체크예요.')+'</div></div>'+
     '<button class="btn2'+(S.edit?' on':'')+'" type="button" data-act="'+(S.edit?'stop':'edit')+'">'+(S.edit?'수정 끝내기':'수정')+'</button></div>'+top+'<div class="tw"><table>'+h+'</table></div>';
+  var pk=$('epick');
+  if(pk)pk.addEventListener('change',function(){
+    var v=this.value;if(!v)return;
+    var en=$('en'),es=$('es'),e2=$('es2');
+    if(en)en.value=v;
+    if(es&&SUBJ[v]){for(var i=0;i<es.options.length;i++){if(es.options[i].text===SUBJ[v]){es.selectedIndex=i;break}}}
+    if(e2)e2.value='';
+  });
   var wf=$('wpf');
   if(wf)wf.addEventListener('submit',function(e){
     e.preventDefault();
@@ -1396,8 +1414,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:28};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:29};
 var UPD_LOG=[
+  ['v29','주간 표 수정 시 항목을 목록에서 골라 넣기'],
   ['v28','세부 항목에 독서를 하면 ‘독서’, 다른 것만 하면 ‘교양’으로 집계'],
   ['v27','마무리 운동은 ‘기타’ 분류, 세부 항목은 하나만 해도 통과'],
   ['v26','“독서/필사/스케치” 같은 항목의 세부 항목 체크'],
