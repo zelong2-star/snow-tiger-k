@@ -1155,8 +1155,8 @@ function popHtml(){
       return '<div class="pr'+(n===cur?' cur':'')+'" data-nm="'+esc(n)+'"><button type="button" class="pi" data-act="popitem" data-nm="'+esc(n)+'"><span class="pn">'+esc(n)+'</span>'+(used[n]?'<span class="pw">↔ '+esc(used[n])+'</span>':'')+(n===cur?CK:'')+'</button><select class="pj" data-nm="'+esc(n)+'" aria-label="'+esc(n)+' 분야 바꾸기">'+subjOpts(SUBJ[n]||'기타')+'</select></div>';
     }).join('')+'</div>';
   });
-  h+='<div class="pe" hidden>찾는 항목이 없어요. 아래 “목록 편집”에서 추가할 수 있어요.</div></div>'+
-    '<div class="pf"><button type="button" data-act="popitem" data-nm=""'+(cur?'':' disabled style="opacity:.4"')+'>비우기</button><button type="button" data-act="popopt">목록 편집</button><button type="button" data-act="popdetail">자세히</button></div>';
+  h+='<div class="pe" hidden>찾는 항목이 없어요. 아래 “항목 목록”에서 추가할 수 있어요.</div></div>'+
+    '<div class="pf"><button type="button" data-act="popitem" data-nm=""'+(cur?'':' disabled style="opacity:.4"')+'>비우기</button><button type="button" data-act="popopt">항목 목록</button><button type="button" data-act="popsubj">분야 목록</button><button type="button" data-act="popdetail">자세히</button></div>';
   if(isSync(pp.s)&&pp.d<=4)h+='<div class="pn2">월~금 거실구장 칸은 함께 바뀌어요.</div>';
   return h+'</div>';
 }
@@ -1324,6 +1324,7 @@ function weekClick(e){
     if(a==='popclose'){closePop();return}
     if(a==='popitem'){if(S.pop)applyPick(S.pop.d,S.pop.s,b.dataset.nm||'');return}
     if(a==='popopt'){closePop();S.optMode=true;S.ed=null;render();main.scrollTop=0;return}
+    if(a==='popsubj'){closePop();S.subj=true;S.ed=null;S.optMode=false;render();main.scrollTop=0;return}
     if(a==='popdetail'){if(S.pop){S.ed={d:S.pop.d,s:S.pop.s}}closePop();render();main.scrollTop=0;return}
     if(a==='edit'){if(S.unlocked)S.edit=true;else S.gate=true;render();return}
     if(a==='stop'){S.edit=false;S.ed=null;S.gate=false;S.subj=false;S.optMode=false;closePop();render();return}
@@ -1555,8 +1556,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:33};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:34};
 var UPD_LOG=[
+  ['v34','팝업에서 분야(과목) 목록 바로 열기'],
   ['v33','팝업에서 항목마다 분야(과목)를 바로 변경'],
   ['v32','수정 모드 점선 제거·선택한 칸만 강조, 항목 팝업 새 디자인(검색 추가)'],
   ['v30','주간 표 칸마다 고를 수 있는 항목 목록(수정·추가·삭제)'],
