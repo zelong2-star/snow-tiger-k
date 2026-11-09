@@ -358,7 +358,16 @@ function flip(k,name){
   return cur.has(name);
 }
 /* 마무리 운동 칸은 항상 '기타' 과목으로 센다 */
-function subjOf(it){return it.id==='f'?'기타':(SUBJ[it.n]||'기타')}
+function subjOf(it,ds){
+  var ps=partsOf(it.n);
+  if(ps&&ps.indexOf('독서')>=0){
+    /* 세부 항목 중 독서를 했으면 '독서', 다른 것만 했으면 '교양'. 아직 못 했으면 '독서'로 센다 */
+    if(ds&&ds.has(it.n))return subDone(ds,it.n,'독서',ps)?'독서':'교양';
+    return '독서';
+  }
+  return it.id==='f'?'기타':(SUBJ[it.n]||'기타');
+}
+function axes(){var a=SUBJ_ORDER.slice();if(a.indexOf('교양')<0)a.push('교양');a.push('기타');return a}
 function partsOf(n){var p=String(n).split('/').map(function(x){return x.trim()}).filter(Boolean);return p.length>=2?p:null}
 function subKey(n,p){return n+'#'+p}
 function subDone(ds,n,p,ps){
@@ -410,7 +419,7 @@ function stats(){
     w.ab+=inf.ab;w.h+=inf.h;w.b2+=inf.b2;w.b3+=inf.b3;w.hr+=inf.hr;
     if(inf.rain){byDay[i]=-1;continue}
     its.forEach(function(it){
-      var s=subjOf(it);by[s]=by[s]||{t:0,d:0};by[s].t++;tot++;if(!byItem[it.n]){byItem[it.n]={t:0,d:0};itemOrder.push(it.n)}byItem[it.n].t++;if(ds.has(it.n))byItem[it.n].d++;
+      var s=subjOf(it,ds);by[s]=by[s]||{t:0,d:0};by[s].t++;tot++;if(!byItem[it.n]){byItem[it.n]={t:0,d:0};itemOrder.push(it.n)}byItem[it.n].t++;if(ds.has(it.n))byItem[it.n].d++;
       if(ds.has(it.n)){by[s].d++;dn++;dt++}
     });
     byDay[i]=its.length?dt/its.length:0;
@@ -620,7 +629,7 @@ function seasonStats(c){
       wkH[wkk]=(wkH[wkk]||0)+y.h;wkHR[wkk]=(wkHR[wkk]||0)+y.hr;
       if(!bestDay||y.h>bestDay.h)bestDay={h:y.h,k:inf.k};
       itemsOf(inf.di).forEach(function(it){
-        var s2=subjOf(it),dd=ds.has(it.n);
+        var s2=subjOf(it,ds),dd=ds.has(it.n);
         sb[s2]=sb[s2]||{t:0,d:0};sb[s2].t++;if(dd)sb[s2].d++;
         pl[it.g]=pl[it.g]||{t:0,d:0};pl[it.g].t++;if(dd)pl[it.g].d++;
         bk[it.n]=bk[it.n]||{t:0,d:0};bk[it.n].t++;if(dd)bk[it.n].d++;
@@ -661,7 +670,7 @@ function levelOf(xp){
   return {i:i,cur:cur,nx:nx,pct:nx?Math.round((xp-cur.x)/(nx.x-cur.x)*100):100};
 }
 function radarSvg(sb){
-  var ax=SUBJ_ORDER.concat(['기타']).filter(function(s){return sb[s]&&sb[s].t>0}).slice(0,8);
+  var ax=axes().filter(function(s){return sb[s]&&sb[s].t>0}).slice(0,8);
   var n=ax.length;if(n<3)return '';
   var R=84,cx=160,cy=116,pts=[],lab='',grid='',spokes='';
   function P(i,r){var a=-Math.PI/2+i*2*Math.PI/n;return [cx+r*Math.cos(a),cy+r*Math.sin(a)]}
@@ -676,7 +685,7 @@ function radarSvg(sb){
   return '<svg viewBox="0 0 320 236" width="100%" style="max-width:340px" role="img" aria-label="과목별 능력치 레이더 차트">'+grid+spokes+'<polygon points="'+pts.join(' ')+'" fill="var(--done)" fill-opacity=".25" stroke="var(--done)" stroke-width="2.5"/>'+lab+'</svg>';
 }
 function abilityCard(ss){
-  var ax=SUBJ_ORDER.concat(['기타']).filter(function(s){return ss.sb[s]&&ss.sb[s].t>0});
+  var ax=axes().filter(function(s){return ss.sb[s]&&ss.sb[s].t>0});
   if(!ax.length)return '<div class="card" style="margin-top:12px"><h2>선수 능력치</h2><div class="lbl">경기가 끝나면 과목별 능력치가 나타나요.</div></div>';
   var rows=ax.map(function(s){
     var pp=pct(ss.sb[s].d,ss.sb[s].t),g=pp>=90?'S':pp>=80?'A':pp>=70?'B':pp>=60?'C':'D';
@@ -857,7 +866,7 @@ function recordCards(ss,c){
   var card3='<div class="card" style="margin-top:12px"><h2>월간 타율 · 순위</h2>'+(mrows||'<div class="lbl">경기가 쌓이면 월별 기록이 나와요.</div>')+rival+'</div>';
   var prow=GROUPS.map(function(g,i){var p=ss.pl[i];if(!p)return '';var v=p.d/p.t;
     return '<div class="rk"><span class="n">'+esc(g)+(i===0?' (홈)':'')+'</span><div class="meter"><b style="width:'+Math.round(v*100)+'%"></b></div><b>'+avg(p.d/2,p.t)+'</b><span class="lbl">'+Math.round(v*100)+'%</span></div>'}).join('');
-  var srows=SUBJ_ORDER.concat(['기타']).filter(function(x){return ss.sb[x]&&ss.sb[x].t>0}).map(function(x){var q=ss.sb[x],v=q.d/q.t;
+  var srows=axes().filter(function(x){return ss.sb[x]&&ss.sb[x].t>0}).map(function(x){var q=ss.sb[x],v=q.d/q.t;
     return '<div class="rk"><span class="n">'+esc(x)+'</span><div class="meter"><b style="width:'+Math.round(v*100)+'%"></b></div><b>'+avg(q.d/2,q.t)+'</b><span class="lbl">'+Math.round(v*100)+'%</span></div>'}).join('');
   var bl=Object.keys(ss.bk).filter(function(k){return ss.bk[k].t>=3}).map(function(k){return {n:k,v:ss.bk[k].d/ss.bk[k].t,t:ss.bk[k].t}}).sort(function(a,b){return b.v-a.v});
   var bk=function(a){return a.map(function(x){return '<div class="kv"><span>'+esc(x.n)+'</span><span><b>'+Math.round(x.v*100)+'%</b> <span class="lbl">'+x.t+'경기</span></span></div>'}).join('')};
@@ -1206,7 +1215,7 @@ function weekReport(off,c){
     if(inf.live){
       live++;ab+=inf.ab;h+=inf.h;b2+=inf.b2;b3+=inf.b3;hr+=inf.hr;
       var ds=doneSet(inf.k);
-      itemsOf(inf.di).forEach(function(it){var s2=subjOf(it);sb[s2]=sb[s2]||{t:0,d:0};sb[s2].t++;if(ds.has(it.n))sb[s2].d++});
+      itemsOf(inf.di).forEach(function(it){var s2=subjOf(it,ds);sb[s2]=sb[s2]||{t:0,d:0};sb[s2].t++;if(ds.has(it.n))sb[s2].d++});
     }
   }
   var we=new Date(ws.getFullYear(),ws.getMonth(),ws.getDate()+6);
@@ -1249,7 +1258,7 @@ function renderLog(c){
     bars+='<div class="dcol'+(fu?' fu':'')+(i===c.ti?' t':'')+'"><span>'+(fu?'':rn?'☔':p+'%')+'</span><div class="bw"><div class="dbar" style="height:'+((fu||rn)?4:Math.max(p,3))+'%"></div></div>'+DOW[i]+'</div>';
   }
   var subs='',worst=null;
-  SUBJ_ORDER.concat(['기타']).forEach(function(sj){
+  axes().forEach(function(sj){
     var x=st.by[sj];if(!x)return;
     var q=pct(x.d,x.t);
     subs+='<div class="st"><span class="n">'+esc(sj)+'</span><div class="meter"><b style="width:'+q+'%'+(q<50?';background:var(--amber)':'')+'"></b></div><b>'+q+'%</b></div>';
@@ -1387,8 +1396,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:27};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:28};
 var UPD_LOG=[
+  ['v28','세부 항목에 독서를 하면 ‘독서’, 다른 것만 하면 ‘교양’으로 집계'],
   ['v27','마무리 운동은 ‘기타’ 분류, 세부 항목은 하나만 해도 통과'],
   ['v26','“독서/필사/스케치” 같은 항목의 세부 항목 체크'],
   ['v25','OPS 추이 그래프 제거'],
@@ -1517,6 +1527,7 @@ loadLocal();render();
   },function(){});
 })();
 })();
+
 if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0){
   window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})});
 }
