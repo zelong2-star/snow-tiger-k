@@ -1551,6 +1551,11 @@ function renderLog(c){
     var fu=i>c.ti,rn=!fu&&st.byDay[i]===-1,p=(fu||rn)?0:Math.round((st.byDay[i]||0)*100);
     bars+='<div class="dcol'+(fu?' fu':'')+(i===c.ti?' t':'')+'"><span>'+(fu?'':rn?'☔':p+'%')+'</span><div class="bw"><div class="dbar" style="height:'+((fu||rn)?4:Math.max(p,3))+'%"></div></div>'+DOW[i]+'</div>';
   }
+  var shr=(function(){var pl={},dn2={},tp=0,td=0;
+    for(var i=0;i<7;i++){var ds0=doneSet(key(c.dates[i])),inf0=dayInfo(c.dates[i],c);
+      itemsOf(i).forEach(function(it){var sj=subjOf(it,ds0);pl[sj]=(pl[sj]||0)+1;tp++;if(i<=c.ti&&!inf0.rain&&ds0.has(it.n)){dn2[sj]=(dn2[sj]||0)+1;td++}})}
+    var ks=Object.keys(pl).sort(function(a,b){return pl[b]-pl[a]}),mx=pl[ks[0]]||1;
+    return '<div class="card"><h2>과목별 주간 횟수 비중</h2><div class="lbl">일정표에 배치된 이번 주 횟수예요. 한 번(이닝)을 1회로 세요.</div>'+ks.map(function(k){var pc=pct(pl[k],tp);return '<div style="margin-top:10px"><div style="display:flex;justify-content:space-between;gap:8px"><b>'+esc(k)+'</b><span>'+pl[k]+'회 · '+pc+'%</span></div><div class="meter"><b style="width:'+Math.round(pl[k]/mx*100)+'%"></b></div><div class="lbl" style="margin-top:2px">지금까지 완료 '+(dn2[k]||0)+'회</div></div>'}).join('')+'<div class="lbl" style="margin-top:10px">합계 '+tp+'회 · 완료 '+td+'회</div></div>'})();
   var subs='',worst=null;
   axes().forEach(function(sj){
     var x=st.by[sj];if(!x)return;
@@ -1612,7 +1617,7 @@ function renderLog(c){
    '<div class="cols"><div>'+
    rpCard+
    '<div class="card"><h2>요일별 달성률</h2><div class="days">'+bars+'</div></div>'+
-   '<div class="card"><h2>과목별 완료율</h2>'+subs+warn+'</div>'+
+   '<div class="card"><h2>과목별 완료율</h2>'+subs+warn+'</div>'+shr+
    '<div class="card"><h2>문제집별 완료율</h2>'+(books||'<div class="lbl">아직 기록이 없어요.</div>')+'<div class="lbl" style="margin-top:6px">이번 주 월요일부터 오늘까지의 완료율이에요. 우천 취소 날은 빠져요.</div></div>'+
    '<div class="card"><h2>컨디션 기록 <span class="lbl">최근 14일</span></h2><div>'+mh+'</div></div></div>'+
    '<div>'+fixCard+
@@ -1690,8 +1695,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:51};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:52};
 var UPD_LOG=[
+  ['v52','과목별 주간 횟수 비중 카드'],
   ['v51','이용권 규칙 정리 · 놓친 항목 보충 · 클리닝타임 월/금 제외'],
   ['v50','탭 이용권 보상 프로그램 추가'],
   ['v49','안타를 1개 단위로 · 전부 끝내면 5타수 5안타(1.000)'],
