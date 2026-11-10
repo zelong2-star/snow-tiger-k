@@ -297,7 +297,7 @@ input[type=range]{height:34px;padding:0;accent-color:#DD032F}
     <div class="brand">설호<br>플래너</div>
     <button data-t="home" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11L12 4l8.5 7"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg>홈</button>
     <button data-t="today"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M3.5 6l1.5 1.5L7 5M3.5 12l1.5 1.5L7 11M3.5 18l1.5 1.5L7 17"/></svg>오늘</button>
-    <button data-t="week"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>주간 경기일정</button>
+    <button data-t="week"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>일정</button>
     <button data-t="log"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V11M12 20V5M19 20v-6"/></svg>기록</button>
     <button data-t="set"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg>설정</button>
     <div class="sync" id="sync"></div>
@@ -1649,8 +1649,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:46};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:47};
 var UPD_LOG=[
+  ['v47','하단 메뉴 이름을 "일정"으로'],
   ['v46','주간 경기일정으로 이름 변경 · 주간 칸의 별점 숨김'],
   ['v45','볼넷=스트레칭만 · 3루타=2·3루타 필수 모두 · 사이클링 히트 추가'],
   ['v44','오늘 탭: 완료한 항목은 접어서 다음 할 일이 바로 보이게'],
