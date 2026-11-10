@@ -1127,13 +1127,20 @@ function renderWeek(c){
     }
     top='<div class="card" style="margin:0 0 14px"><h2>'+ttl+'</h2>'+body+'<div class="brow"><button type="button" class="btn" data-act="save">저장</button><button type="button" class="btn2" data-act="cancel">취소</button></div><p class="err" id="eerr" hidden></p></div>';
   }else if(S.edit&&S.subj){
-    var sf='';
+    var sf='',by2={},ord2=[];
     SUBJ_ORDER.forEach(function(o,i){sf+='<div><label class="fl" for="sj'+i+'">과목 '+(i+1)+'</label><input id="sj'+i+'" class="sjin" type="text" maxlength="8" value="'+esc(o)+'"></div>'});
-    top='<div class="card" style="margin:0 0 14px"><h2>과목 목록 수정</h2><div class="pfg">'+sf+'<div><label class="fl" for="sjn">새 과목 추가</label><input id="sjn" type="text" maxlength="8" placeholder="이름 입력"></div></div>'+
-      '<p class="lbl" style="margin:10px 0 0">이름을 바꾸면 그 과목의 항목도 함께 바뀌어요. 칸을 비우면 과목이 삭제되고, 그 과목의 항목은 "기타"로 옮겨져요.</p>'+
+    Object.keys(SUBJ).forEach(function(n){var g=SUBJ[n]||'기타';(by2[g]=by2[g]||[]).push(n)});
+    axes().concat(Object.keys(by2)).forEach(function(g,i,a){if(a.indexOf(g)===i&&by2[g])by2[g].forEach(function(n){ord2.push(n)})});
+    var orow2=function(n){return '<div class="orow" style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><input class="oin" type="text" maxlength="30" data-old="'+esc(n)+'" value="'+esc(n)+'" aria-label="문제집 이름" style="flex:2;min-width:150px"><select class="osj" aria-label="과목" style="flex:1;min-width:100px">'+subjOpts(SUBJ[n]||'기타')+'</select><button type="button" class="btn2" data-act="optdel" style="margin:0">삭제</button></div>'};
+    top='<div class="card" style="margin:0 0 14px"><h2>과목 · 문제집 수정</h2>'+
+      '<div class="lbl" style="margin-top:4px"><b>과목 목록</b></div><div class="pfg">'+sf+'<div><label class="fl" for="sjn">새 과목 추가</label><input id="sjn" type="text" maxlength="8" placeholder="이름 입력"></div></div>'+
+      '<p class="lbl" style="margin:8px 0 0">과목 이름을 바꾸면 그 과목의 문제집도 함께 바뀌어요. 칸을 비우면 과목이 삭제되고, 그 과목의 문제집은 "기타"로 옮겨져요.</p>'+
+      '<div class="lbl" style="margin-top:18px"><b>문제집(항목) 목록</b> · 이름과 과목을 한꺼번에 고쳐요</div><div id="orows">'+ord2.map(orow2).join('')+'</div>'+
+      '<div class="brow"><button type="button" class="btn2" data-act="optadd">+ 문제집 추가</button></div>'+
+      '<p class="lbl" style="margin:8px 0 0">문제집 이름을 바꾸면 표에 들어 있는 같은 항목과 지난 체크 기록도 함께 바뀌어요. 표에서 쓰고 있는 문제집은 삭제해도 표에는 남아요. 새 과목은 저장한 뒤 문제집에 지정할 수 있어요.</p>'+
       '<div class="brow"><button type="button" class="btn" data-act="subsave">저장</button><button type="button" class="btn2" data-act="subclose">취소</button></div><p class="err" id="sjerr" hidden></p></div>';
   }else if(S.edit){
-    top='<div class="warn" style="margin:0 0 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span>고칠 칸을 눌러 주세요. 항목, 장소, 시간 칸을 모두 누를 수 있어요.</span><button type="button" class="btn2" data-act="subopen" style="margin:0">과목 목록 수정</button></div>';
+    top='<div class="warn" style="margin:0 0 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span>고칠 칸을 눌러 주세요. 항목, 장소, 시간 칸을 모두 누를 수 있어요.</span><button type="button" class="btn2" data-act="subopen" style="margin:0">과목·문제집 수정</button></div>';
   }
   main.innerHTML='<div class="head"><div><h1>주간 표</h1><div class="date">'+(S.edit?'고칠 칸을 눌러 수정하세요.':'오늘 칸은 연한 분홍색, 끝낸 항목은 빨간 체크예요.')+'</div></div>'+
     '<button class="btn2'+(S.edit?' on':'')+'" type="button" data-act="'+(S.edit?'stop':'edit')+'">'+(S.edit?'수정 끝내기':'수정')+'</button></div>'+top+'<div class="tw"><table>'+h+'</table></div>';
@@ -1299,21 +1306,52 @@ function saveEditor(){
   saveSched();S.ed=null;S.optMode=false;render();
 }
 function saveSubjects(){
-  var er=$('sjerr'),inputs=document.querySelectorAll('.sjin'),map={},next=[],seen={};
+  var er=$('sjerr'),map={},next=[],seen={};
+  var fail=function(m){er.textContent=m;er.hidden=false};
+  /* 1) 과목 목록 */
   for(var i=0;i<SUBJ_ORDER.length;i++){
     var el=$('sj'+i);if(!el)continue;
     var v=el.value.trim(),old=SUBJ_ORDER[i];
     if(!v){map[old]='기타';continue}
-    if(v==='기타'||seen[v]){er.textContent='같은 이름이거나 "기타"는 쓸 수 없어요: '+v;er.hidden=false;return}
+    if(v==='기타'||seen[v]){fail('같은 이름이거나 "기타"는 쓸 수 없어요: '+v);return}
     seen[v]=1;map[old]=v;next.push(v);
   }
   var nw=$('sjn').value.trim();
   if(nw){
-    if(nw==='기타'||seen[nw]){er.textContent='같은 이름이거나 "기타"는 쓸 수 없어요: '+nw;er.hidden=false;return}
+    if(nw==='기타'||seen[nw]){fail('같은 이름이거나 "기타"는 쓸 수 없어요: '+nw);return}
     next.push(nw);
   }
+  /* 2) 문제집 목록 */
+  var rows=document.querySelectorAll('.orow'),list=[],ren=[],seenN={};
+  for(var r=0;r<rows.length;r++){
+    var inp=rows[r].querySelector('.oin'),o=inp.dataset.old,nm=inp.value.trim(),sj=rows[r].querySelector('.osj').value;
+    if(!nm)continue;
+    if(seenN[nm]){fail('문제집 이름이 두 번 있어요: '+nm);return}
+    seenN[nm]=1;
+    var sj2=(sj==='기타')?'기타':(map[sj]!==undefined?map[sj]:sj);
+    list.push({n:nm,s:sj2});
+    if(o&&o!==nm)ren.push([o,nm]);
+  }
+  /* 적용: 과목 이름 바꾸기 → 문제집 이름 바꾸기 → 목록 다시 만들기 */
+  var oldKeys=Object.keys(SUBJ);
   Object.keys(SUBJ).forEach(function(k){var m=map[SUBJ[k]];if(m!==undefined)SUBJ[k]=m});
-  SUBJ_ORDER=next;S.subj=false;
+  SUBJ_ORDER=next;
+  ren.forEach(function(rn){
+    var oldN=rn[0],newN=rn[1],ts=[];
+    DAYS.forEach(function(d,t){
+      var hit=null;SLOTS.forEach(function(q){if(d.s[q.id]===oldN)hit=q.id});
+      if(!hit)return;
+      if(SLOTS.some(function(q){return d.s[q.id]===newN}))return;
+      d.s[hit]=newN;ts.push(t);
+    });
+    if(ts.length)migrateName(ts,oldN,newN);
+  });
+  var used={};DAYS.forEach(function(d){SLOTS.forEach(function(q){if(d.s[q.id])used[d.s[q.id]]=1})});
+  var nextS={};
+  list.forEach(function(x){nextS[x.n]=x.s});
+  oldKeys.forEach(function(k){if(!(k in nextS)&&used[k])nextS[k]=SUBJ[k]||'기타'});
+  SUBJ=nextS;
+  S.subj=false;S.optMode=false;
   saveSched();
   if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();
   render();
@@ -1341,7 +1379,7 @@ function weekClick(e){
     if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();
     if(a==='popclose'){closePop();return}
     if(a==='popitem'){if(S.pop)applyPick(S.pop.d,S.pop.s,b.dataset.nm||'');return}
-    if(a==='popopt'){closePop();S.optMode=true;S.ed=null;render();main.scrollTop=0;return}
+    if(a==='popopt'){closePop();S.subj=true;S.ed=null;S.optMode=false;render();var oe=$('orows');if(oe&&oe.scrollIntoView)oe.scrollIntoView({block:'start'});return}
     if(a==='popsubj'){closePop();S.subj=true;S.ed=null;S.optMode=false;render();main.scrollTop=0;return}
     if(a==='popdetail'){if(S.pop){S.ed={d:S.pop.d,s:S.pop.s}}closePop();render();main.scrollTop=0;return}
     if(a==='edit'){if(S.unlocked)S.edit=true;else S.gate=true;render();return}
@@ -1574,8 +1612,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:35};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:36};
 var UPD_LOG=[
+  ['v36','과목·문제집을 한 화면에서 한꺼번에 수정'],
   ['v35','팝업에서 2루타·3루타 필수 체크 바로 설정'],
   ['v34','팝업에서 분야(과목) 목록 바로 열기'],
   ['v33','팝업에서 항목마다 분야(과목)를 바로 변경'],
