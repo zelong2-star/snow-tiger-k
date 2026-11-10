@@ -177,6 +177,10 @@ td.sel .it{color:var(--ink)}
 .sndb{appearance:none;border:0;width:44px;height:44px;border-radius:50%;background:#C4C7CC;color:#2B2F36;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:none;padding:0;margin:0;transition:transform .1s}
 .sndb:active{transform:scale(.92)}
 .sndb.off{background:#E3E5E8;color:#8A9099}
+.foldbar{appearance:none;display:flex;align-items:center;gap:10px;width:100%;min-height:48px;padding:6px 14px;margin:0 0 8px;border:1px dashed var(--line,#9aa3b2);border-radius:14px;background:transparent;color:var(--muted);font:600 14px var(--f-b);cursor:pointer;text-align:left}
+.foldbar .fn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:400;font-size:13px}
+.foldbar .fa{margin-left:auto;flex:none}
+.foldbar.open{min-height:36px;justify-content:space-between}
 .ds{color:#E8A800;font-size:.78em;letter-spacing:1px;margin-left:6px;white-space:nowrap}
 .ds.blk{display:block;margin:1px 0 0;font-size:11px;line-height:1}
 .ds .e{opacity:.28}
@@ -1033,7 +1037,12 @@ function renderToday(c){
   var frac=total?n/total:0,stage=frac>=1?4:Math.floor(frac*4);
   var stageTxt=['타석 대기 중','1루 진루!','2루 진루!','3루 진루!','홈런! 홈인!'][stage];
   var list='',last=-1;
+  var firstUn=-1;for(var j0=0;j0<its.length;j0++){if(!ds.has(its[j0].n)){firstUn=j0;break}}
+  var foldN=(firstUn>=1&&!S.unfold)?firstUn:0;
+  if(foldN){list+='<button type="button" class="foldbar" data-act="fold" aria-expanded="false"><span>✓ 완료 '+foldN+'개</span><span class="fn">'+its.slice(0,foldN).map(function(q){return esc(q.n)}).join(' · ')+'</span><span class="fa">펼치기 ▾</span></button>'}
+  else if(firstUn>=1){list+='<button type="button" class="foldbar open" data-act="fold" aria-expanded="true"><span>완료한 항목 접기</span><span class="fa">▴</span></button>'}
   its.forEach(function(it,i){
+    if(i<foldN)return;
     if(it.g!==last){last=it.g;list+='<div class="sec">'+esc(GROUPS[it.g])+'</div>'}
     var d=ds.has(it.n);
     list+='<button class="row'+(d?' d':'')+'" data-i="'+i+'" aria-pressed="'+d+'"><span class="ck">'+ICON_CK+'</span><span class="tm">'+esc(it.t)+'</span><span class="nm">'+esc(it.n)+(partsOf(it.n)?'<span class="tg">'+partsOf(it.n).filter(function(q){return subDone(ds,it.n,q,partsOf(it.n))}).length+'/'+partsOf(it.n).length+'</span>':'')+'</span></button>';
@@ -1074,6 +1083,7 @@ function todayClick(e){
   if(S.tab!=='today')return;
   var b=e.target.closest('button[data-act]');if(!b)return;
   var a=b.dataset.act,c=ctx();
+  if(a==='fold'){S.unfold=!S.unfold;render();return}
   if(a==='snd'){
     S.sound=!S.sound;prefsSave();
     if(S.sound)fx('ck');render();return;
@@ -1640,8 +1650,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:43};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:44};
 var UPD_LOG=[
+  ['v44','오늘 탭: 완료한 항목은 접어서 다음 할 일이 바로 보이게'],
   ['v43','항목이 적은 날(수요일)은 4타수'],
   ['v42','진행 중에도 "5타수 1안타"처럼 표시'],
   ['v41','소리 켜기/끄기를 동그란 스피커 버튼으로'],
