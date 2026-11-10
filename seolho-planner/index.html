@@ -370,7 +370,7 @@ function dayStat(i,ds){
   });
   return {n:N,dn:dn,ab:N?(N>=8?5:4):0,h:N?(N>=8?5:4)*0.5*dn/N:0,all:all,ad:ad,
     f2:f2,d2:d2,f3:f3,d3:d3,
-    b2:(f2>0&&d2===f2)?1:0,b3:(f3>0&&d3===f3)?1:0,hr:(all>0&&ad===all)?1:0};
+    b2:(f2>0&&d2===f2)?1:0,b3:(f3>0&&d3===f3&&d2===f2)?1:0,hr:(all>0&&ad===all)?1:0};
 }
 function isSync(id){return /^r[0-3]$/.test(id)}
 function syncTargets(d,id){return (d<=4&&isSync(id))?[0,1,2,3,4]:[d]}
@@ -693,7 +693,6 @@ function seasonStats(c){
       if(y.h>=1){hs++;if(hs>hsBest)hsBest=hs}else hs=0;
       if(y.h>=2)mh++;
       if(nm.r0&&ds.has(nm.r0))bb++;
-      if(nm.f&&ds.has(nm.f))bb++;
       var mk=inf.k.slice(0,7);mo[mk]=mo[mk]||{ab:0,h:0,g:0};mo[mk].ab+=y.ab;mo[mk].h+=y.h;mo[mk].g++;
       wkH[wkk]=(wkH[wkk]||0)+y.h;wkHR[wkk]=(wkHR[wkk]||0)+y.hr;
       if(!bestDay||y.h>bestDay.h)bestDay={h:y.h,k:inf.k};
@@ -707,15 +706,17 @@ function seasonStats(c){
     d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1);
   }
   var mw=0;Object.keys(wk).forEach(function(k){if(wk[k]>mw)mw=wk[k]});
+  var cyc=0;Object.keys(wkHR).forEach(function(k){if(wkHR[k]>=7)cyc++});
   var mwh=0,mwr=0;Object.keys(wkH).forEach(function(k){if(wkH[k]>mwh)mwh=wkH[k]});Object.keys(wkHR).forEach(function(k){if(wkHR[k]>mwr)mwr=wkHR[k]});
   return {ab:ab,h:h,b2:b2,b3:b3,hr:hr,gd:gd,best:best,maxWeek:mw,items:items,xp:items+bonus,rain:rain,ok:ok,sb:sb,
-    g:G,absent:absent,bb:bb,tb:h+b2+2*b3+3*hr,ap:ap,apBest:apBest,hs:hs,hsBest:hsBest,mh:mh,mo:mo,pl:pl,bk:bk,bestDay:bestDay,maxWkH:mwh,maxWkHR:mwr};
+    g:G,absent:absent,bb:bb,tb:h+b2+2*b3+3*hr,ap:ap,apBest:apBest,hs:hs,hsBest:hsBest,mh:mh,mo:mo,pl:pl,bk:bk,bestDay:bestDay,maxWkH:mwh,maxWkHR:mwr,cyc:cyc};
 }
 var BADGES=[
   {id:'first',ic:'⚾',n:'데뷔전',d:'첫 항목을 해냈어요',t:function(s){return s.gd>=1}},
-  {id:'d2',ic:'🥈',n:'첫 2루타',d:'2루타 필수 항목을 모두 끝냈어요',t:function(s){return s.b2>=1}},
-  {id:'d3',ic:'🥉',n:'첫 3루타',d:'3루타 필수 항목을 모두 끝냈어요',t:function(s){return s.b3>=1}},
+  {id:'d2',ic:'🥈',n:'첫 2루타',d:'그날 2루타 필수 항목을 모두 끝냈어요',t:function(s){return s.b2>=1}},
+  {id:'d3',ic:'🥉',n:'첫 3루타',d:'2루타·3루타 필수 항목을 모두 끝냈어요',t:function(s){return s.b3>=1}},
   {id:'hr1',ic:'💥',n:'첫 홈런',d:'하루 모든 항목을 끝냈어요',t:function(s){return s.hr>=1}},
+  {id:'cyc',ic:'🌀',n:'사이클링 히트',d:'월~일 일주일 모든 스케줄을 클리어했어요',t:function(s){return s.cyc>=1}},
   {id:'hr3',ic:'🚀',n:'홈런왕',d:'홈런 3개 달성',t:function(s){return s.hr>=3}},
   {id:'a300',ic:'🥇',n:'3할 타자',d:'25타수 이상, 타율 .300',t:function(s){return s.ab>=25&&s.h/s.ab>=0.3}},
   {id:'a400',ic:'🔥',n:'4할 타자',d:'25타수 이상, 타율 .400',t:function(s){return s.ab>=25&&s.h/s.ab>=0.4}},
@@ -763,7 +764,7 @@ function abilityCard(ss){
   return '<div class="card" style="margin-top:12px"><h2>선수 능력치</h2><div class="cols" style="align-items:center"><div>'+radarSvg(ss.sb)+'</div><div>'+rows+'<div class="lbl" style="margin-top:6px">끝난 경기의 과목별 완료율이에요. S 90 · A 80 · B 70 · C 60</div></div></div></div>';
 }
 function glossCard(){
-  var T=[['타석','방망이를 휘두를 기회예요. 하루 5타석(항목이 적은 날은 4타석)이고, 항목을 해낸 만큼 안타가 쌓여요.'],['안타','타석을 해낸 거예요. 항목을 끝낼수록 쌓여요.'],['출전 · 결장','출전은 그날 항목을 하나라도 해낸 경기, 결장은 하나도 못 한 경기예요.'],['출루율 · 장타율 · OPS','출루율은 준비·마무리(볼넷)까지 더한 비율, 장타율은 2·3루타와 홈런의 힘이에요. 둘을 더하면 OPS예요.'],['타율','안타 ÷ 타수예요. 만점이 .500이고, .300이면 훌륭한 타자예요.'],['2루타 · 3루타','중요한 항목(감독이 정해요)을 모두 끝내면 나와요.'],['홈런','오늘 항목을 전부 끝내면 나와요.'],['경기 종료','오늘 할 만큼 했을 때 누르면 오늘 타율이 나와요. 다 끝내면 자동으로 끝나요.'],['우천 취소','아프거나 쉬는 날이에요. 그날은 타율에서 빠져요.'],['성장 점수','해낸 항목과 장타로 쌓여요. 연습생 → 2군 → 1군 → 주전 → 올스타 → 레전드!']];
+  var T=[['타석','방망이를 휘두를 기회예요. 하루 5타석(항목이 적은 날은 4타석)이고, 항목을 해낸 만큼 안타가 쌓여요.'],['안타','타석을 해낸 거예요. 항목을 끝낼수록 쌓여요.'],['출전 · 결장','출전은 그날 항목을 하나라도 해낸 경기, 결장은 하나도 못 한 경기예요.'],['출루율 · 장타율 · OPS','출루율은 스트레칭(볼넷)까지 더한 비율, 장타율은 2·3루타와 홈런의 힘이에요. 둘을 더하면 OPS예요.'],['타율','안타 ÷ 타수예요. 만점이 .500이고, .300이면 훌륭한 타자예요.'],['볼넷','스트레칭을 하면 볼넷이에요. 타수에는 안 들어가요.'],['2루타 · 3루타','그날 2루타 필수 항목을 모두 끝내면 2루타, 2루타·3루타 필수 항목을 모두 끝내면 3루타예요.'],['홈런','오늘 항목을 전부 끝내면 나와요.'],['사이클링 히트','월요일부터 일요일까지 모든 스케줄을 전부 클리어한 주에 기록돼요.'],['경기 종료','오늘 할 만큼 했을 때 누르면 오늘 타율이 나와요. 다 끝내면 자동으로 끝나요.'],['우천 취소','아프거나 쉬는 날이에요. 그날은 타율에서 빠져요.'],['성장 점수','해낸 항목과 장타로 쌓여요. 연습생 → 2군 → 1군 → 주전 → 올스타 → 레전드!']];
   return '<details class="card" style="margin-top:12px"><summary>⚾ 야구 용어 도감 (눌러서 보기)</summary>'+T.map(function(x){return '<p style="margin:10px 0 0"><b>'+x[0]+'</b> · '+x[1]+'</p>'}).join('')+'</details>';
 }
 function recentNote(c){
@@ -803,7 +804,6 @@ function pStats(c,r){
       o.ab+=y.ab;o.h+=y.h;o.b2+=y.b2;o.b3+=y.b3;o.hr+=y.hr;o.items+=y.ad;
       if(y.h>=2)o.mh++;
       if(nm.r0&&ds.has(nm.r0))o.bb++;
-      if(nm.f&&ds.has(nm.f))o.bb++;
     }
     d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1);
   }
@@ -818,7 +818,6 @@ function aggDays(c,a,b){
       var ds=doneSet(inf.k),nm=DAYS[inf.di].s,y=inf.y;
       o.live++;o.h+=y.h;o.ab+=y.ab;o.b2+=y.b2;o.b3+=y.b3;o.hr+=y.hr;
       if(nm.r0&&ds.has(nm.r0))o.bb++;
-      if(nm.f&&ds.has(nm.f))o.bb++;
     }
     d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1);
   }
@@ -899,7 +898,7 @@ function periodCard(c){
     var inf=dayInfo(c.now,c),y=inf.y;
     var st=inf.rain?'🌧️ 우천 취소':(y.n===0?'쉬는 날':(inf.fin?'⚾ 경기 종료':'🔥 경기 진행 중'));
     body='<div class="win" style="margin:10px 0 0">'+st+'</div><div class="sl">'+
-      cell('완료 항목',y.dn+' / '+y.n)+cell('타수',y.ab)+cell('안타',fmtH(y.h))+cell('2루타',y.b2)+cell('3루타',y.b3)+cell('홈런',y.hr)+cell('볼넷',(function(){var nm=DAYS[c.ti].s,ds=doneSet(c.tk);return (nm.r0&&ds.has(nm.r0)?1:0)+(nm.f&&ds.has(nm.f)?1:0)})())+'</div>'+
+      cell('완료 항목',y.dn+' / '+y.n)+cell('타수',y.ab)+cell('안타',fmtH(y.h))+cell('2루타',y.b2)+cell('3루타',y.b3)+cell('홈런',y.hr)+cell('볼넷',(function(){var nm=DAYS[c.ti].s,ds=doneSet(c.tk);return (nm.r0&&ds.has(nm.r0)?1:0)})())+'</div>'+
       '<div class="sl">'+cell('오늘 타율',(y.ab&&inf.fin)?avg(y.h,y.ab):'경기 후 공개',1)+'</div>'+
       (!inf.fin&&!inf.rain&&y.n>0?'<p class="lbl" style="margin:8px 0 0">진행 중인 기록이에요. 경기가 끝나면 시즌 기록에 더해져요.</p>':'');
   }else{
@@ -923,7 +922,7 @@ function recordCards(ss,c){
   var mv=mvpOf(c);
   var mvHtml=mv?'<div class="win" style="margin:12px 0 0">🏅 이번 주 MVP · '+DOW[mv.i]+'요일 (안타 '+fmtH(mv.h)+(mv.hr?' · 홈런':'')+')</div>':'';
   var card1='<div class="card" style="margin-top:12px"><h2>시즌 기록표 <span class="lbl">끝난 경기 기준</span></h2><div class="sl">'+line1+'</div><div class="sl">'+line2+'</div>'+mvHtml+'</div>';
-  var recs=[['최장 연속 출전',ss.apBest+'경기','지금 '+ss.ap+'경기째'],['최장 연속 안타',ss.hsBest+'경기','지금 '+ss.hs+'경기째'],['한 주 최다 안타',fmtH(ss.maxWkH),''],['한 주 최다 홈런',ss.maxWkHR,''],['하루 최고 안타',ss.bestDay?fmtH(ss.bestDay.h):'—',ss.bestDay?ss.bestDay.k.slice(5).replace('-','월 ')+'일':'']];
+  var recs=[['최장 연속 출전',ss.apBest+'경기','지금 '+ss.ap+'경기째'],['최장 연속 안타',ss.hsBest+'경기','지금 '+ss.hs+'경기째'],['한 주 최다 안타',fmtH(ss.maxWkH),''],['한 주 최다 홈런',ss.maxWkHR,''],['사이클링 히트',ss.cyc+'회','월~일 전부 클리어'],['하루 최고 안타',ss.bestDay?fmtH(ss.bestDay.h):'—',ss.bestDay?ss.bestDay.k.slice(5).replace('-','월 ')+'일':'']];
   var card2='<div class="card" style="margin-top:12px"><h2>시즌 최고 기록</h2>'+recs.map(function(x){return '<div class="kv"><span>'+x[0]+'</span><span><b>'+x[1]+'</b>'+(x[2]?' <span class="lbl">'+x[2]+'</span>':'')+'</span></div>'}).join('')+'</div>';
   var ms=Object.keys(ss.mo).sort(),bestM=null;
   ms.forEach(function(k){var m=ss.mo[k];if(m.ab>=10&&(!bestM||m.h/m.ab>ss.mo[bestM].h/ss.mo[bestM].ab))bestM=k});
@@ -1650,8 +1649,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:44};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:45};
 var UPD_LOG=[
+  ['v45','볼넷=스트레칭만 · 3루타=2·3루타 필수 모두 · 사이클링 히트 추가'],
   ['v44','오늘 탭: 완료한 항목은 접어서 다음 할 일이 바로 보이게'],
   ['v43','항목이 적은 날(수요일)은 4타수'],
   ['v42','진행 중에도 "5타수 1안타"처럼 표시'],
