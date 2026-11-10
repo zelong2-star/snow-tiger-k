@@ -352,7 +352,7 @@ function itemsOf(i){
 function doneSet(k){return new Set(S.checks[k]||[])}
 function rated(id){return id!=='r0'&&id!=='f'}
 function fmt(v){return String(Math.round(v*100)/100)}
-/* One day's batting line. 5 at-bats a day; finishing every rated item = .500 (2.5 hits).
+/* One day's batting line. 5 at-bats a day (4 on light days with under 8 rated items); finishing every rated item = .500.
    Extra-base hits: all items ticked "2루타/3루타 필수" done -> double/triple; every item done -> home run. */
 function dayStat(i,ds){
   var N=0,dn=0,all=0,ad=0,f2=0,d2=0,f3=0,d3=0;
@@ -364,7 +364,7 @@ function dayStat(i,ds){
     if(m&1){f2++;if(d)d2++}
     if(m&2){f3++;if(d)d3++}
   });
-  return {n:N,dn:dn,ab:N?5:0,h:N?2.5*dn/N:0,all:all,ad:ad,
+  return {n:N,dn:dn,ab:N?(N>=8?5:4):0,h:N?(N>=8?5:4)*0.5*dn/N:0,all:all,ad:ad,
     f2:f2,d2:d2,f3:f3,d3:d3,
     b2:(f2>0&&d2===f2)?1:0,b3:(f3>0&&d3===f3)?1:0,hr:(all>0&&ad===all)?1:0};
 }
@@ -759,7 +759,7 @@ function abilityCard(ss){
   return '<div class="card" style="margin-top:12px"><h2>선수 능력치</h2><div class="cols" style="align-items:center"><div>'+radarSvg(ss.sb)+'</div><div>'+rows+'<div class="lbl" style="margin-top:6px">끝난 경기의 과목별 완료율이에요. S 90 · A 80 · B 70 · C 60</div></div></div></div>';
 }
 function glossCard(){
-  var T=[['타석','방망이를 휘두를 기회예요. 항목 2개를 해내면 1타석이에요.'],['안타','타석을 해낸 거예요. 항목을 끝낼수록 쌓여요.'],['출전 · 결장','출전은 그날 항목을 하나라도 해낸 경기, 결장은 하나도 못 한 경기예요.'],['출루율 · 장타율 · OPS','출루율은 준비·마무리(볼넷)까지 더한 비율, 장타율은 2·3루타와 홈런의 힘이에요. 둘을 더하면 OPS예요.'],['타율','안타 ÷ 타수예요. 만점이 .500이고, .300이면 훌륭한 타자예요.'],['2루타 · 3루타','중요한 항목(감독이 정해요)을 모두 끝내면 나와요.'],['홈런','오늘 항목을 전부 끝내면 나와요.'],['경기 종료','오늘 할 만큼 했을 때 누르면 오늘 타율이 나와요. 다 끝내면 자동으로 끝나요.'],['우천 취소','아프거나 쉬는 날이에요. 그날은 타율에서 빠져요.'],['성장 점수','해낸 항목과 장타로 쌓여요. 연습생 → 2군 → 1군 → 주전 → 올스타 → 레전드!']];
+  var T=[['타석','방망이를 휘두를 기회예요. 하루 5타석(항목이 적은 날은 4타석)이고, 항목을 해낸 만큼 안타가 쌓여요.'],['안타','타석을 해낸 거예요. 항목을 끝낼수록 쌓여요.'],['출전 · 결장','출전은 그날 항목을 하나라도 해낸 경기, 결장은 하나도 못 한 경기예요.'],['출루율 · 장타율 · OPS','출루율은 준비·마무리(볼넷)까지 더한 비율, 장타율은 2·3루타와 홈런의 힘이에요. 둘을 더하면 OPS예요.'],['타율','안타 ÷ 타수예요. 만점이 .500이고, .300이면 훌륭한 타자예요.'],['2루타 · 3루타','중요한 항목(감독이 정해요)을 모두 끝내면 나와요.'],['홈런','오늘 항목을 전부 끝내면 나와요.'],['경기 종료','오늘 할 만큼 했을 때 누르면 오늘 타율이 나와요. 다 끝내면 자동으로 끝나요.'],['우천 취소','아프거나 쉬는 날이에요. 그날은 타율에서 빠져요.'],['성장 점수','해낸 항목과 장타로 쌓여요. 연습생 → 2군 → 1군 → 주전 → 올스타 → 레전드!']];
   return '<details class="card" style="margin-top:12px"><summary>⚾ 야구 용어 도감 (눌러서 보기)</summary>'+T.map(function(x){return '<p style="margin:10px 0 0"><b>'+x[0]+'</b> · '+x[1]+'</p>'}).join('')+'</details>';
 }
 function recentNote(c){
@@ -1640,8 +1640,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:42};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:43};
 var UPD_LOG=[
+  ['v43','항목이 적은 날(수요일)은 4타수'],
   ['v42','진행 중에도 "5타수 1안타"처럼 표시'],
   ['v41','소리 켜기/끄기를 동그란 스피커 버튼으로'],
   ['v40','목록 팝업의 난이도 버튼 제거'],
