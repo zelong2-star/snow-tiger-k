@@ -174,6 +174,9 @@ td.sel .it{color:var(--ink)}
 .orhd .c3{flex:none;width:112px}
 .orhd .c4{flex:none;width:64px}
 @media (max-width:560px){.orow,.orhd{gap:5px}.orow .osj{width:78px;padding:0 4px}.orow .odf{width:68px;padding:0 4px}.orow .btn2{min-width:44px;padding:0 6px}.orhd .c2{width:78px}.orhd .c3{width:68px}.orhd .c4{width:44px}}
+.sndb{appearance:none;border:0;width:44px;height:44px;border-radius:50%;background:#C4C7CC;color:#2B2F36;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:none;padding:0;margin:0;transition:transform .1s}
+.sndb:active{transform:scale(.92)}
+.sndb.off{background:#E3E5E8;color:#8A9099}
 .ds{color:#E8A800;font-size:.78em;letter-spacing:1px;margin-left:6px;white-space:nowrap}
 .ds.blk{display:block;margin:1px 0 0;font-size:11px;line-height:1}
 .ds .e{opacity:.28}
@@ -1056,7 +1059,7 @@ function renderToday(c){
     (nextT?'<div class="lbl" style="margin-top:8px">다음 보상까지 '+(nextT.n-stars)+'개 남았어요</div>':'<div class="win">모든 보상 달성!</div>')+'</div>';
   main.innerHTML=
    '<div class="head"><div><h1>'+DOW[c.ti]+'요일 경기 일정</h1><div class="date">'+(c.now.getMonth()+1)+'월 '+c.now.getDate()+'일</div></div>'+
-   '<div class="brow" style="margin:0;align-items:center"><button type="button" class="btn2" data-act="snd" aria-pressed="'+S.sound+'" style="margin:0">'+(S.sound?'🔔 소리 켬':'🔕 소리 끔')+'</button><span class="chip">오늘 배터리 '+esc(DAYS[c.ti].e)+'</span></div></div>'+
+   '<div class="brow" style="margin:0;align-items:center"><button type="button" class="sndb'+(S.sound?'':' off')+'" data-act="snd" aria-pressed="'+S.sound+'" aria-label="'+(S.sound?'소리 켜짐 (누르면 끔)':'소리 꺼짐 (누르면 켬)')+'"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z" fill="currentColor"/>'+(S.sound?'<path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/>':'<path d="M16 9.5l5 5M21 9.5l-5 5"/>')+'</svg></button><span class="chip">오늘 배터리 '+esc(DAYS[c.ti].e)+'</span></div></div>'+
    (inf.rain?'<div class="warn" style="margin:0 0 12px">☔ 오늘은 우천 취소예요. 오늘 항목은 타율과 달성률에서 빠져요.</div>':'')+
    (S.toast?'<div class="win" role="status" style="margin:0 0 12px">'+esc(S.toast)+'</div>':'')+
    '<div class="today"><div>'+list+'</div><div class="side">'+
@@ -1637,8 +1640,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:40};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:41};
 var UPD_LOG=[
+  ['v41','소리 켜기/끄기를 동그란 스피커 버튼으로'],
   ['v40','목록 팝업의 난이도 버튼 제거'],
   ['v39','경기 일정 제목 · 오늘 탭 간소화 · 체크 해제 소리/진동'],
   ['v38','문제집 이름·과목·난이도를 한 줄에 보기'],
