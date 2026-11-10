@@ -1045,7 +1045,7 @@ function renderToday(c){
   var batMain,batSub;
   if(inf.rain){batMain='<div class="big">☔</div>';batSub='우천 취소 · 오늘은 쉬어요'}
   else if(inf.fin){batMain='<div class="big">'+avg(y.h,y.ab)+'</div>';batSub='오늘 경기 끝 · 안타 '+fmtH(y.h)+' / '+y.ab+'타수'}
-  else{batMain='<div class="big" style="font-size:26px">타석 진행 중</div>';batSub='지금까지 안타 '+fmtH(y.h)+' · 경기가 끝나면 오늘 타율이 나와요'}
+  else{batMain='<div class="big" style="font-size:30px">'+y.ab+'타수 '+fmtH(y.h)+'안타</div>';batSub='🔥 타석 진행 중 · 경기가 끝나면 오늘 타율이 나와요'}
   var bat='<div class="card"><div class="lbl">오늘의 타격</div>'+batMain+'<div class="lbl">'+batSub+'</div>'+
     (y.f2?xl('2루타 필수',y.d2,y.f2,y.b2):'')+(y.f3?xl('3루타 필수',y.d3,y.f3,y.b3):'')+xl('홈런 (모두 끝내기)',y.ad,y.all,y.hr)+
     (m.o?'<div class="xb d"><span>감독 확인</span><span>🧢 도장 받았어요</span></div>':'')+
@@ -1640,8 +1640,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:41};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:42};
 var UPD_LOG=[
+  ['v42','진행 중에도 "5타수 1안타"처럼 표시'],
   ['v41','소리 켜기/끄기를 동그란 스피커 버튼으로'],
   ['v40','목록 팝업의 난이도 버튼 제거'],
   ['v39','경기 일정 제목 · 오늘 탭 간소화 · 체크 해제 소리/진동'],
