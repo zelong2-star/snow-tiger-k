@@ -163,6 +163,17 @@ td.sel .it{color:var(--ink)}
 .pop .pr.cur{background:var(--done-bg)}
 .pop .pr.cur::before{content:'';position:absolute;left:0;top:9px;bottom:9px;width:4px;border-radius:2px;background:var(--done)}
 .pop .pi{display:flex;align-items:center;gap:8px;flex:1;min-width:0;text-align:left;min-height:46px;padding:8px 6px 8px 12px;border:0;border-radius:11px;background:transparent;color:var(--ink);font:500 16px var(--f-b);cursor:pointer}
+.orow{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:nowrap}
+.orow .oin{flex:1 1 auto;min-width:0}
+.orow .osj{flex:none;width:128px}
+.orow .odf{flex:none;width:112px}
+.orow .btn2{flex:none;margin:0;min-width:64px;padding:0 12px}
+.orhd{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:12px;color:var(--muted)}
+.orhd .c1{flex:1 1 auto}
+.orhd .c2{flex:none;width:128px}
+.orhd .c3{flex:none;width:112px}
+.orhd .c4{flex:none;width:64px}
+@media (max-width:560px){.orow,.orhd{gap:5px}.orow .osj{width:78px;padding:0 4px}.orow .odf{width:68px;padding:0 4px}.orow .btn2{min-width:44px;padding:0 6px}.orhd .c2{width:78px}.orhd .c3{width:68px}.orhd .c4{width:44px}}
 .ds{color:#E8A800;font-size:.78em;letter-spacing:1px;margin-left:6px;white-space:nowrap}
 .ds.blk{display:block;margin:1px 0 0;font-size:11px;line-height:1}
 .ds .e{opacity:.28}
@@ -1140,11 +1151,11 @@ function renderWeek(c){
     SUBJ_ORDER.forEach(function(o,i){sf+='<div><label class="fl" for="sj'+i+'">과목 '+(i+1)+'</label><input id="sj'+i+'" class="sjin" type="text" maxlength="8" value="'+esc(o)+'"></div>'});
     Object.keys(SUBJ).forEach(function(n){var g=SUBJ[n]||'기타';(by2[g]=by2[g]||[]).push(n)});
     axes().concat(Object.keys(by2)).forEach(function(g,i,a){if(a.indexOf(g)===i&&by2[g])by2[g].forEach(function(n){ord2.push(n)})});
-    var orow2=function(n){return '<div class="orow" style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><input class="oin" type="text" maxlength="30" data-old="'+esc(n)+'" value="'+esc(n)+'" aria-label="문제집 이름" style="flex:2;min-width:150px"><select class="osj" aria-label="과목" style="flex:1;min-width:100px">'+subjOpts(SUBJ[n]||'기타')+'</select>'+'<select class="odf" aria-label="난이도" style="flex:none;min-width:96px"><option value="0">난이도 -</option><option value="1"'+((DIFF[n]||0)===1?' selected':'')+'>★ 하</option><option value="2"'+((DIFF[n]||0)===2?' selected':'')+'>★★ 중</option><option value="3"'+((DIFF[n]||0)===3?' selected':'')+'>★★★ 상</option></select>'+'<button type="button" class="btn2" data-act="optdel" style="margin:0">삭제</button></div>'};
+    var orow2=function(n){return '<div class="orow"><input class="oin" type="text" maxlength="30" data-old="'+esc(n)+'" value="'+esc(n)+'" aria-label="문제집 이름"><select class="osj" aria-label="과목">'+subjOpts(SUBJ[n]||'기타')+'</select>'+'<select class="odf" aria-label="난이도"><option value="0">난이도 -</option><option value="1"'+((DIFF[n]||0)===1?' selected':'')+'>★ 하</option><option value="2"'+((DIFF[n]||0)===2?' selected':'')+'>★★ 중</option><option value="3"'+((DIFF[n]||0)===3?' selected':'')+'>★★★ 상</option></select>'+'<button type="button" class="btn2" data-act="optdel">삭제</button></div>'};
     top='<div class="card" style="margin:0 0 14px"><h2>과목 · 문제집 수정</h2>'+
       '<div class="lbl" style="margin-top:4px"><b>과목 목록</b></div><div class="pfg">'+sf+'<div><label class="fl" for="sjn">새 과목 추가</label><input id="sjn" type="text" maxlength="8" placeholder="이름 입력"></div></div>'+
       '<p class="lbl" style="margin:8px 0 0">과목 이름을 바꾸면 그 과목의 문제집도 함께 바뀌어요. 칸을 비우면 과목이 삭제되고, 그 과목의 문제집은 "기타"로 옮겨져요.</p>'+
-      '<div class="lbl" style="margin-top:18px"><b>문제집(항목) 목록</b> · 이름, 과목, 난이도(★ 하 · ★★ 중 · ★★★ 상)를 한꺼번에 고쳐요</div><div id="orows">'+ord2.map(orow2).join('')+'</div>'+
+      '<div class="lbl" style="margin-top:18px"><b>문제집(항목) 목록</b> · 이름, 과목, 난이도(★ 하 · ★★ 중 · ★★★ 상)를 한꺼번에 고쳐요</div><div class="orhd" aria-hidden="true"><span class="c1">문제집 이름</span><span class="c2">과목(주제)</span><span class="c3">난이도</span><span class="c4"></span></div><div id="orows">'+ord2.map(orow2).join('')+'</div>'+
       '<div class="brow"><button type="button" class="btn2" data-act="optadd">+ 문제집 추가</button></div>'+
       '<p class="lbl" style="margin:8px 0 0">문제집 이름을 바꾸면 표에 들어 있는 같은 항목과 지난 체크 기록도 함께 바뀌어요. 표에서 쓰고 있는 문제집은 삭제해도 표에는 남아요. 새 과목은 저장한 뒤 문제집에 지정할 수 있어요. 난이도 별은 표시용이고 점수 계산에는 영향이 없어요.</p>'+
       '<div class="brow"><button type="button" class="btn" data-act="subsave">저장</button><button type="button" class="btn2" data-act="subclose">취소</button></div><p class="err" id="sjerr" hidden></p></div>';
@@ -1400,7 +1411,7 @@ function weekClick(e){
     if(a==='subsave'){saveSubjects();return}
     if(a==='optclose'){S.optMode=false;render();return}
     if(a==='optdel'){var r0=b.closest('.orow');if(r0)r0.remove();return}
-    if(a==='optadd'){var box=$('orows');if(box){box.insertAdjacentHTML('beforeend','<div class="orow" style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><input class="oin" type="text" maxlength="30" data-old="" placeholder="새 항목 이름" aria-label="새 항목 이름" style="flex:2;min-width:150px"><select class="osj" aria-label="과목" style="flex:1;min-width:100px">'+subjOpts('기타')+'</select><select class="odf" aria-label="난이도" style="flex:none;min-width:96px"><option value="0">난이도 -</option><option value="1">★ 하</option><option value="2">★★ 중</option><option value="3">★★★ 상</option></select><button type="button" class="btn2" data-act="optdel" style="margin:0">삭제</button></div>');var ins=box.querySelectorAll('.oin');ins[ins.length-1].focus()}return}
+    if(a==='optadd'){var box=$('orows');if(box){box.insertAdjacentHTML('beforeend','<div class="orow"><input class="oin" type="text" maxlength="30" data-old="" placeholder="새 항목 이름" aria-label="새 항목 이름"><select class="osj" aria-label="과목">'+subjOpts('기타')+'</select><select class="odf" aria-label="난이도"><option value="0">난이도 -</option><option value="1">★ 하</option><option value="2">★★ 중</option><option value="3">★★★ 상</option></select><button type="button" class="btn2" data-act="optdel">삭제</button></div>');var ins=box.querySelectorAll('.oin');ins[ins.length-1].focus()}return}
     if(a==='optsave'){saveOpts();return}
     if(!S.ed)return;
     if(a==='del'){S.ed.del=true;render();return}
@@ -1623,8 +1634,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:37};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:38};
 var UPD_LOG=[
+  ['v38','문제집 이름·과목·난이도를 한 줄에 보기'],
   ['v37','문제집 난이도 별(하·중·상) 표시와 설정'],
   ['v36','과목·문제집을 한 화면에서 한꺼번에 수정'],
   ['v35','팝업에서 2루타·3루타 필수 체크 바로 설정'],
