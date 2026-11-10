@@ -446,7 +446,7 @@ function subToggle(i,j){
   flip(c.tk,subKey(it.n,ps[j]));
   var after=doneSet(c.tk),all=ps.some(function(q){return after.has(subKey(it.n,q))});
   if(all!==parentDone){toggle(i,true);return}
-  fx('ck');render();
+  fx(after.has(subKey(it.n,ps[j]))?'ck':'un');render();
 }
 function toggle(i,keepSubs){
   var c=ctx(),it=itemsOf(c.ti)[i];if(!it)return;
@@ -454,7 +454,7 @@ function toggle(i,keepSubs){
   var added=flip(c.tk,it.n);
   if(!keepSubs)setSubs(c.tk,it.n,added);
   var postY=dayStat(c.ti,doneSet(c.tk)),inf=dayInfo(c.now,c);
-  var msgs=[],cele=null,snd=added?'ck':null;
+  var msgs=[],cele=null,snd=added?'ck':'un';
   if(postY.b2&&!preY.b2){msgs.push('🥈 2루타!');cele={t:'2루타!',k:'x2'};snd='bt'}
   if(postY.b3&&!preY.b3){msgs.push('🥉 3루타!');cele={t:'3루타!',k:'x3'};snd='bt'}
   if(postY.hr&&!preY.hr){msgs.push('💥 홈런!');cele={t:'홈런!',k:'hr'};snd='hr'}
@@ -587,6 +587,7 @@ function speak(txt,delay){
 }
 var SFX={
   park:{
+    un:function(){tn(0,330,.07,{type:'sine',to:220,v:.18})},
     ck:function(){FX.pop(0)},
     bt:function(){FX.crack(0);FX.crowd(.05,1.1,.35)},
     hr:function(){FX.crack(0);FX.crowd(.08,2.4,.55);FX.applause(.9,1.6)},
@@ -594,6 +595,7 @@ var SFX={
     badge:function(){tn(0,1319,.2,{type:'sine',v:.3});tn(.12,1760,.35,{type:'sine',v:.3})}
   },
   arcade:{
+    un:function(){tn(0,440,.07,{type:'square',v:.1})},
     ck:function(){tn(0,880,.07,{type:'square',v:.12})},
     bt:function(){[660,880,1100].forEach(function(f,i){tn(i*.08,f,.09,{type:'square',v:.12})})},
     hr:function(){[523,659,784,1047,1319,1568,2093].forEach(function(f,i){tn(i*.075,f,.09,{type:'square',v:.12})});tn(.6,2093,.5,{type:'square',v:.12})},
@@ -601,6 +603,7 @@ var SFX={
     badge:function(){tn(0,988,.07,{type:'square',v:.12});tn(.07,1319,.3,{type:'square',v:.12})}
   },
   giants:{
+    un:function(){FX.drum(0,.3)},
     ck:function(){FX.drum(0,.55)},
     bt:function(){FX.drum(0);FX.clap(.18);FX.clap(.36)},
     hr:function(){
@@ -620,7 +623,7 @@ function sfx(type){
 function vib(type){
   if(!S.haptic)return;
   try{
-    var P={ck:[12],bt:[30,40,30],hr:[60,50,60,50,160],end:[40,40,40],badge:[25,30,25]}[type];
+    var P={un:[8],ck:[12],bt:[30,40,30],hr:[60,50,60,50,160],end:[40,40,40],badge:[25,30,25]}[type];
     if(P&&navigator.vibrate)navigator.vibrate(P);
   }catch(e){}
 }
@@ -1030,7 +1033,7 @@ function renderToday(c){
   its.forEach(function(it,i){
     if(it.g!==last){last=it.g;list+='<div class="sec">'+esc(GROUPS[it.g])+'</div>'}
     var d=ds.has(it.n);
-    list+='<button class="row'+(d?' d':'')+'" data-i="'+i+'" aria-pressed="'+d+'"><span class="ck">'+ICON_CK+'</span><span class="tm">'+esc(it.t)+'</span><span class="nm">'+esc(it.n)+starsHtml(it.n,true)+((it.m&1)?'<span class="tg">2루타</span>':'')+((it.m&2)?'<span class="tg">3루타</span>':'')+(partsOf(it.n)?'<span class="tg">'+partsOf(it.n).filter(function(q){return subDone(ds,it.n,q,partsOf(it.n))}).length+'/'+partsOf(it.n).length+'</span>':'')+'</span></button>';
+    list+='<button class="row'+(d?' d':'')+'" data-i="'+i+'" aria-pressed="'+d+'"><span class="ck">'+ICON_CK+'</span><span class="tm">'+esc(it.t)+'</span><span class="nm">'+esc(it.n)+(partsOf(it.n)?'<span class="tg">'+partsOf(it.n).filter(function(q){return subDone(ds,it.n,q,partsOf(it.n))}).length+'/'+partsOf(it.n).length+'</span>':'')+'</span></button>';
     var ps=partsOf(it.n);
     if(ps)list+='<div class="subs" role="group" aria-label="'+esc(it.n)+' 세부 항목">'+ps.map(function(q,j){var sd=subDone(ds,it.n,q,ps);return '<button type="button" class="sub'+(sd?' d':'')+'" data-sub="'+i+':'+j+'" aria-pressed="'+sd+'">'+(sd?'✓ ':'')+esc(q)+'</button>'}).join('')+'</div>';
   });
@@ -1052,8 +1055,8 @@ function renderToday(c){
   var rew='<div class="card"><div class="lbl">이번 주 별</div><div class="big">★ '+stars+' <span style="font-size:18px;color:var(--muted)">/ '+topN+'</span></div><div class="meter"><b style="width:'+Math.min(100,pct(stars,topN))+'%"></b></div>'+ladder+
     (nextT?'<div class="lbl" style="margin-top:8px">다음 보상까지 '+(nextT.n-stars)+'개 남았어요</div>':'<div class="win">모든 보상 달성!</div>')+'</div>';
   main.innerHTML=
-   '<div class="head"><div><h1>'+DOW[c.ti]+'요일 할 일</h1><div class="date">'+(c.now.getMonth()+1)+'월 '+c.now.getDate()+'일</div></div>'+
-   '<div class="brow" style="margin:0;align-items:center"><button type="button" class="btn2" data-act="snd" aria-pressed="'+S.sound+'" style="margin:0">'+(S.sound?'🔊 소리 켜짐':'🔇 소리 꺼짐')+'</button><span class="chip">오늘 배터리 '+esc(DAYS[c.ti].e)+'</span></div></div>'+
+   '<div class="head"><div><h1>'+DOW[c.ti]+'요일 경기 일정</h1><div class="date">'+(c.now.getMonth()+1)+'월 '+c.now.getDate()+'일</div></div>'+
+   '<div class="brow" style="margin:0;align-items:center"><button type="button" class="btn2" data-act="snd" aria-pressed="'+S.sound+'" style="margin:0">'+(S.sound?'🔔 소리 켬':'🔕 소리 끔')+'</button><span class="chip">오늘 배터리 '+esc(DAYS[c.ti].e)+'</span></div></div>'+
    (inf.rain?'<div class="warn" style="margin:0 0 12px">☔ 오늘은 우천 취소예요. 오늘 항목은 타율과 달성률에서 빠져요.</div>':'')+
    (S.toast?'<div class="win" role="status" style="margin:0 0 12px">'+esc(S.toast)+'</div>':'')+
    '<div class="today"><div>'+list+'</div><div class="side">'+
@@ -1634,8 +1637,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:38};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:39};
 var UPD_LOG=[
+  ['v39','경기 일정 제목 · 오늘 탭 간소화 · 체크 해제 소리/진동'],
   ['v38','문제집 이름·과목·난이도를 한 줄에 보기'],
   ['v37','문제집 난이도 별(하·중·상) 표시와 설정'],
   ['v36','과목·문제집을 한 화면에서 한꺼번에 수정'],
