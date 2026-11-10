@@ -163,6 +163,13 @@ td.sel .it{color:var(--ink)}
 .pop .pr.cur{background:var(--done-bg)}
 .pop .pr.cur::before{content:'';position:absolute;left:0;top:9px;bottom:9px;width:4px;border-radius:2px;background:var(--done)}
 .pop .pi{display:flex;align-items:center;gap:8px;flex:1;min-width:0;text-align:left;min-height:46px;padding:8px 6px 8px 12px;border:0;border-radius:11px;background:transparent;color:var(--ink);font:500 16px var(--f-b);cursor:pointer}
+.ds{color:#E8A800;font-size:.78em;letter-spacing:1px;margin-left:6px;white-space:nowrap}
+.ds.blk{display:block;margin:1px 0 0;font-size:11px;line-height:1}
+.ds .e{opacity:.28}
+.pop .pd{appearance:none;border:0;background:transparent;color:#E8A800;font:600 13px var(--f-b);letter-spacing:1px;min-width:54px;height:34px;border-radius:8px;cursor:pointer;flex:none;padding:0 4px}
+.pop .pd:hover{background:var(--panel)}
+.pop .pd.z{color:var(--muted);opacity:.55}
+.pop .pd .e{opacity:.28}
 .pop .pj{appearance:none;-webkit-appearance:none;flex:none;height:34px;max-width:96px;border:1px solid var(--line);border-radius:17px;background:var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2353617E' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 9px center;color:var(--muted);font:600 12px var(--f-b);padding:0 24px 0 10px;cursor:pointer}
 .pop .pj:focus-visible{outline:2px solid var(--done)}
 .pop .pi .pn{flex:1;min-width:0}
@@ -303,6 +310,8 @@ var DEF=[
 ];
 var DAYS=DEF.map(function(a,i){var s={};SLOTS.forEach(function(sl,k){s[sl.id]=a[k]});return {n:DOW[i],s:s,e:a[12],x:{}}});
 var SUBJ={'스트레칭':'체육','신문':'영어','매거진':'영어','리딩게이트':'영어','빠른연산':'수학','한자':'한자','쎈연산':'수학','수학리더':'수학','문장제':'수학','팩토수학':'수학','오답리뷰':'수학','READ IT(복습)':'영어','READ IT(본문)':'영어','READ IT(워크북)':'영어','S. STAGE(본문)':'영어','S. STAGE(워크북)':'영어','기적의영어문장쓰기':'영어','백점국어':'국어','추론독해':'국어','한문장정리의힘':'국어','빠작문학':'국어','빠작어휘':'국어','생각대로 써지는 초등글쓰기':'국어','한장사회':'과학/사회','빠작비문학':'과학/사회','씽킹과학':'과학/사회','무작정따라하기':'과학/사회','요약독해의힘':'과학/사회','한문장요약의힘':'과학/사회','용선생 HISTORY':'과학/사회','독서DAY':'독서','독서/스케치':'독서','독서기록장':'독서','독서/운동':'독서'};
+var DIFF={};/* 문제집 난이도: 1=하 2=중 3=상 */
+function starsHtml(n,inline){var d=DIFF[n]||0;return d?'<span class="ds'+(inline?'':' blk')+'" title="난이도 '+['','하','중','상'][d]+'">'+'★'.repeat(d)+'<span class="e">'+'★'.repeat(3-d)+'</span></span>':''}
 var SUBJ_ORDER=['수학','국어','영어','한자','과학/사회','독서','체육'];
 
 var S={checks:{},settings:{goal:60,reward:'롯데 경기 보러 가기',pin:'0000',tiers:null},tab:'home',profile:null,pedit:false,pgate:false,unlocked:false,store:'local',live:false,edit:false,ed:null,gate:false,subj:false,toast:''};
@@ -348,7 +357,7 @@ function dayStat(i,ds){
 function isSync(id){return /^r[0-3]$/.test(id)}
 function syncTargets(d,id){return (d<=4&&isSync(id))?[0,1,2,3,4]:[d]}
 
-function subjArr(){return Object.keys(SUBJ).map(function(k){return {n:k,s:SUBJ[k]}})}
+function subjArr(){return Object.keys(SUBJ).map(function(k){var o={n:k,s:SUBJ[k]};if(DIFF[k])o.d=DIFF[k];return o})}
 function slotT(){var o={};SLOTS.forEach(function(sl){o[sl.id]=sl.t});return o}
 function schedDoc(){return {v:2,days:DAYS,subj:subjArr(),so:SUBJ_ORDER.slice(),g:GROUPS.slice(),t:slotT()}}
 function applySched(x){
@@ -359,7 +368,7 @@ function applySched(x){
     if(d&&d.x&&typeof d.x==='object')SLOTS.forEach(function(sl){var m=+d.x[sl.id];if(m>=1&&m<=3&&s[sl.id])x[sl.id]=m});
     return {n:DOW[i],s:s,e:(d&&d.e)||'엄마',x:x};
   });
-  if(Array.isArray(x.subj)){SUBJ={};x.subj.forEach(function(y){SUBJ[y.n]=y.s})}
+  if(Array.isArray(x.subj)){SUBJ={};DIFF={};x.subj.forEach(function(y){SUBJ[y.n]=y.s;if(y.d>=1&&y.d<=3)DIFF[y.n]=y.d|0})}
   if(Array.isArray(x.so)){var so=x.so.filter(function(v){return typeof v==='string'&&v.trim()&&v!=='기타'}).map(function(v){return v.slice(0,8)});if(so.length)SUBJ_ORDER=so.slice(0,20)}
   if(Array.isArray(x.g)&&x.g.length===4)x.g.forEach(function(v,i){if(typeof v==='string'&&v.trim())GROUPS[i]=v.slice(0,10)});
   if(x.t&&typeof x.t==='object')SLOTS.forEach(function(sl){var v=x.t[sl.id];if(typeof v==='string'&&v.trim())sl.t=v.slice(0,8)});
@@ -1010,7 +1019,7 @@ function renderToday(c){
   its.forEach(function(it,i){
     if(it.g!==last){last=it.g;list+='<div class="sec">'+esc(GROUPS[it.g])+'</div>'}
     var d=ds.has(it.n);
-    list+='<button class="row'+(d?' d':'')+'" data-i="'+i+'" aria-pressed="'+d+'"><span class="ck">'+ICON_CK+'</span><span class="tm">'+esc(it.t)+'</span><span class="nm">'+esc(it.n)+((it.m&1)?'<span class="tg">2루타</span>':'')+((it.m&2)?'<span class="tg">3루타</span>':'')+(partsOf(it.n)?'<span class="tg">'+partsOf(it.n).filter(function(q){return subDone(ds,it.n,q,partsOf(it.n))}).length+'/'+partsOf(it.n).length+'</span>':'')+'</span></button>';
+    list+='<button class="row'+(d?' d':'')+'" data-i="'+i+'" aria-pressed="'+d+'"><span class="ck">'+ICON_CK+'</span><span class="tm">'+esc(it.t)+'</span><span class="nm">'+esc(it.n)+starsHtml(it.n,true)+((it.m&1)?'<span class="tg">2루타</span>':'')+((it.m&2)?'<span class="tg">3루타</span>':'')+(partsOf(it.n)?'<span class="tg">'+partsOf(it.n).filter(function(q){return subDone(ds,it.n,q,partsOf(it.n))}).length+'/'+partsOf(it.n).length+'</span>':'')+'</span></button>';
     var ps=partsOf(it.n);
     if(ps)list+='<div class="subs" role="group" aria-label="'+esc(it.n)+' 세부 항목">'+ps.map(function(q,j){var sd=subDone(ds,it.n,q,ps);return '<button type="button" class="sub'+(sd?' d':'')+'" data-sub="'+i+':'+j+'" aria-pressed="'+sd+'">'+(sd?'✓ ':'')+esc(q)+'</button>'}).join('')+'</div>';
   });
@@ -1082,7 +1091,7 @@ function renderWeek(c){
     DAYS.forEach(function(d,i){
       var nm=d.s[sl.id],ds=i<=c.ti?doneSet(key(c.dates[i])):new Set();
       var xm=(d.x||{})[sl.id]||0;
-      var inner=nm?'<div class="it'+(ds.has(nm)?' d':'')+'">'+esc(nm)+'</div>'+((xm&1)?'<span class="tg">2루타</span>':'')+((xm&2)?'<span class="tg">3루타</span>':''):(S.edit?'<span class="lbl">+</span>':'');
+      var inner=nm?'<div class="it'+(ds.has(nm)?' d':'')+'">'+esc(nm)+'</div>'+starsHtml(nm,false)+((xm&1)?'<span class="tg">2루타</span>':'')+((xm&2)?'<span class="tg">3루타</span>':''):(S.edit?'<span class="lbl">+</span>':'');
       h+='<td class="'+cellCls(i,sl.id)+'"'+attr(i,sl.id)+'>'+inner+'</td>';
     });
     h+='</tr>';
@@ -1131,13 +1140,13 @@ function renderWeek(c){
     SUBJ_ORDER.forEach(function(o,i){sf+='<div><label class="fl" for="sj'+i+'">과목 '+(i+1)+'</label><input id="sj'+i+'" class="sjin" type="text" maxlength="8" value="'+esc(o)+'"></div>'});
     Object.keys(SUBJ).forEach(function(n){var g=SUBJ[n]||'기타';(by2[g]=by2[g]||[]).push(n)});
     axes().concat(Object.keys(by2)).forEach(function(g,i,a){if(a.indexOf(g)===i&&by2[g])by2[g].forEach(function(n){ord2.push(n)})});
-    var orow2=function(n){return '<div class="orow" style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><input class="oin" type="text" maxlength="30" data-old="'+esc(n)+'" value="'+esc(n)+'" aria-label="문제집 이름" style="flex:2;min-width:150px"><select class="osj" aria-label="과목" style="flex:1;min-width:100px">'+subjOpts(SUBJ[n]||'기타')+'</select><button type="button" class="btn2" data-act="optdel" style="margin:0">삭제</button></div>'};
+    var orow2=function(n){return '<div class="orow" style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><input class="oin" type="text" maxlength="30" data-old="'+esc(n)+'" value="'+esc(n)+'" aria-label="문제집 이름" style="flex:2;min-width:150px"><select class="osj" aria-label="과목" style="flex:1;min-width:100px">'+subjOpts(SUBJ[n]||'기타')+'</select>'+'<select class="odf" aria-label="난이도" style="flex:none;min-width:96px"><option value="0">난이도 -</option><option value="1"'+((DIFF[n]||0)===1?' selected':'')+'>★ 하</option><option value="2"'+((DIFF[n]||0)===2?' selected':'')+'>★★ 중</option><option value="3"'+((DIFF[n]||0)===3?' selected':'')+'>★★★ 상</option></select>'+'<button type="button" class="btn2" data-act="optdel" style="margin:0">삭제</button></div>'};
     top='<div class="card" style="margin:0 0 14px"><h2>과목 · 문제집 수정</h2>'+
       '<div class="lbl" style="margin-top:4px"><b>과목 목록</b></div><div class="pfg">'+sf+'<div><label class="fl" for="sjn">새 과목 추가</label><input id="sjn" type="text" maxlength="8" placeholder="이름 입력"></div></div>'+
       '<p class="lbl" style="margin:8px 0 0">과목 이름을 바꾸면 그 과목의 문제집도 함께 바뀌어요. 칸을 비우면 과목이 삭제되고, 그 과목의 문제집은 "기타"로 옮겨져요.</p>'+
-      '<div class="lbl" style="margin-top:18px"><b>문제집(항목) 목록</b> · 이름과 과목을 한꺼번에 고쳐요</div><div id="orows">'+ord2.map(orow2).join('')+'</div>'+
+      '<div class="lbl" style="margin-top:18px"><b>문제집(항목) 목록</b> · 이름, 과목, 난이도(★ 하 · ★★ 중 · ★★★ 상)를 한꺼번에 고쳐요</div><div id="orows">'+ord2.map(orow2).join('')+'</div>'+
       '<div class="brow"><button type="button" class="btn2" data-act="optadd">+ 문제집 추가</button></div>'+
-      '<p class="lbl" style="margin:8px 0 0">문제집 이름을 바꾸면 표에 들어 있는 같은 항목과 지난 체크 기록도 함께 바뀌어요. 표에서 쓰고 있는 문제집은 삭제해도 표에는 남아요. 새 과목은 저장한 뒤 문제집에 지정할 수 있어요.</p>'+
+      '<p class="lbl" style="margin:8px 0 0">문제집 이름을 바꾸면 표에 들어 있는 같은 항목과 지난 체크 기록도 함께 바뀌어요. 표에서 쓰고 있는 문제집은 삭제해도 표에는 남아요. 새 과목은 저장한 뒤 문제집에 지정할 수 있어요. 난이도 별은 표시용이고 점수 계산에는 영향이 없어요.</p>'+
       '<div class="brow"><button type="button" class="btn" data-act="subsave">저장</button><button type="button" class="btn2" data-act="subclose">취소</button></div><p class="err" id="sjerr" hidden></p></div>';
   }else if(S.edit){
     top='<div class="warn" style="margin:0 0 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span>고칠 칸을 눌러 주세요. 항목, 장소, 시간 칸을 모두 누를 수 있어요.</span><button type="button" class="btn2" data-act="subopen" style="margin:0">과목·문제집 수정</button></div>';
@@ -1164,7 +1173,7 @@ function popHtml(){
   axes().concat(Object.keys(by)).forEach(function(g,i,a){
     if(a.indexOf(g)!==i||!by[g])return;
     h+='<div class="pgrp"><div class="pg">'+esc(g)+'</div>'+by[g].map(function(n){
-      return '<div class="pr'+(n===cur?' cur':'')+'" data-nm="'+esc(n)+'"><button type="button" class="pi" data-act="popitem" data-nm="'+esc(n)+'"><span class="pn">'+esc(n)+'</span>'+(used[n]?'<span class="pw">↔ '+esc(used[n])+'</span>':'')+(n===cur?CK:'')+'</button><select class="pj" data-nm="'+esc(n)+'" aria-label="'+esc(n)+' 분야 바꾸기">'+subjOpts(SUBJ[n]||'기타')+'</select></div>';
+      return '<div class="pr'+(n===cur?' cur':'')+'" data-nm="'+esc(n)+'"><button type="button" class="pi" data-act="popitem" data-nm="'+esc(n)+'"><span class="pn">'+esc(n)+'</span>'+(used[n]?'<span class="pw">↔ '+esc(used[n])+'</span>':'')+(n===cur?CK:'')+'</button><button type="button" class="pd'+(DIFF[n]?'':' z')+'" data-act="popdiff" data-nm="'+esc(n)+'" aria-label="'+esc(n)+' 난이도 바꾸기 (현재 '+['미정','하','중','상'][DIFF[n]||0]+')">'+(DIFF[n]?'★'.repeat(DIFF[n])+'<span class="e">'+'★'.repeat(3-DIFF[n])+'</span>':'☆☆☆')+'</button><select class="pj" data-nm="'+esc(n)+'" aria-label="'+esc(n)+' 분야 바꾸기">'+subjOpts(SUBJ[n]||'기타')+'</select></div>';
     }).join('')+'</div>';
   });
   var fm=(DAYS[pp.d].x||{})[pp.s]||0;
@@ -1329,7 +1338,7 @@ function saveSubjects(){
     if(seenN[nm]){fail('문제집 이름이 두 번 있어요: '+nm);return}
     seenN[nm]=1;
     var sj2=(sj==='기타')?'기타':(map[sj]!==undefined?map[sj]:sj);
-    list.push({n:nm,s:sj2});
+    list.push({n:nm,s:sj2,d:+(rows[r].querySelector('.odf')||{value:0}).value||0});
     if(o&&o!==nm)ren.push([o,nm]);
   }
   /* 적용: 과목 이름 바꾸기 → 문제집 이름 바꾸기 → 목록 다시 만들기 */
@@ -1348,9 +1357,10 @@ function saveSubjects(){
   });
   var used={};DAYS.forEach(function(d){SLOTS.forEach(function(q){if(d.s[q.id])used[d.s[q.id]]=1})});
   var nextS={};
-  list.forEach(function(x){nextS[x.n]=x.s});
-  oldKeys.forEach(function(k){if(!(k in nextS)&&used[k])nextS[k]=SUBJ[k]||'기타'});
-  SUBJ=nextS;
+  var nextD={};
+  list.forEach(function(x){nextS[x.n]=x.s;if(x.d>=1&&x.d<=3)nextD[x.n]=x.d});
+  oldKeys.forEach(function(k){if(!(k in nextS)&&used[k]){nextS[k]=SUBJ[k]||'기타';if(DIFF[k])nextD[k]=DIFF[k]}});
+  SUBJ=nextS;DIFF=nextD;
   S.subj=false;S.optMode=false;
   saveSched();
   if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();
@@ -1380,6 +1390,7 @@ function weekClick(e){
     if(a==='popclose'){closePop();return}
     if(a==='popitem'){if(S.pop)applyPick(S.pop.d,S.pop.s,b.dataset.nm||'');return}
     if(a==='popopt'){closePop();S.subj=true;S.ed=null;S.optMode=false;render();var oe=$('orows');if(oe&&oe.scrollIntoView)oe.scrollIntoView({block:'start'});return}
+    if(a==='popdiff'){var dn=b.dataset.nm;DIFF[dn]=((DIFF[dn]||0)+1)%4;if(!DIFF[dn])delete DIFF[dn];saveSched();refreshPop();return}
     if(a==='popsubj'){closePop();S.subj=true;S.ed=null;S.optMode=false;render();main.scrollTop=0;return}
     if(a==='popdetail'){if(S.pop){S.ed={d:S.pop.d,s:S.pop.s}}closePop();render();main.scrollTop=0;return}
     if(a==='edit'){if(S.unlocked)S.edit=true;else S.gate=true;render();return}
@@ -1389,7 +1400,7 @@ function weekClick(e){
     if(a==='subsave'){saveSubjects();return}
     if(a==='optclose'){S.optMode=false;render();return}
     if(a==='optdel'){var r0=b.closest('.orow');if(r0)r0.remove();return}
-    if(a==='optadd'){var box=$('orows');if(box){box.insertAdjacentHTML('beforeend','<div class="orow" style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><input class="oin" type="text" maxlength="30" data-old="" placeholder="새 항목 이름" aria-label="새 항목 이름" style="flex:2;min-width:150px"><select class="osj" aria-label="과목" style="flex:1;min-width:100px">'+subjOpts('기타')+'</select><button type="button" class="btn2" data-act="optdel" style="margin:0">삭제</button></div>');var ins=box.querySelectorAll('.oin');ins[ins.length-1].focus()}return}
+    if(a==='optadd'){var box=$('orows');if(box){box.insertAdjacentHTML('beforeend','<div class="orow" style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><input class="oin" type="text" maxlength="30" data-old="" placeholder="새 항목 이름" aria-label="새 항목 이름" style="flex:2;min-width:150px"><select class="osj" aria-label="과목" style="flex:1;min-width:100px">'+subjOpts('기타')+'</select><select class="odf" aria-label="난이도" style="flex:none;min-width:96px"><option value="0">난이도 -</option><option value="1">★ 하</option><option value="2">★★ 중</option><option value="3">★★★ 상</option></select><button type="button" class="btn2" data-act="optdel" style="margin:0">삭제</button></div>');var ins=box.querySelectorAll('.oin');ins[ins.length-1].focus()}return}
     if(a==='optsave'){saveOpts();return}
     if(!S.ed)return;
     if(a==='del'){S.ed.del=true;render();return}
@@ -1612,8 +1623,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:36};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:37};
 var UPD_LOG=[
+  ['v37','문제집 난이도 별(하·중·상) 표시와 설정'],
   ['v36','과목·문제집을 한 화면에서 한꺼번에 수정'],
   ['v35','팝업에서 2루타·3루타 필수 체크 바로 설정'],
   ['v34','팝업에서 분야(과목) 목록 바로 열기'],
