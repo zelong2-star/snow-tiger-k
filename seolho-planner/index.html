@@ -297,7 +297,7 @@ input[type=range]{height:34px;padding:0;accent-color:#DD032F}
     <div class="brand">설호<br>플래너</div>
     <button data-t="home" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11L12 4l8.5 7"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg>홈</button>
     <button data-t="today"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M3.5 6l1.5 1.5L7 5M3.5 12l1.5 1.5L7 11M3.5 18l1.5 1.5L7 17"/></svg>오늘</button>
-    <button data-t="week"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>주간 표</button>
+    <button data-t="week"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>주간 경기일정</button>
     <button data-t="log"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V11M12 20V5M19 20v-6"/></svg>기록</button>
     <button data-t="set"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg>설정</button>
     <div class="sync" id="sync"></div>
@@ -1117,7 +1117,7 @@ function renderWeek(c){
     DAYS.forEach(function(d,i){
       var nm=d.s[sl.id],ds=i<=c.ti?doneSet(key(c.dates[i])):new Set();
       var xm=(d.x||{})[sl.id]||0;
-      var inner=nm?'<div class="it'+(ds.has(nm)?' d':'')+'">'+esc(nm)+'</div>'+starsHtml(nm,false)+((xm&1)?'<span class="tg">2루타</span>':'')+((xm&2)?'<span class="tg">3루타</span>':''):(S.edit?'<span class="lbl">+</span>':'');
+      var inner=nm?'<div class="it'+(ds.has(nm)?' d':'')+'">'+esc(nm)+'</div>'+((xm&1)?'<span class="tg">2루타</span>':'')+((xm&2)?'<span class="tg">3루타</span>':''):(S.edit?'<span class="lbl">+</span>':'');
       h+='<td class="'+cellCls(i,sl.id)+'"'+attr(i,sl.id)+'>'+inner+'</td>';
     });
     h+='</tr>';
@@ -1177,7 +1177,7 @@ function renderWeek(c){
   }else if(S.edit){
     top='<div class="warn" style="margin:0 0 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span>고칠 칸을 눌러 주세요. 항목, 장소, 시간 칸을 모두 누를 수 있어요.</span><button type="button" class="btn2" data-act="subopen" style="margin:0">과목·문제집 수정</button></div>';
   }
-  main.innerHTML='<div class="head"><div><h1>주간 표</h1><div class="date">'+(S.edit?'고칠 칸을 눌러 수정하세요.':'오늘 칸은 연한 분홍색, 끝낸 항목은 빨간 체크예요.')+'</div></div>'+
+  main.innerHTML='<div class="head"><div><h1>주간 경기일정</h1><div class="date">'+(S.edit?'고칠 칸을 눌러 수정하세요.':'오늘 칸은 연한 분홍색, 끝낸 항목은 빨간 체크예요.')+'</div></div>'+
     '<button class="btn2'+(S.edit?' on':'')+'" type="button" data-act="'+(S.edit?'stop':'edit')+'">'+(S.edit?'수정 끝내기':'수정')+'</button></div>'+top+'<div class="tw"><table>'+h+'</table></div>';
   if(S.edit&&S.pop&&!S.optMode)showPop();
   var wf=$('wpf');
@@ -1649,8 +1649,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:45};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:46};
 var UPD_LOG=[
+  ['v46','주간 경기일정으로 이름 변경 · 주간 칸의 별점 숨김'],
   ['v45','볼넷=스트레칭만 · 3루타=2·3루타 필수 모두 · 사이클링 히트 추가'],
   ['v44','오늘 탭: 완료한 항목은 접어서 다음 할 일이 바로 보이게'],
   ['v43','항목이 적은 날(수요일)은 4타수'],
