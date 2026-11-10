@@ -95,8 +95,10 @@ th,td{border:1px solid var(--line);padding:9px 6px;text-align:center;vertical-al
 thead th{background:var(--navy);color:var(--on-navy);font-weight:700}
 thead th.tdy{background:var(--red);color:#fff}
 th.we{background:var(--we);color:#fff}
-td.gl{background:var(--bg);font-weight:700;width:86px}
-td.rh{background:var(--bg);color:var(--muted);width:56px;font-weight:500}
+td.gl{background:var(--bg);font-weight:700;font-size:12px;padding:6px 2px;word-break:keep-all}
+td.rh{background:var(--bg);color:var(--muted);font-weight:500;font-size:12px;padding:6px 2px}
+.tw thead th:nth-child(1){width:58px;font-size:12px;padding:8px 2px}
+.tw thead th:nth-child(2){width:44px;font-size:12px;padding:8px 2px}
 .tdy{background:var(--today-bg)}
 .it.d{color:var(--done);font-weight:700}
 .it.d::before{content:"✓ "}
@@ -1649,8 +1651,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:47};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:48};
 var UPD_LOG=[
+  ['v48','일정 표: 장소·시간 칸을 줄여 월~일 칸을 넓힘'],
   ['v47','하단 메뉴 이름을 "일정"으로'],
   ['v46','주간 경기일정으로 이름 변경 · 주간 칸의 별점 숨김'],
   ['v45','볼넷=스트레칭만 · 3루타=2·3루타 필수 모두 · 사이클링 히트 추가'],
