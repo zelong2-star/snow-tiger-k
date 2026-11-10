@@ -1187,7 +1187,7 @@ function popHtml(){
   axes().concat(Object.keys(by)).forEach(function(g,i,a){
     if(a.indexOf(g)!==i||!by[g])return;
     h+='<div class="pgrp"><div class="pg">'+esc(g)+'</div>'+by[g].map(function(n){
-      return '<div class="pr'+(n===cur?' cur':'')+'" data-nm="'+esc(n)+'"><button type="button" class="pi" data-act="popitem" data-nm="'+esc(n)+'"><span class="pn">'+esc(n)+'</span>'+(used[n]?'<span class="pw">↔ '+esc(used[n])+'</span>':'')+(n===cur?CK:'')+'</button><button type="button" class="pd'+(DIFF[n]?'':' z')+'" data-act="popdiff" data-nm="'+esc(n)+'" aria-label="'+esc(n)+' 난이도 바꾸기 (현재 '+['미정','하','중','상'][DIFF[n]||0]+')">'+(DIFF[n]?'★'.repeat(DIFF[n])+'<span class="e">'+'★'.repeat(3-DIFF[n])+'</span>':'☆☆☆')+'</button><select class="pj" data-nm="'+esc(n)+'" aria-label="'+esc(n)+' 분야 바꾸기">'+subjOpts(SUBJ[n]||'기타')+'</select></div>';
+      return '<div class="pr'+(n===cur?' cur':'')+'" data-nm="'+esc(n)+'"><button type="button" class="pi" data-act="popitem" data-nm="'+esc(n)+'"><span class="pn">'+esc(n)+'</span>'+(used[n]?'<span class="pw">↔ '+esc(used[n])+'</span>':'')+(n===cur?CK:'')+'</button><select class="pj" data-nm="'+esc(n)+'" aria-label="'+esc(n)+' 분야 바꾸기">'+subjOpts(SUBJ[n]||'기타')+'</select></div>';
     }).join('')+'</div>';
   });
   var fm=(DAYS[pp.d].x||{})[pp.s]||0;
@@ -1637,8 +1637,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:39};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:40};
 var UPD_LOG=[
+  ['v40','목록 팝업의 난이도 버튼 제거'],
   ['v39','경기 일정 제목 · 오늘 탭 간소화 · 체크 해제 소리/진동'],
   ['v38','문제집 이름·과목·난이도를 한 줄에 보기'],
   ['v37','문제집 난이도 별(하·중·상) 표시와 설정'],
