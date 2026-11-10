@@ -511,6 +511,31 @@ function dayInfo(d,c){
   return {k:k,di:di,y:y,m:m,fin:fin,rain:!!m.r,live:live,
     ab:live?y.ab:0,h:live?y.h:0,b2:live?y.b2:0,b3:live?y.b3:0,hr:live?y.hr:0};
 }
+
+/* 탭 이용권: 월~금 정규이닝(1~9이닝) 전부 -> 1시간 획득, 토 정규이닝 전부 -> 사용 가능; 일 정규이닝 전부 -> 1시간 추가 */
+var REG={r1:1,r2:1,r3:1,c4:1,d4:1,d5:1,d6:1,d7:1,d8:1,d9:1};
+function regStat(di,k){var ds=doneSet(k),t=0,d=0;itemsOf(di).forEach(function(it){if(REG[it.id]){t++;if(ds.has(it.n))d++}});return {t:t,d:d,ok:t>0&&d===t}}
+function tixInfo(c){
+  var wt=0,wd=0,all=true;
+  for(var i=0;i<5;i++){var r=regStat(i,key(c.dates[i]));wt+=r.t;wd+=r.d;if(!r.ok)all=false}
+  var sat=regStat(5,key(c.dates[5])),sun=regStat(6,key(c.dates[6]));
+  var ma=S.meta[key(c.dates[5])]||{},mb=S.meta[key(c.dates[6])]||{};
+  return {wt:wt,wd:wd,aGot:all,satOk:sat.ok,satT:sat.t,satD:sat.d,aUsed:!!ma.ua,bGot:sun.ok,sunT:sun.t,sunD:sun.d,bUsed:!!mb.ub};
+}
+function tixCard(c){
+  var t=tixInfo(c),arm=S.tixArm,rows='';
+  function btn(id,lab){return '<button type="button" class="btn" data-act="tix" data-t="'+id+'" style="margin-top:8px;width:100%">'+(arm===id?'한 번 더 누르면 1시간 시작!':lab)+'</button>'}
+  var a;
+  if(t.aUsed)a='<div class="xb d"><span>🎫 평일 이용권</span><span>사용 완료 ✓</span></div>';
+  else if(t.aGot&&t.satOk)a='<div class="xb d"><span>🎫 평일 이용권</span><span>사용 가능!</span></div>'+btn('a','탭 1시간 사용하기');
+  else if(t.aGot)a='<div class="xb d"><span>🎫 평일 이용권</span><span>획득 · 토요일 정규 이닝 '+t.satD+' / '+t.satT+'</span></div><div class="lbl">토요일 정규 이닝(1~9이닝)을 모두 끝내면 쓸 수 있어요</div>';
+  else a='<div class="xb"><span>🎫 평일 이용권</span><span>월~금 정규 이닝 '+t.wd+' / '+t.wt+'</span></div><div class="meter"><b style="width:'+Math.min(100,pct(t.wd,t.wt))+'%"></b></div>';
+  var b;
+  if(t.bUsed)b='<div class="xb d"><span>🎫 일요일 이용권</span><span>사용 완료 ✓</span></div>';
+  else if(t.bGot)b='<div class="xb d"><span>🎫 일요일 이용권</span><span>획득!</span></div>'+btn('b','탭 1시간 사용하기');
+  else b='<div class="xb"><span>🎫 일요일 이용권</span><span>일요일 정규 이닝 '+t.sunD+' / '+t.sunT+'</span></div>';
+  return '<div class="card"><div class="lbl">탭 이용권 (1장 = 1시간)</div>'+a+b+'</div>';
+}
 function saveMeta(){
   saveLocal();
   if(DB)DB.doc('settings/daymeta').set({m:S.meta}).catch(function(){S.store='error';renderSync()});
@@ -1076,7 +1101,7 @@ function renderToday(c){
    '<div class="card"><div class="lbl">오늘의 훈련</div><div class="big">'+n+' / '+total+'</div>'+scoreboard(its,ds)+diamondSvg(stage)+'<div class="stg">'+stageTxt+'</div><div class="lbl" style="margin-top:6px;text-align:center">'+msg+'</div></div>'+
    bat+mood+note+
    '<div class="card"><div class="lbl">다음 할 일</div><div style="font-size:20px;font-weight:700">'+(nextI<0?'모두 완료':esc(its[nextI].n))+'</div></div>'+
-   rew+
+   tixCard(c)+rew+
    '</div></div>'+
    (S.cele?'<div class="cele '+S.cele.k+'" role="status"><div>'+esc(S.cele.t)+'</div></div>':'');
 }
@@ -1084,6 +1109,7 @@ function todayClick(e){
   if(S.tab!=='today')return;
   var b=e.target.closest('button[data-act]');if(!b)return;
   var a=b.dataset.act,c=ctx();
+  if(a==='tix'){var tt=b.dataset.t;if(S.tixArm!==tt){S.tixArm=tt;render();return}S.tixArm=null;var ck5=key(c.dates[tt==='a'?5:6]);setMeta(ck5,tt==='a'?{ua:1}:{ub:1});fx('ck');render();return}
   if(a==='fold'){S.unfold=!S.unfold;render();return}
   if(a==='snd'){
     S.sound=!S.sound;prefsSave();
@@ -1651,8 +1677,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:49};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:50};
 var UPD_LOG=[
+  ['v50','탭 이용권 보상 프로그램 추가'],
   ['v49','안타를 1개 단위로 · 전부 끝내면 5타수 5안타(1.000)'],
   ['v48','일정 표: 장소·시간 칸을 줄여 월~일 칸을 넓힘'],
   ['v47','하단 메뉴 이름을 "일정"으로'],
