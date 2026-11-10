@@ -514,14 +514,14 @@ function dayInfo(d,c){
 
 /* 탭 이용권: 월~금 정규이닝(1~9이닝) 전부 -> 1시간 획득, 토 정규이닝 전부 -> 사용 가능; 일 정규이닝 전부 -> 1시간 추가 */
 var REG={r1:1,r2:1,r3:1,c4:1,d4:1,d5:1,d6:1,d7:1,d8:1,d9:1};
-function regStat(di,k){var ds=doneSet(k),mk=(S.meta[k]||{}).mk||[],t=0,d=0,miss=[];
+function regStat(di,k){if((S.meta[k]||{}).r)return {t:0,d:0,ok:true,miss:[],rain:true};var ds=doneSet(k),mk=(S.meta[k]||{}).mk||[],t=0,d=0,miss=[];
   itemsOf(di).forEach(function(it){if(!REG[it.id])return;if(it.id==='c4'&&(di===0||di===4))return;t++;if(ds.has(it.n)||mk.indexOf(it.n)>=0)d++;else miss.push(it)});
   return {t:t,d:d,ok:t>0&&d===t,miss:miss}}
 function tixInfo(c){
   var r=[];for(var i=0;i<7;i++)r.push(regStat(i,key(c.dates[i])));
-  function sum(a,b){var t=0,d=0;for(var i=a;i<=b;i++){t+=r[i].t;d+=r[i].d}return {t:t,d:d,ok:t>0&&d===t}}
+  function sum(a,b){var t=0,d=0;for(var i=a;i<=b;i++){t+=r[i].t;d+=r[i].d}return {t:t,d:d,ok:d===t&&(t>0||r.slice(a,b+1).some(function(x){return x.rain}))}}
   var wk=sum(0,4),wk6=sum(0,5);
-  var at=0,ad=0;for(var q=0;q<5;q++){var kq=key(c.dates[q]),dq=doneSet(kq),mq=(S.meta[kq]||{}).mk||[];itemsOf(q).forEach(function(it){if(!rated(it.id))return;at++;if(dq.has(it.n)||mq.indexOf(it.n)>=0)ad++})}
+  var at=0,ad=0;for(var q=0;q<5;q++){var kq=key(c.dates[q]);if((S.meta[kq]||{}).r)continue;var dq=doneSet(kq),mq=(S.meta[kq]||{}).mk||[];itemsOf(q).forEach(function(it){if(!rated(it.id))return;at++;if(dq.has(it.n)||mq.indexOf(it.n)>=0)ad++})}
   var ma=S.meta[key(c.dates[5])]||{},mb=S.meta[key(c.dates[6])]||{};
   return {r:r,wk:wk,wk6:wk6,at:at,ad:ad,cGot:at>0&&ad/at>=0.8,cUsed:!!ma.uc,aGot:wk.ok&&r[5].ok,aUsed:!!ma.ua,bGot:wk6.ok&&r[6].ok,bUsed:!!mb.ub};
 }
@@ -555,6 +555,8 @@ function tixCard(c){
   }
   return '<div class="card"><div class="lbl">탭 이용권 · 보상</div>'+a+cc+b+mk+'</div>';
 }
+function doRain(){var c=ctx();if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();var rp=$('rpin');if(rp&&rp.value===String(S.settings.pin)){var mr=S.meta[c.tk]||{};setMeta(c.tk,{r:mr.r?0:1});S.rainAsk=false;S.rainErr=false;S.toast=mr.r?'우천 취소를 해제했어요.':'☔ 우천 취소로 처리했어요. 오늘 일정은 기록에서 빠져요.';clearTimeout(toastT);toastT=setTimeout(function(){S.toast='';render()},6000)}else S.rainErr=true;render();}
+document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target&&e.target.id==='rpin'){e.preventDefault();try{doRain()}catch(x){console.log('ERR',x.message)}}});
 function saveMeta(){
   saveLocal();
   if(DB)DB.doc('settings/daymeta').set({m:S.meta}).catch(function(){S.store='error';renderSync()});
@@ -1123,8 +1125,9 @@ function renderToday(c){
     (nextT?'<div class="lbl" style="margin-top:8px">다음 보상까지 '+(nextT.n-stars)+'개 남았어요</div>':'<div class="win">모든 보상 달성!</div>')+'</div>';
   main.innerHTML=
    '<div class="head"><div><h1>'+DOW[c.ti]+'요일 경기 일정</h1><div class="date">'+(c.now.getMonth()+1)+'월 '+c.now.getDate()+'일</div></div>'+
-   '<div class="brow" style="margin:0;align-items:center"><button type="button" class="sndb'+(S.sound?'':' off')+'" data-act="snd" aria-pressed="'+S.sound+'" aria-label="'+(S.sound?'소리 켜짐 (누르면 끔)':'소리 꺼짐 (누르면 켬)')+'"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z" fill="currentColor"/>'+(S.sound?'<path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/>':'<path d="M16 9.5l5 5M21 9.5l-5 5"/>')+'</svg></button><span class="chip">오늘 배터리 '+esc(DAYS[c.ti].e)+'</span></div></div>'+
-   (inf.rain?'<div class="warn" style="margin:0 0 12px">☔ 오늘은 우천 취소예요. 오늘 항목은 타율과 달성률에서 빠져요.</div>':'')+
+   '<div class="brow" style="margin:0;align-items:center"><button type="button" class="sndb'+(S.sound?'':' off')+'" data-act="snd" aria-pressed="'+S.sound+'" aria-label="'+(S.sound?'소리 켜짐 (누르면 끔)':'소리 꺼짐 (누르면 켬)')+'"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z" fill="currentColor"/>'+(S.sound?'<path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/>':'<path d="M16 9.5l5 5M21 9.5l-5 5"/>')+'</svg></button><span class="chip">오늘 배터리 '+esc(DAYS[c.ti].e)+'</span><button type="button" class="btn2" data-act="rainask" style="margin:0">'+(inf.rain?'☔ 우천 취소 해제':'☔ 우천 취소')+'</button></div></div>'+
+   (S.rainAsk?'<div class="card" style="margin:0 0 12px"><div class="lbl">'+(inf.rain?'우천 취소를 해제할까요?':'급한 일로 오늘 일정을 못 하게 됐나요? 우천 취소로 처리하면 오늘은 타율·달성률·이용권 조건에서 빠져요.')+' 부모 비밀번호를 입력하세요.</div><div class="brow"><input id="rpin" type="password" inputmode="numeric" maxlength="8" placeholder="비밀번호" aria-label="부모 비밀번호" style="flex:1;min-width:120px"><button type="button" class="btn" data-act="rainok" style="margin:0">확인</button><button type="button" class="btn2" data-act="rainask" style="margin:0">닫기</button></div>'+(S.rainErr?'<div class="warn" style="margin:8px 0 0">비밀번호가 맞지 않아요.</div>':'')+'</div>':'')+
+   (inf.rain?'<div class="warn" style="margin:0 0 12px">☔ 오늘은 우천 취소예요. 오늘 항목은 타율·달성률·이용권 조건에서 빠져요.</div>':'')+
    (S.toast?'<div class="win" role="status" style="margin:0 0 12px">'+esc(S.toast)+'</div>':'')+
    '<div class="today"><div>'+list+'</div><div class="side">'+
    '<div class="card"><div class="lbl">오늘의 훈련</div><div class="big">'+n+' / '+total+'</div>'+scoreboard(its,ds)+diamondSvg(stage)+'<div class="stg">'+stageTxt+'</div><div class="lbl" style="margin-top:6px;text-align:center">'+msg+'</div></div>'+
@@ -1139,6 +1142,8 @@ function todayClick(e){
   var b=e.target.closest('button[data-act]');if(!b)return;
   var a=b.dataset.act,c=ctx();
   if(a==='tix'){var tt=b.dataset.t;if(S.tixArm!==tt){S.tixArm=tt;render();return}S.tixArm=null;var ck5=key(c.dates[tt==='b'?6:5]);setMeta(ck5,tt==='a'?{ua:1}:tt==='c'?{uc:1}:{ub:1});fx('ck');render();return}
+  if(a==='rainask'){S.rainAsk=!S.rainAsk;S.rainErr=false;render();return}
+  if(a==='rainok'){doRain();return}
   if(a==='mkopen'){S.mkOpen=!S.mkOpen;render();return}
   if(a==='mk'){var md=+b.dataset.d,mid=b.dataset.id,mk0=key(c.dates[md]),nm0=(itemsOf(md).filter(function(q){return q.id===mid})[0]||{}).n;if(nm0){var cur=((S.meta[mk0]||{}).mk||[]).slice();if(cur.indexOf(nm0)<0)cur.push(nm0);setMeta(mk0,{mk:cur});fx('ck')}render();return}
   if(a==='fold'){S.unfold=!S.unfold;render();return}
@@ -1714,8 +1719,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:55};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:56};
 var UPD_LOG=[
+  ['v56','오늘 탭 우천 취소 버튼(부모 비밀번호) · 이용권 조건 반영'],
   ['v55','80% 보상 계산에서 준비·마무리 제외'],
   ['v54','80% 달성 시 토요일 탭 30분 보상'],
   ['v53','하위 항목 1PAGE · 독서 · 필사 · 스케치'],
