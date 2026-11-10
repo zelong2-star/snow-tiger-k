@@ -674,13 +674,23 @@ function vib(type){
 }
 function fx(type){sfx(type);vib(type)}
 
+var ONEP_OLD='독서/스케치',ONEP_NEW='1PAGE/독서/필사/스케치';
+function hasOldOneP(){return DAYS.some(function(d){return SLOTS.some(function(sl){return d.s[sl.id]===ONEP_OLD})})}
+function upgradeOneP(){
+  var days=[];
+  DAYS.forEach(function(d,i){SLOTS.forEach(function(sl){if(d.s[sl.id]===ONEP_OLD){d.s[sl.id]=ONEP_NEW;if(days.indexOf(i)<0)days.push(i)}})});
+  if(!days.length)return;
+  if(SUBJ[ONEP_OLD]&&!SUBJ[ONEP_NEW]){SUBJ[ONEP_NEW]=SUBJ[ONEP_OLD]}
+  if(DIFF[ONEP_OLD]&&!DIFF[ONEP_NEW]){DIFF[ONEP_NEW]=DIFF[ONEP_OLD]}
+  migrateName(days,ONEP_OLD,ONEP_NEW);saveSched();
+}
 function migrateName(days,oldN,newN){
   Object.keys(S.checks).forEach(function(k){
     if(!/^\d{4}-\d{2}-\d{2}$/.test(k))return;
     var di=(keyToDate(k).getDay()+6)%7;
     if(days.indexOf(di)<0)return;
-    var a=S.checks[k];if(!Array.isArray(a)||a.indexOf(oldN)<0)return;
-    var b=a.map(function(x){return x===oldN?newN:x}).filter(function(x,i,arr){return arr.indexOf(x)===i});
+    var a=S.checks[k];if(!Array.isArray(a)||!a.some(function(x){return x===oldN||x.indexOf(oldN+'#')===0}))return;
+    var b=a.map(function(x){return x===oldN?newN:(x.indexOf(oldN+'#')===0?newN+x.slice(oldN.length):x)}).filter(function(x,i,arr){return arr.indexOf(x)===i});
     S.checks[k]=b;queueWrite(k,b);
   });
   saveLocal();
@@ -1212,7 +1222,7 @@ function renderWeek(c){
       '<div class="lbl" style="margin-top:4px"><b>과목 목록</b></div><div class="pfg">'+sf+'<div><label class="fl" for="sjn">새 과목 추가</label><input id="sjn" type="text" maxlength="8" placeholder="이름 입력"></div></div>'+
       '<p class="lbl" style="margin:8px 0 0">과목 이름을 바꾸면 그 과목의 문제집도 함께 바뀌어요. 칸을 비우면 과목이 삭제되고, 그 과목의 문제집은 "기타"로 옮겨져요.</p>'+
       '<div class="lbl" style="margin-top:18px"><b>문제집(항목) 목록</b> · 이름, 과목, 난이도(★ 하 · ★★ 중 · ★★★ 상)를 한꺼번에 고쳐요</div><div class="orhd" aria-hidden="true"><span class="c1">문제집 이름</span><span class="c2">과목(주제)</span><span class="c3">난이도</span><span class="c4"></span></div><div id="orows">'+ord2.map(orow2).join('')+'</div>'+
-      '<div class="brow"><button type="button" class="btn2" data-act="optadd">+ 문제집 추가</button></div>'+
+      '<div class="brow"><button type="button" class="btn2" data-act="optadd">+ 문제집 추가</button>'+(hasOldOneP()?'<button type="button" class="btn2" data-act="up1page">독서/스케치 → 1PAGE/독서/필사/스케치로 바꾸기</button>':'')+'</div>'+
       '<p class="lbl" style="margin:8px 0 0">문제집 이름을 바꾸면 표에 들어 있는 같은 항목과 지난 체크 기록도 함께 바뀌어요. 표에서 쓰고 있는 문제집은 삭제해도 표에는 남아요. 새 과목은 저장한 뒤 문제집에 지정할 수 있어요. 난이도 별은 표시용이고 점수 계산에는 영향이 없어요.</p>'+
       '<div class="brow"><button type="button" class="btn" data-act="subsave">저장</button><button type="button" class="btn2" data-act="subclose">취소</button></div><p class="err" id="sjerr" hidden></p></div>';
   }else if(S.edit){
@@ -1467,6 +1477,7 @@ function weekClick(e){
     if(a==='subsave'){saveSubjects();return}
     if(a==='optclose'){S.optMode=false;render();return}
     if(a==='optdel'){var r0=b.closest('.orow');if(r0)r0.remove();return}
+    if(a==='up1page'){upgradeOneP();S.toast='하위 항목을 1PAGE · 독서 · 필사 · 스케치로 바꿨어요. 기록은 그대로예요.';render();return}
     if(a==='optadd'){var box=$('orows');if(box){box.insertAdjacentHTML('beforeend','<div class="orow"><input class="oin" type="text" maxlength="30" data-old="" placeholder="새 항목 이름" aria-label="새 항목 이름"><select class="osj" aria-label="과목">'+subjOpts('기타')+'</select><select class="odf" aria-label="난이도"><option value="0">난이도 -</option><option value="1">★ 하</option><option value="2">★★ 중</option><option value="3">★★★ 상</option></select><button type="button" class="btn2" data-act="optdel">삭제</button></div>');var ins=box.querySelectorAll('.oin');ins[ins.length-1].focus()}return}
     if(a==='optsave'){saveOpts();return}
     if(!S.ed)return;
@@ -1695,8 +1706,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:52};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:53};
 var UPD_LOG=[
+  ['v53','하위 항목 1PAGE · 독서 · 필사 · 스케치'],
   ['v52','과목별 주간 횟수 비중 카드'],
   ['v51','이용권 규칙 정리 · 놓친 항목 보충 · 클리닝타임 월/금 제외'],
   ['v50','탭 이용권 보상 프로그램 추가'],
