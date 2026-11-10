@@ -521,7 +521,7 @@ function tixInfo(c){
   var r=[];for(var i=0;i<7;i++)r.push(regStat(i,key(c.dates[i])));
   function sum(a,b){var t=0,d=0;for(var i=a;i<=b;i++){t+=r[i].t;d+=r[i].d}return {t:t,d:d,ok:t>0&&d===t}}
   var wk=sum(0,4),wk6=sum(0,5);
-  var at=0,ad=0;for(var q=0;q<5;q++){var kq=key(c.dates[q]),dq=doneSet(kq),mq=(S.meta[kq]||{}).mk||[];itemsOf(q).forEach(function(it){at++;if(dq.has(it.n)||mq.indexOf(it.n)>=0)ad++})}
+  var at=0,ad=0;for(var q=0;q<5;q++){var kq=key(c.dates[q]),dq=doneSet(kq),mq=(S.meta[kq]||{}).mk||[];itemsOf(q).forEach(function(it){if(!rated(it.id))return;at++;if(dq.has(it.n)||mq.indexOf(it.n)>=0)ad++})}
   var ma=S.meta[key(c.dates[5])]||{},mb=S.meta[key(c.dates[6])]||{};
   return {r:r,wk:wk,wk6:wk6,at:at,ad:ad,cGot:at>0&&ad/at>=0.8,cUsed:!!ma.uc,aGot:wk.ok&&r[5].ok,aUsed:!!ma.ua,bGot:wk6.ok&&r[6].ok,bUsed:!!mb.ub};
 }
@@ -544,7 +544,7 @@ function tixCard(c){
   else if(t.cGot&&c.ti===5)cc='<div class="xb d"><span>🎫 80% 달성 보상 (30분)</span><span>사용 가능!</span></div>'+btn('c','탭 30분 사용하기');
   else if(t.cGot&&c.ti===6)cc='<div class="xb"><span>🎫 80% 달성 보상 (30분)</span><span>토요일에만 쓸 수 있어요</span></div>';
   else if(t.cGot)cc='<div class="xb d"><span>🎫 80% 달성 보상 (30분)</span><span>달성 · 토요일에 사용</span></div>';
-  else cc='<div class="xb"><span>🎫 80% 달성 보상 (30분)</span><span>월~금 달성 '+cp+'%</span></div><div class="meter"><b style="width:'+Math.min(100,cp)+'%"></b></div><div class="lbl">월~금 항목의 80%를 끝내면 토요일에 탭 30분!</div>';
+  else cc='<div class="xb"><span>🎫 80% 달성 보상 (30분)</span><span>월~금 달성 '+cp+'%</span></div><div class="meter"><b style="width:'+Math.min(100,cp)+'%"></b></div><div class="lbl">월~금 항목(준비·마무리 제외)의 80%를 끝내면 토요일에 탭 30분!</div>';
   var mk='';
   if(c.ti>=5){
     var last=c.ti===5?4:5,ms=[];
@@ -1714,8 +1714,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:54};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:55};
 var UPD_LOG=[
+  ['v55','80% 보상 계산에서 준비·마무리 제외'],
   ['v54','80% 달성 시 토요일 탭 30분 보상'],
   ['v53','하위 항목 1PAGE · 독서 · 필사 · 스케치'],
   ['v52','과목별 주간 횟수 비중 카드'],
