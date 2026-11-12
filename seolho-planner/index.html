@@ -67,7 +67,9 @@ h1{font-family:var(--f-d);font-weight:700;font-size:30px;line-height:1.2;margin:
 h2{font-size:15px;font-weight:700;margin:0 0 10px}
 .head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:16px}
 .date{color:var(--muted);font-size:14px}
-.head{align-items:center}
+.head{align-items:flex-start}
+.head .tt{display:flex;align-items:center;gap:10px;min-height:44px}
+.head .date{margin-top:4px}
 .head .navb,.head .sndb{width:44px;height:44px}
 .head .chip,.head .btn2{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 16px;margin:0;font:700 14px var(--f-b);line-height:1;border-radius:22px;white-space:nowrap}
 .head .btn2{border:1px solid var(--line)}
@@ -1135,7 +1137,7 @@ function renderToday(c){
   var rew='<div class="card"><div class="lbl">이번 주 별</div><div class="big">★ '+stars+' <span style="font-size:18px;color:var(--muted)">/ '+topN+'</span></div><div class="meter"><b style="width:'+Math.min(100,pct(stars,topN))+'%"></b></div>'+ladder+
     (nextT?'<div class="lbl" style="margin-top:8px">다음 보상까지 '+(nextT.n-stars)+'개 남았어요</div>':'<div class="win">모든 보상 달성!</div>')+'</div>';
   main.innerHTML=
-   '<div class="head"><div><div style="display:flex;align-items:center;gap:10px"><button type="button" class="navb" data-act="dnav" data-d="-1" aria-label="어제">◀</button><div><h1>'+DOW[c.ti]+'요일 경기 일정</h1><div class="date">'+(c.now.getMonth()+1)+'월 '+c.now.getDate()+'일'+(ro?' · '+(S.vo===-1?'어제':S.vo===1?'내일':S.vo<0?(-S.vo)+'일 전':S.vo+'일 후')+' (보기만 가능)':'')+'</div></div><button type="button" class="navb" data-act="dnav" data-d="1" aria-label="내일">▶</button>'+(ro?'<button type="button" class="btn2" data-act="dnav" data-d="0" style="margin:0">오늘로</button>':'')+'</div></div>'+
+   '<div class="head"><div><div class="tt"><button type="button" class="navb" data-act="dnav" data-d="-1" aria-label="어제">◀</button><h1>'+DOW[c.ti]+'요일 경기 일정</h1><button type="button" class="navb" data-act="dnav" data-d="1" aria-label="내일">▶</button>'+(ro?'<button type="button" class="btn2" data-act="dnav" data-d="0" style="margin:0">오늘로</button>':'')+'</div><div class="date">'+(c.now.getMonth()+1)+'월 '+c.now.getDate()+'일'+(ro?' · '+(S.vo===-1?'어제':S.vo===1?'내일':S.vo<0?(-S.vo)+'일 전':S.vo+'일 후')+' (보기만 가능)':'')+'</div></div>'+
    '<div class="brow" style="margin:0;align-items:center"><button type="button" class="sndb'+(S.sound?'':' off')+'" data-act="snd" aria-pressed="'+S.sound+'" aria-label="'+(S.sound?'소리 켜짐 (누르면 끔)':'소리 꺼짐 (누르면 켬)')+'"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z" fill="currentColor"/>'+(S.sound?'<path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/>':'<path d="M16 9.5l5 5M21 9.5l-5 5"/>')+'</svg></button><span class="chip">'+(ro?'배터리 ':'오늘 배터리 ')+esc(DAYS[c.ti].e)+'</span>'+(ro?'':'<button type="button" class="btn2" data-act="rainask" style="margin:0">'+(inf.rain?'☔ 우천 취소 해제':'☔ 우천 취소')+'</button>')+'</div></div>'+
    (S.rainAsk?'<div class="card" style="margin:0 0 12px"><div class="lbl">'+(inf.rain?'우천 취소를 해제할까요?':'급한 일로 오늘 일정을 못 하게 됐나요? 우천 취소로 처리하면 오늘은 타율·달성률·이용권 조건에서 빠져요.')+' 부모 비밀번호를 입력하세요.</div><div class="brow"><input id="rpin" type="password" inputmode="numeric" maxlength="8" placeholder="비밀번호" aria-label="부모 비밀번호" style="flex:1;min-width:120px"><button type="button" class="btn" data-act="rainok" style="margin:0">확인</button><button type="button" class="btn2" data-act="rainask" style="margin:0">닫기</button></div>'+(S.rainErr?'<div class="warn" style="margin:8px 0 0">비밀번호가 맞지 않아요.</div>':'')+'</div>':'')+
    (inf.rain?'<div class="warn" style="margin:0 0 12px">☔ 오늘은 우천 취소예요. 오늘 항목은 타율·달성률·이용권 조건에서 빠져요.</div>':'')+
@@ -1731,8 +1733,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:60};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:61};
 var UPD_LOG=[
+  ['v61','오늘 탭 제목·화살표·버튼 한 줄 중앙 정렬'],
   ['v60','설정 아이콘을 톱니바퀴로'],
   ['v59','오늘 탭 상단 버튼·칩 높이/정렬 통일'],
   ['v58','오늘 탭: ◀ ▶ 어제·내일 보기'],
