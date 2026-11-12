@@ -108,8 +108,10 @@ td.rh{background:var(--bg);color:var(--muted);font-weight:500;font-size:12px;pad
 .tw thead th:nth-child(2){width:44px;font-size:12px;padding:8px 2px}
 .tdy{background:var(--today-bg)}
 .it.d{color:var(--done);font-weight:700}
-.it.d{display:flex;align-items:flex-start;gap:4px;text-align:left;background:color-mix(in srgb,var(--done) 14%,transparent);border-radius:8px;padding:3px 6px}
-.it.d::before{content:"✓";flex:none;width:1em}
+.it.d{text-align:center}
+td.dn{position:relative;background:color-mix(in srgb,var(--done) 16%,var(--card,#fff))!important}
+td.dn::before{content:"✓";position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--done);font-weight:700}
+.it.d::before{content:none}
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:12px}
 .tiles .card{margin:0}
 .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;align-items:start}
@@ -1201,7 +1203,7 @@ function renderWeek(c){
       var nm=d.s[sl.id],ds=i<=c.ti?doneSet(key(c.dates[i])):new Set();
       var xm=(d.x||{})[sl.id]||0;
       var inner=nm?'<div class="it'+(ds.has(nm)?' d':'')+'">'+esc(nm)+'</div>'+((xm&1)?'<span class="tg">2루타</span>':'')+((xm&2)?'<span class="tg">3루타</span>':''):(S.edit?'<span class="lbl">+</span>':'');
-      h+='<td class="'+cellCls(i,sl.id)+'"'+attr(i,sl.id)+'>'+inner+'</td>';
+      h+='<td class="'+cellCls(i,sl.id)+(nm&&ds.has(nm)?' dn':'')+'"'+attr(i,sl.id)+'>'+inner+'</td>';
     });
     h+='</tr>';
   });
@@ -1738,8 +1740,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:65};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:66};
 var UPD_LOG=[
+  ['v66','일정표 완료 칸: 칸 전체 배경색, 체크는 왼쪽·글자는 중앙'],
   ['v65','지난 날짜 화면에서 부모 확인 후 바로 체크 고치기'],
   ['v64','일정표 완료 항목: 체크 왼쪽 정렬 + 배경색'],
   ['v63','문제집 이름에 | 를 넣으면 일정표·오늘 탭에서 그 자리에서 줄바꿈'],
