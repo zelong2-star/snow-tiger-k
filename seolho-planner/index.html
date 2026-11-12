@@ -12,6 +12,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -306,6 +307,45 @@ input[type=range]{height:34px;padding:0;accent-color:#DD032F}
   h1{font-size:26px}
 }
 @media (prefers-reduced-motion:reduce){.meter b{transition:none}}
+/* ===== 화면 테마: 롯데 자이언츠 (설정 > 화면 테마). 자이언츠체를 글자 전체에 쓰고 네이비·레드 핀스트라이프로 꾸밈 ===== */
+:root[data-skin="giants"]{
+  --f-b:'Giants','Noto Sans KR',system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --bg:#EEF2F9; --panel:#FFFFFF; --ink:#041E42; --muted:#4A5B7A; --line:#C9D3E6;
+  --navy:#041E42; --on-navy:#FFFFFF; --red:#D00F31;
+  --green:#177A4B; --green-bg:#DDF3E7;
+  --done:#D00F31; --on-done:#FFFFFF; --done-bg:#FDE3E8;
+  --amber-bg:#FFF0C7; --amber:#6B4700; --today-bg:#FDE9EC;
+  --chip-bg:#E1E8F5; --chip-ink:#041E42; --we:#0B2F63; color-scheme:light;
+}
+:root[data-skin="giants"] body{background:#041E42}
+:root[data-skin="giants"] .app{border:2px solid #041E42;border-top:7px solid #D00F31;box-shadow:0 0 0 2px #fff inset}
+:root[data-skin="giants"] .nav{background:#041E42 repeating-linear-gradient(90deg,rgba(255,255,255,.07) 0 1px,transparent 1px 9px);border-right:4px solid #D00F31}
+:root[data-skin="giants"] .brand{font-family:'GiantsInline','Giants',sans-serif;font-weight:400;font-size:19px;letter-spacing:.04em}
+:root[data-skin="giants"] .nav button{font-weight:700}
+:root[data-skin="giants"] .main{background:#fff repeating-linear-gradient(90deg,rgba(4,30,66,.055) 0 1px,transparent 1px 16px)}
+:root[data-skin="giants"] h1{letter-spacing:.01em;position:relative;padding-bottom:8px}
+:root[data-skin="giants"] h1::after{content:"";position:absolute;left:0;bottom:0;width:56px;height:5px;border-radius:3px;background:#D00F31}
+:root[data-skin="giants"] .head .tt h1::after,:root[data-skin="giants"] .pname h1::after{display:none}
+:root[data-skin="giants"] .head .tt h1,:root[data-skin="giants"] .pname h1{padding-bottom:0}
+:root[data-skin="giants"] h2{font-weight:700;letter-spacing:.01em}
+:root[data-skin="giants"] .card{border:1px solid var(--line);border-top:4px solid #041E42;background:#fff}
+:root[data-skin="giants"] .card.go,:root[data-skin="giants"] .tiles .card{border-top-color:#D00F31}
+:root[data-skin="giants"] .row{background:#fff;border-left:6px solid #041E42}
+:root[data-skin="giants"] .row.d{background:var(--done-bg);border-left-color:#D00F31}
+:root[data-skin="giants"] .btn{background:#041E42;border-bottom:4px solid #D00F31;height:48px}
+:root[data-skin="giants"] .btn2.on{background:#D00F31;border-color:#D00F31;color:#fff}
+:root[data-skin="giants"] .chip{background:#D00F31;color:#fff}
+:root[data-skin="giants"] .win{background:#041E42;color:#fff;border-left:6px solid #D00F31}
+:root[data-skin="giants"] .big{font-weight:700;color:#041E42}
+:root[data-skin="giants"] .board i,:root[data-skin="giants"] .pop .ph{background:#041E42}
+:root[data-skin="giants"] thead th{background:#041E42}
+:root[data-skin="giants"] thead th.tdy{background:#D00F31}
+:root[data-skin="giants"] td.gl{background:#E1E8F5;color:#041E42}
+:root[data-skin="giants"] .sl .hi b{color:#D00F31}
+:root[data-skin="giants"] .meter b{background:linear-gradient(90deg,#041E42,#D00F31)}
+:root[data-skin="giants"] .thm[aria-pressed="true"]{border-color:#D00F31;background:var(--done-bg)}
+:root[data-skin="giants"] .pphoto{border:4px solid #041E42;box-shadow:6px 6px 0 #D00F31}
+@media (orientation:portrait),(max-width:700px){:root[data-skin="giants"] .nav{border-right:0;border-top:4px solid #D00F31}}
 </style>
 
 <div class="app">
@@ -350,7 +390,7 @@ var SUBJ_ORDER=['수학','국어','영어','한자','과학/사회','독서','�
 
 var S={checks:{},settings:{goal:60,reward:'롯데 경기 보러 가기',pin:'0000',tiers:null},tab:'home',profile:null,pedit:false,pgate:false,unlocked:false,store:'local',live:false,edit:false,ed:null,gate:false,subj:false,toast:''};
 var toastT=null,celeT=null;
-S.pop=null;S.optMode=false;S.per='all';S.po=0;S.meta={};S.vol=0.7;S.theme='park';S.haptic=true;S.voice=true;S.sound=true;S.cele=null;S.fixDate='';S.wkOff=0;S.bkmsg=null;
+S.pop=null;S.optMode=false;S.per='all';S.po=0;S.meta={};S.vol=0.7;S.theme='park';S.skin='basic';S.haptic=true;S.voice=true;S.sound=true;S.cele=null;S.fixDate='';S.wkOff=0;S.bkmsg=null;
 var DB=null,LS='seolho-planner-v1';
 S.profile=defProfile();
 var main=document.getElementById('main'),syncEl=document.getElementById('sync');
@@ -593,7 +633,8 @@ function tiersOf(){
 }
 function topGoal(){return tiersOf()[2].n}
 var AC=null,MG=null,NB=null;
-function prefsSave(){try{localStorage.setItem('seolho-prefs',JSON.stringify({sound:S.sound,vol:S.vol,theme:S.theme,haptic:S.haptic,voice:S.voice}))}catch(e){}}
+function prefsSave(){try{localStorage.setItem('seolho-prefs',JSON.stringify({sound:S.sound,vol:S.vol,theme:S.theme,skin:S.skin,haptic:S.haptic,voice:S.voice}))}catch(e){}}
+function applySkin(){try{var r=document.documentElement;if(S.skin==='giants')r.setAttribute('data-skin','giants');else r.removeAttribute('data-skin')}catch(e){}}
 function prefsLoad(){
   try{
     var j=JSON.parse(localStorage.getItem('seolho-prefs')||'null');
@@ -601,6 +642,7 @@ function prefsLoad(){
       if(typeof j.sound==='boolean')S.sound=j.sound;
       if(typeof j.vol==='number')S.vol=Math.min(1,Math.max(0,j.vol));
       if(['park','arcade','giants'].indexOf(j.theme)>=0)S.theme=j.theme;
+      if(j.skin==='giants'||j.skin==='basic')S.skin=j.skin;
       if(typeof j.haptic==='boolean')S.haptic=j.haptic;
       if(typeof j.voice==='boolean')S.voice=j.voice;
     }else if(localStorage.getItem('seolho-sound')==='0')S.sound=false;
@@ -1750,9 +1792,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:68};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.12',ver:69};
 var UPD_LOG=[
-  ['v68','메뉴·버튼을 누를 때도 작은 효과음과 진동'],
+  ['v69','메뉴·버튼을 누를 때도 작은 효과음과 진동'],
+  ['v68','설정 > 화면 테마: 롯데 자이언츠 테마(자이언츠체 글꼴 전체 적용) 추가'],
   ['v67','일정표 완료 칸을 초록색으로 구분'],
   ['v66','일정표 완료 칸: 칸 전체 배경색, 체크는 왼쪽·글자는 중앙'],
   ['v65','지난 날짜 화면에서 부모 확인 후 바로 체크 고치기'],
@@ -1813,11 +1856,14 @@ function renderSet(c){
   };
   var canVib=typeof navigator.vibrate==='function',canVoice=!!window.speechSynthesis;
   var th=THEMES.map(function(x){return '<button type="button" class="thm" data-act="theme" data-v="'+x[0]+'" aria-pressed="'+(S.theme===x[0])+'"><b>'+x[1]+'</b><small>'+x[2]+'</small></button>'}).join('');
+  var SK=[['basic','기본','지금 보고 있는 화면이에요. 글씨는 맑은 고딕 계열이에요.'],['giants','⚾ 롯데 자이언츠','자이언츠체 글꼴을 글자 전체에 쓰고, 네이비·레드 핀스트라이프로 꾸며요.']];
+  var sk=SK.map(function(x){return '<button type="button" class="thm" data-act="skin" data-v="'+x[0]+'" aria-pressed="'+(S.skin===x[0])+'"><b>'+x[1]+'</b><small>'+x[2]+'</small><span style="display:block;margin-top:8px;font-size:20px;font-weight:700;font-family:'+(x[0]==='giants'?"'Giants',":'')+'var(--f-b)">롯데 자이언츠 가나다 123</span></button>'}).join('');
   var pv=[['ck','체크'],['bt','2·3루타'],['hr','홈런'],['end','경기 종료'],['badge','새 배지']].map(function(x){return '<button type="button" class="btn2" data-act="prev" data-v="'+x[0]+'" style="margin:0">'+x[1]+'</button>'}).join('');
   var log=UPD_LOG.map(function(x){return '<div class="kv"><span>'+x[0]+'</span><span style="text-align:right">'+esc(x[1])+'</span></div>'}).join('');
   main.innerHTML=
    '<div class="head"><div><h1>설정</h1><div class="date">소리와 진동 설정은 이 기기에만 저장돼요.</div></div></div>'+
    '<div class="cols"><div>'+
+   '<div class="card"><h2>화면 테마</h2><div class="thms">'+sk+'</div></div>'+
    '<div class="card"><h2>소리</h2>'+sw('psound','효과음','체크하거나 홈런을 칠 때 소리가 나요',S.sound)+
    '<div class="sw" style="display:block;padding:10px 0"><b>볼륨</b> <span class="lbl" id="volv">'+Math.round(S.vol*100)+'%</span><input id="vol" type="range" min="0" max="100" step="5" value="'+Math.round(S.vol*100)+'" aria-label="볼륨"></div>'+
    sw('pvoice','응원 구호 음성','자이언츠 응원단 테마에서 “롯데 자이언츠!”를 말해 줘요'+(canVoice?'':' (이 기기는 음성을 지원하지 않아요)'),S.voice)+'</div>'+
@@ -1849,6 +1895,7 @@ function setClick(e){
   else if(a==='pvoice'){S.voice=!S.voice;prefsSave();render()}
   else if(a==='phap'){S.haptic=!S.haptic;prefsSave();render();vib('bt')}
   else if(a==='theme'){S.theme=v;prefsSave();render();fx('hr')}
+  else if(a==='skin'){S.skin=v;prefsSave();applySkin();render();fx('badge')}
   else if(a==='prev'){fx(v)}
   else if(a==='upd'){
     var m=$('updmsg');if(m)m.textContent='최신 버전을 불러오는 중이에요…';
@@ -1888,7 +1935,7 @@ main.addEventListener('click',function(e){
 });
 document.addEventListener('visibilitychange',function(){if(!document.hidden)render()});
 
-prefsLoad();
+prefsLoad();applySkin();
 loadLocal();adoptShipped();render();
 
 (async function(){
@@ -1925,5 +1972,7 @@ if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0){
   window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})});
 }
 </script>
+
+</body></html>
 </body>
 </html>
