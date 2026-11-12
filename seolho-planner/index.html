@@ -67,6 +67,11 @@ h1{font-family:var(--f-d);font-weight:700;font-size:30px;line-height:1.2;margin:
 h2{font-size:15px;font-weight:700;margin:0 0 10px}
 .head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:16px}
 .date{color:var(--muted);font-size:14px}
+.head{align-items:center}
+.head .navb,.head .sndb{width:44px;height:44px}
+.head .chip,.head .btn2{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 16px;margin:0;font:700 14px var(--f-b);line-height:1;border-radius:22px;white-space:nowrap}
+.head .btn2{border:1px solid var(--line)}
+.head .brow{align-items:center;gap:8px}
 .chip{background:var(--chip-bg);color:var(--chip-ink);border-radius:999px;padding:6px 14px;font-weight:700;font-size:14px;white-space:nowrap}
 .lbl{font-size:14px;color:var(--muted)}
 .today{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(250px,1fr);gap:22px;align-items:start}
@@ -1726,8 +1731,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:58};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:59};
 var UPD_LOG=[
+  ['v59','오늘 탭 상단 버튼·칩 높이/정렬 통일'],
   ['v58','오늘 탭: ◀ ▶ 어제·내일 보기'],
   ['v57','돌봄구장 4이닝 → 클리닝 타임'],
   ['v56','오늘 탭 우천 취소 버튼(부모 비밀번호) · 이용권 조건 반영'],
