@@ -1148,7 +1148,7 @@ function renderToday(c){
    (S.toast?'<div class="win" role="status" style="margin:0 0 12px">'+esc(S.toast)+'</div>':'')+
    '<div class="today"><div>'+list+'</div><div class="side">'+
    '<div class="card"><div class="lbl">'+(ro?'이날의':'오늘의')+' 훈련</div><div class="big">'+n+' / '+total+'</div>'+scoreboard(its,ds)+diamondSvg(stage)+'<div class="stg">'+stageTxt+'</div><div class="lbl" style="margin-top:6px;text-align:center">'+msg+'</div></div>'+
-   bat+(ro?'':mood)+note+
+   bat+(ro?'':mood)+((ro&&S.vo<0)?'<div class="card"><div class="lbl">체크를 빠뜨렸나요? 부모님 확인 번호로 이날 체크를 고칠 수 있어요.</div><div class="brow"><button type="button" class="btn2" data-act="pfix">🔒 이날 체크 고치기</button></div></div>':'')+note+
    '<div class="card"><div class="lbl">다음 할 일</div><div style="font-size:20px;font-weight:700">'+(nextI<0?'모두 완료':esc(its[nextI].n))+'</div></div>'+
    tixCard(real)+rew+
    '</div></div>'+
@@ -1159,6 +1159,7 @@ function todayClick(e){
   var b=e.target.closest('button[data-act]');if(!b)return;
   var a=b.dataset.act,c=ctx();
   if(a==='tix'){var tt=b.dataset.t;if(S.tixArm!==tt){S.tixArm=tt;render();return}S.tixArm=null;var ck5=key(c.dates[tt==='b'?6:5]);setMeta(ck5,tt==='a'?{ua:1}:tt==='c'?{uc:1}:{ub:1});fx('ck');render();return}
+  if(a==='pfix'){S.fixDate=viewCtx(c).tk;S.tab='log';S.vo=0;closePop();render();main.scrollTop=0;return}
   if(a==='dnav'){var dd=+b.dataset.d;S.vo=dd===0?0:Math.max(-7,Math.min(7,(S.vo||0)+dd));S.rainAsk=false;render();return}
   if(a==='rainask'){S.rainAsk=!S.rainAsk;S.rainErr=false;render();return}
   if(a==='rainok'){doRain();return}
@@ -1737,8 +1738,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:64};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:65};
 var UPD_LOG=[
+  ['v65','지난 날짜 화면에서 부모 확인 후 바로 체크 고치기'],
   ['v64','일정표 완료 항목: 체크 왼쪽 정렬 + 배경색'],
   ['v63','문제집 이름에 | 를 넣으면 일정표·오늘 탭에서 그 자리에서 줄바꿈'],
   ['v62','일정표 갱신: 아빠가 수정한 주간 일정·문제집 목록이 태블릿에도 반영 (기록은 그대로)'],
