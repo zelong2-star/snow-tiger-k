@@ -109,8 +109,9 @@ td.rh{background:var(--bg);color:var(--muted);font-weight:500;font-size:12px;pad
 .tdy{background:var(--today-bg)}
 .it.d{color:var(--done);font-weight:700}
 .it.d{text-align:center}
-td.dn{position:relative;background:color-mix(in srgb,var(--done) 16%,var(--card,#fff))!important}
-td.dn::before{content:"✓";position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--done);font-weight:700}
+td.dn{position:relative;background:#d8f1e0!important}
+td.dn .it.d{color:#17703a}
+td.dn::before{content:"✓";position:absolute;left:8px;top:50%;transform:translateY(-50%);color:#17703a;font-weight:700}
 .it.d::before{content:none}
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:12px}
 .tiles .card{margin:0}
@@ -1262,7 +1263,7 @@ function renderWeek(c){
   }else if(S.edit){
     top='<div class="warn" style="margin:0 0 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span>고칠 칸을 눌러 주세요. 항목, 장소, 시간 칸을 모두 누를 수 있어요.</span><button type="button" class="btn2" data-act="subopen" style="margin:0">과목·문제집 수정</button></div>';
   }
-  main.innerHTML='<div class="head"><div><h1>주간 경기일정</h1><div class="date">'+(S.edit?'고칠 칸을 눌러 수정하세요.':'오늘 칸은 연한 분홍색, 끝낸 항목은 빨간 체크예요.')+'</div></div>'+
+  main.innerHTML='<div class="head"><div><h1>주간 경기일정</h1><div class="date">'+(S.edit?'고칠 칸을 눌러 수정하세요.':'오늘 칸은 연한 분홍색, 끝낸 항목은 초록색이에요.')+'</div></div>'+
     '<button class="btn2'+(S.edit?' on':'')+'" type="button" data-act="'+(S.edit?'stop':'edit')+'">'+(S.edit?'수정 끝내기':'수정')+'</button></div>'+top+'<div class="tw"><table>'+h+'</table></div>';
   if(S.edit&&S.pop&&!S.optMode)showPop();
   var wf=$('wpf');
@@ -1740,8 +1741,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:66};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:67};
 var UPD_LOG=[
+  ['v67','일정표 완료 칸을 초록색으로 구분'],
   ['v66','일정표 완료 칸: 칸 전체 배경색, 체크는 왼쪽·글자는 중앙'],
   ['v65','지난 날짜 화면에서 부모 확인 후 바로 체크 고치기'],
   ['v64','일정표 완료 항목: 체크 왼쪽 정렬 + 배경색'],
