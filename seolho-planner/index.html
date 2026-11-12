@@ -108,7 +108,8 @@ td.rh{background:var(--bg);color:var(--muted);font-weight:500;font-size:12px;pad
 .tw thead th:nth-child(2){width:44px;font-size:12px;padding:8px 2px}
 .tdy{background:var(--today-bg)}
 .it.d{color:var(--done);font-weight:700}
-.it.d::before{content:"✓ "}
+.it.d{display:flex;align-items:flex-start;gap:4px;text-align:left;background:color-mix(in srgb,var(--done) 14%,transparent);border-radius:8px;padding:3px 6px}
+.it.d::before{content:"✓";flex:none;width:1em}
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:12px}
 .tiles .card{margin:0}
 .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;align-items:start}
@@ -1736,8 +1737,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:63};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:64};
 var UPD_LOG=[
+  ['v64','일정표 완료 항목: 체크 왼쪽 정렬 + 배경색'],
   ['v63','문제집 이름에 | 를 넣으면 일정표·오늘 탭에서 그 자리에서 줄바꿈'],
   ['v62','일정표 갱신: 아빠가 수정한 주간 일정·문제집 목록이 태블릿에도 반영 (기록은 그대로)'],
   ['v61','오늘 탭 제목·화살표·버튼 한 줄 중앙 정렬'],
