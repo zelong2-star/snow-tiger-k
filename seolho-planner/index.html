@@ -665,6 +665,7 @@ var SFX={
     bt:function(){FX.crack(0);FX.crowd(.05,1.1,.35)},
     hr:function(){FX.crack(0);FX.crowd(.08,2.4,.55);FX.applause(.9,1.6)},
     end:function(){FX.whistle(0,.55);FX.applause(.5,1.4)},
+    tp:function(){tn(0,620,.035,{type:'sine',v:.09})},
     badge:function(){tn(0,1319,.2,{type:'sine',v:.3});tn(.12,1760,.35,{type:'sine',v:.3})}
   },
   arcade:{
@@ -673,6 +674,7 @@ var SFX={
     bt:function(){[660,880,1100].forEach(function(f,i){tn(i*.08,f,.09,{type:'square',v:.12})})},
     hr:function(){[523,659,784,1047,1319,1568,2093].forEach(function(f,i){tn(i*.075,f,.09,{type:'square',v:.12})});tn(.6,2093,.5,{type:'square',v:.12})},
     end:function(){[784,988,1175,1568].forEach(function(f,i){tn(i*.12,f,.14,{type:'square',v:.12})})},
+    tp:function(){tn(0,740,.035,{type:'square',v:.06})},
     badge:function(){tn(0,988,.07,{type:'square',v:.12});tn(.07,1319,.3,{type:'square',v:.12})}
   },
   giants:{
@@ -686,6 +688,7 @@ var SFX={
       speak('홈런! 롯데 자이언츠!',1400);
     },
     end:function(){FX.bugle(0,[[523,0,.12],[659,.14,.12],[784,.28,.45]]);FX.clap(.75);FX.clap(.95);speak('오늘도 수고했어요!',700)},
+    tp:function(){FX.drum(0,.18)},
     badge:function(){FX.bugle(0,[[659,0,.12],[784,.14,.4]])}
   }
 };
@@ -696,11 +699,17 @@ function sfx(type){
 function vib(type){
   if(!S.haptic)return;
   try{
-    var P={un:[8],ck:[12],bt:[30,40,30],hr:[60,50,60,50,160],end:[40,40,40],badge:[25,30,25]}[type];
+    var P={un:[8],ck:[12],bt:[30,40,30],hr:[60,50,60,50,160],end:[40,40,40],badge:[25,30,25],tp:[6]}[type];
     if(P&&navigator.vibrate)navigator.vibrate(P);
   }catch(e){}
 }
-function fx(type){sfx(type);vib(type)}
+var LASTFX=0;
+function fx(type){LASTFX=Date.now();sfx(type);vib(type)}
+document.addEventListener('click',function(e){
+  var b=e.target.closest&&e.target.closest('button,[role=button],.tab,select,summary');if(!b||b.disabled)return;
+  if(b.closest('.row[data-i],.row[data-fx],.sub[data-sub]'))return;
+  var t0=Date.now();setTimeout(function(){if(LASTFX>=t0-5)return;LASTFX=Date.now();sfx('tp');vib('tp')},0)
+},true);
 
 var ONEP_OLD='독서/스케치',ONEP_NEW='1PAGE/독서/필사/스케치';
 function hasOldOneP(){return DAYS.some(function(d){return SLOTS.some(function(sl){return d.s[sl.id]===ONEP_OLD})})}
@@ -1741,8 +1750,9 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:67};
+var APP={name:'설호 학습 플래너',maker:'설호',date:'2026.11.09',ver:68};
 var UPD_LOG=[
+  ['v68','메뉴·버튼을 누를 때도 작은 효과음과 진동'],
   ['v67','일정표 완료 칸을 초록색으로 구분'],
   ['v66','일정표 완료 칸: 칸 전체 배경색, 체크는 왼쪽·글자는 중앙'],
   ['v65','지난 날짜 화면에서 부모 확인 후 바로 체크 고치기'],
