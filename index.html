@@ -15,6 +15,12 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;1,700;1,800&family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700;800&display=swap">
 <style>
+@font-face{font-family:'Kkukkuk';src:url(fonts/kk.woff2) format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Busan';src:url(fonts/bsM.woff2) format('woff2');font-weight:100 600;font-display:swap}
+@font-face{font-family:'Busan';src:url(fonts/bsB.woff2) format('woff2');font-weight:700 900;font-display:swap}
+:root[data-font="kk"]{--title:'Kkukkuk','Noto Sans KR',sans-serif;--body:'Kkukkuk','Noto Sans KR',sans-serif;--num:'Kkukkuk','Noto Sans KR',sans-serif}
+:root[data-font="bs"]{--title:'Busan','Noto Sans KR',sans-serif;--body:'Busan','Noto Sans KR',sans-serif;--num:'Busan','Noto Sans KR',sans-serif}
+:root[data-font="kk"] *,:root[data-font="bs"] *{font-synthesis:none}
 /* Layout concept: PLAY. LOG. PLAY.의 체육관 스코어보드를 야구장으로 옮긴다. 초록 티켓이 승률을 요약하고, 아래에 구단 순위와 하단 5탭이 이어진다. */
 :root{
   --bg:#f3f5f3; --surface:#ffffff; --ink:#0f1411; --muted:#58645d; --line:#d9dfdb;
@@ -297,7 +303,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
 <script>
 (function(){
 'use strict';
-var APP_VER='1.4.0',APP_DATE='2026-11-08';
+var APP_VER='1.5.0',APP_DATE='2026-11-15';
 var TEAMS=['롯데','기아','KT','삼성','LG','키움','SSG','두산','한화','NC'];
 var TSTYLE={
   '롯데':['롯','#101d35','#ffffff','#d71920'],'기아':['기','#c8102e','#ffffff','#8f0b21'],
@@ -718,7 +724,7 @@ function viewSet(){
     '<label>아빠 구단<select data-f="sDad">'+teamOpts(s.dadTeam)+'</select></label>'+
     '<label>기본 이닝 수<select data-f="sInn">'+innOpts(s.innings)+'</select></label></div>'+
     '<p class="hint">내 구단을 고르면 앱 색깔도 그 구단 느낌으로 바뀌어요. 새 경기를 시작할 때 처음 보이는 구단과 이닝 수이기도 해요.</p></section>'+
-    soundCard()+
+    soundCard()+fontCard()+
     '<section class="card"><h3>앱 정보</h3><dl class="info"><div><dt>버전</dt><dd>v'+APP_VER+'</dd></div><div><dt>업데이트 일자</dt><dd>'+APP_DATE.replace(/-/g,'.')+'</dd></div></dl>'+
     '<button class="btn" type="button" data-act="upd" data-nosfx style="width:100%;margin-top:10px" id="updBtn">업데이트 확인</button><p class="hint" id="updMsg" role="status">새 버전이 나오면 받아서 바로 바꿔 드려요.</p></section>'+
     '<section class="card"><h3>기록 백업</h3><p class="hint" style="margin-top:0">폰을 바꾸거나 앱을 지우기 전에 저장해 두면, 나중에 그대로 되살릴 수 있어요.</p>'+
@@ -773,6 +779,7 @@ $app.addEventListener('click',function(e){
   else if(act==='bkSave'){bkSave()}
   else if(act==='bkCopy'){bkCopy()}
   else if(act==='bkLoad'){var ta=document.getElementById('bk');importText(ta?ta.value:'')}
+  else if(act==='font'){prefs.font=b.getAttribute('data-v');savePrefs();applyFont();render();buzz([12])}
   else if(act==='sfx'){prefs.sfx=b.getAttribute('data-v');savePrefs();render();playSfx(prefs.sfx);buzz([12])}
   else if(act==='bump'){
     var d=+b.getAttribute('data-d'),sel=S.sel;
@@ -845,7 +852,7 @@ $app.addEventListener('focusout',function(e){
 });
 
 /* ---------- 소리와 진동 ---------- */
-var prefs={sound:true,sfx:'bat',vol:0.7,haptic:true};
+var prefs={sound:true,sfx:'bat',vol:0.7,haptic:true,font:'basic'};
 try{
   var pj=JSON.parse(localStorage.getItem('stk-prefs')||'null');
   if(pj){
@@ -853,9 +860,16 @@ try{
     prefs.sfx=['bat','mitt','clap'].indexOf(pj.sfx)>=0?pj.sfx:'bat';
     prefs.vol=clamp(pj.vol===undefined?0.7:num(pj.vol),0,1);
     prefs.haptic=pj.haptic!==false;
+    prefs.font=['basic','kk','bs'].indexOf(pj.font)>=0?pj.font:'basic';
   }
 }catch(e){}
 function savePrefs(){try{localStorage.setItem('stk-prefs',JSON.stringify(prefs))}catch(e){}}
+function applyFont(){try{if(prefs.font==='kk'||prefs.font==='bs')document.documentElement.setAttribute('data-font',prefs.font);else document.documentElement.removeAttribute('data-font')}catch(e){}}
+applyFont();
+function fontCard(){
+  var L=[['basic','기본'],['bs','부산 단디고딕'],['kk','꾹꾹체']];
+  return '<section class="card"><h3>글꼴<small>이 기기에만 적용돼요</small></h3><div class="seg" role="group" aria-label="글꼴">'+L.map(function(x){return '<button type="button" data-act="font" data-v="'+x[0]+'" data-nosfx aria-pressed="'+(prefs.font===x[0])+'">'+x[1]+'</button>'}).join('')+'</div><p class="hint">글꼴을 고르면 앱 전체 글자가 바뀌어요.</p></section>';
+}
 function sfxName(v){return v==='bat'?'딱! 타격음':v==='mitt'?'팡! 글러브':'짝짝 응원'}
 function soundCard(){
   return '<section class="card"><h3>소리와 진동<small>이 기기에만 적용돼요</small></h3><div class="fl">'+

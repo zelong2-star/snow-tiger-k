@@ -20,6 +20,9 @@
 /* 자이언츠체: (주)롯데자이언츠 배포 서체. 원본 파일을 변환·수정하지 않고 그대로 사용. */
 @font-face{font-family:'Giants';src:url(fonts/Giants-Regular.ttf) format('truetype');font-weight:400;font-display:swap}
 @font-face{font-family:'Giants';src:url(fonts/Giants-Bold.ttf) format('truetype');font-weight:700;font-display:swap}
+@font-face{font-family:'Kkukkuk';src:url(fonts/kk.woff2) format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Busan';src:url(fonts/bsM.woff2) format('woff2');font-weight:100 600;font-display:swap}
+@font-face{font-family:'Busan';src:url(fonts/bsB.woff2) format('woff2');font-weight:700 900;font-display:swap}
 @font-face{font-family:'GiantsInline';src:url(fonts/Giants-Inline.ttf) format('truetype');font-weight:400;font-display:swap}
 /* Layout: tablet-first. Left tab rail in landscape, bottom tab bar in portrait.
    Schedule is a grid of ballpark zones (거실/돌봄/책상 구장) x innings, one item per cell. */
@@ -308,6 +311,10 @@ input[type=range]{height:34px;padding:0;accent-color:#DD032F}
   h1{font-size:26px}
 }
 @media (prefers-reduced-motion:reduce){.meter b{transition:none}}
+/* ===== 화면 테마: 꾹꾹체 (설정 > 화면 테마). 메모먼트 꾹꾹체를 글자 전체에 씀 ===== */
+:root[data-skin="kk"],:root[data-skin="kk"] *{font-family:'Kkukkuk','Noto Sans KR',system-ui,sans-serif!important;font-synthesis:none}
+/* ===== 화면 테마: 부산 단디고딕 ===== */
+:root[data-skin="bs"],:root[data-skin="bs"] *{font-family:'Busan','Noto Sans KR',system-ui,sans-serif!important;font-synthesis:none}
 /* ===== 화면 테마: 롯데 자이언츠 (설정 > 화면 테마). 자이언츠체를 글자 전체에 쓰고 네이비·레드 핀스트라이프로 꾸밈 ===== */
 :root[data-skin="giants"]{
   --f-b:'Giants','Noto Sans KR',system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
@@ -635,7 +642,7 @@ function tiersOf(){
 function topGoal(){return tiersOf()[2].n}
 var AC=null,MG=null,NB=null;
 function prefsSave(){try{localStorage.setItem('seolho-prefs',JSON.stringify({sound:S.sound,vol:S.vol,theme:S.theme,skin:S.skin,haptic:S.haptic,voice:S.voice}))}catch(e){}}
-function applySkin(){try{var r=document.documentElement;if(S.skin==='giants')r.setAttribute('data-skin','giants');else r.removeAttribute('data-skin')}catch(e){}}
+function applySkin(){try{var r=document.documentElement;if(S.skin==='giants'||S.skin==='kk'||S.skin==='bs')r.setAttribute('data-skin',S.skin);else r.removeAttribute('data-skin')}catch(e){}}
 function prefsLoad(){
   try{
     var j=JSON.parse(localStorage.getItem('seolho-prefs')||'null');
@@ -643,7 +650,7 @@ function prefsLoad(){
       if(typeof j.sound==='boolean')S.sound=j.sound;
       if(typeof j.vol==='number')S.vol=Math.min(1,Math.max(0,j.vol));
       if(['park','arcade','giants'].indexOf(j.theme)>=0)S.theme=j.theme;
-      if(j.skin==='giants'||j.skin==='basic')S.skin=j.skin;
+      if(j.skin==='giants'||j.skin==='basic'||j.skin==='kk'||j.skin==='bs')S.skin=j.skin;
       if(typeof j.haptic==='boolean')S.haptic=j.haptic;
       if(typeof j.voice==='boolean')S.voice=j.voice;
     }else if(localStorage.getItem('seolho-sound')==='0')S.sound=false;
@@ -1793,9 +1800,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-13',ver:170};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-15',ver:171};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+  ['v1.71','설정 > 화면 테마: 꾹꾹체·부산 단디고딕 테마 추가'],
   ['v1.70','업데이트 후 보던 화면 유지 · 버전 표시를 게임현황판 방식(v1.70)으로 변경'],
   ['v69','메뉴·버튼을 누를 때도 작은 효과음과 진동'],
   ['v68','설정 > 화면 테마: 롯데 자이언츠 테마(자이언츠체 글꼴 전체 적용) 추가'],
@@ -1859,8 +1867,8 @@ function renderSet(c){
   };
   var canVib=typeof navigator.vibrate==='function',canVoice=!!window.speechSynthesis;
   var th=THEMES.map(function(x){return '<button type="button" class="thm" data-act="theme" data-v="'+x[0]+'" aria-pressed="'+(S.theme===x[0])+'"><b>'+x[1]+'</b><small>'+x[2]+'</small></button>'}).join('');
-  var SK=[['basic','기본','지금 보고 있는 화면이에요. 글씨는 맑은 고딕 계열이에요.'],['giants','⚾ 롯데 자이언츠','자이언츠체 글꼴을 글자 전체에 쓰고, 네이비·레드 핀스트라이프로 꾸며요.']];
-  var sk=SK.map(function(x){return '<button type="button" class="thm" data-act="skin" data-v="'+x[0]+'" aria-pressed="'+(S.skin===x[0])+'"><b>'+x[1]+'</b><small>'+x[2]+'</small><span style="display:block;margin-top:8px;font-size:20px;font-weight:700;font-family:'+(x[0]==='giants'?"'Giants',":'')+'var(--f-b)">롯데 자이언츠 가나다 123</span></button>'}).join('');
+  var SK=[['basic','기본','지금 보고 있는 화면이에요. 글씨는 맑은 고딕 계열이에요.'],['giants','⚾ 롯데 자이언츠','자이언츠체 글꼴을 글자 전체에 쓰고, 네이비·레드 핀스트라이프로 꾸며요.'],['kk','✏️ 꾹꾹체','꾹꾹 눌러 쓴 손글씨 느낌의 글꼴을 글자 전체에 써요.'],['bs','🌊 부산 단디고딕','부산서체 단디고딕을 글자 전체에 써요.']];
+  var sk=SK.map(function(x){return '<button type="button" class="thm" data-act="skin" data-v="'+x[0]+'" aria-pressed="'+(S.skin===x[0])+'"><b>'+x[1]+'</b><small>'+x[2]+'</small><span style="display:block;margin-top:8px;font-size:20px;font-weight:700;font-family:'+(x[0]==='giants'?"'Giants',":x[0]==='kk'?"'Kkukkuk',":x[0]==='bs'?"'Busan',":'')+'var(--f-b)">'+(x[0]==='kk'||x[0]==='bs'?'설호 학습 플래너 가나다 123':'롯데 자이언츠 가나다 123')+'</span></button>'}).join('');
   var pv=[['ck','체크'],['bt','2·3루타'],['hr','홈런'],['end','경기 종료'],['badge','새 배지']].map(function(x){return '<button type="button" class="btn2" data-act="prev" data-v="'+x[0]+'" style="margin:0">'+x[1]+'</button>'}).join('');
   var log=UPD_LOG.map(function(x){return '<div class="kv"><span>'+x[0]+'</span><span style="text-align:right">'+esc(x[1])+'</span></div>'}).join('');
   main.innerHTML=

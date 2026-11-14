@@ -1,7 +1,7 @@
 /* SNOW TIGER K 서비스 워커: 앱 파일을 저장해 두어 인터넷이 없어도 열리게 한다. */
-var V = 'stk-app-v11';
+var V = 'stk-app-v12';
 var FONTS = 'stk-fonts-v1';
-var CORE = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon.svg',
+var CORE = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon.svg', 'fonts/bsB.woff2', 'fonts/bsM.woff2',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png', 'icons/apple-touch-icon.png'];
 
 self.addEventListener('install', function (e) {
