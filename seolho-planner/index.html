@@ -16,6 +16,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -427,9 +428,12 @@ function ctx(){
   for(var i=0;i<7;i++)dates.push(new Date(now.getFullYear(),now.getMonth(),now.getDate()-ti+i));
   return {now:now,ti:ti,dates:dates,tk:key(now)};
 }
+/* 타이머는 '문제집(항목 이름)' 단위: 어느 칸에서든 ⏱를 켜면 같은 이름의 모든 칸에 적용된다 */
+function tmNames(){var s={};DAYS.forEach(function(d){SLOTS.forEach(function(sl){var n=d.s[sl.id];if(n&&(((d.x||{})[sl.id]||0)&4))s[n]=1})});return s}
+function tmSetName(n,on){if(!n)return;DAYS.forEach(function(d){var x=d.x||(d.x={});SLOTS.forEach(function(sl){if(d.s[sl.id]!==n)return;var m=x[sl.id]||0;m=on?(m|4):(m&~4);if(m)x[sl.id]=m;else delete x[sl.id]})})}
 function itemsOf(i){
-  var o=[];
-  SLOTS.forEach(function(sl){var n=DAYS[i].s[sl.id];if(n)o.push({n:n,g:sl.g,t:sl.t,id:sl.id,m:(DAYS[i].x||{})[sl.id]||0})});
+  var o=[],tn=tmNames();
+  SLOTS.forEach(function(sl){var n=DAYS[i].s[sl.id];if(n)o.push({n:n,g:sl.g,t:sl.t,id:sl.id,m:((DAYS[i].x||{})[sl.id]||0)|(tn[n]?4:0)})});
   return o;
 }
 function doneSet(k){return new Set(S.checks[k]||[])}
@@ -1303,7 +1307,7 @@ function renderWeek(c){
     }
     DAYS.forEach(function(d,i){
       var nm=d.s[sl.id],ds=i<=c.ti?doneSet(key(c.dates[i])):new Set();
-      var xm=(d.x||{})[sl.id]||0;
+      var xm=((d.x||{})[sl.id]||0)|(nm&&tmNames()[nm]?4:0);
       var inner=nm?'<div class="it'+(ds.has(nm)?' d':'')+'">'+esc(nm)+'</div>'+((xm&1)?'<span class="tg">2루타</span>':'')+((xm&2)?'<span class="tg">3루타</span>':'')+((xm&4)?'<span class="tg">⏱ 타이머</span>':''):(S.edit?'<span class="lbl">+</span>':'');
       h+='<td class="'+cellCls(i,sl.id)+(nm&&ds.has(nm)?' dn':'')+'"'+attr(i,sl.id)+'>'+inner+'</td>';
     });
@@ -1342,7 +1346,7 @@ function renderWeek(c){
         '<label class="fl" for="es2">새 과목으로 추가 (비워 두면 위 목록에서 선택한 과목)</label><input id="es2" type="text" maxlength="8" placeholder="예: 영어회화">'+
         '<label class="chk"><input type="checkbox" id="x2"'+((DAYS[ed.d].x||{})[ed.s]&1?' checked':'')+'>2루타 필수 요소</label>'+
         '<label class="chk"><input type="checkbox" id="x3"'+((DAYS[ed.d].x||{})[ed.s]&2?' checked':'')+'>3루타 필수 요소</label>'+
-        '<label class="chk"><input type="checkbox" id="x4"'+((DAYS[ed.d].x||{})[ed.s]&4?' checked':'')+'>⏱ 순공 타이머 사용</label>'+
+        '<label class="chk"><input type="checkbox" id="x4"'+(tmNames()[DAYS[ed.d].s[ed.s]]?' checked':'')+'>⏱ 순공 타이머 사용</label>'+
         '<p class="lbl" style="margin:4px 0 0">체크한 항목을 그날 모두 끝내면 2루타(3루타)가 기록돼요. 모든 항목을 끝내면 홈런이에요.</p>'+
         '<div class="brow"><button type="button" class="btn2" data-act="up">▲ 위 칸과 바꾸기</button><button type="button" class="btn2" data-act="down">▼ 아래 칸과 바꾸기</button></div>'+
         (!cur?'':ed.del?'<div class="warn" style="margin-top:10px">정말 삭제할까요? '+(isSync(ed.s)&&ed.d<=4?'월~금 거실구장 칸이 함께 비워져요.':'이 칸이 비워져요.')+' 이미 한 체크 기록은 남아요.</div><div class="brow"><button type="button" class="btn" data-act="delyes" style="background:var(--red);color:#fff">삭제하기</button><button type="button" class="btn2" data-act="delno">아니요</button></div>':'<div class="brow"><button type="button" class="btn2" data-act="del" style="color:var(--red)">🗑 이 항목 삭제</button></div>')+
@@ -1392,7 +1396,7 @@ function popHtml(){
   });
   var fm=(DAYS[pp.d].x||{})[pp.s]||0;
   h+='<div class="pe" hidden>찾는 항목이 없어요. 아래 “항목 목록”에서 추가할 수 있어요.</div></div>'+
-    '<div class="pxr"><label'+(cur?'':' class="off"')+'><input type="checkbox" data-fx="1"'+(fm&1?' checked':'')+(cur?'':' disabled')+'>2루타 필수</label><label'+(cur?'':' class="off"')+'><input type="checkbox" data-fx="2"'+(fm&2?' checked':'')+(cur?'':' disabled')+'>3루타 필수</label><label'+(cur?'':' class="off"')+'><input type="checkbox" data-fx="4"'+(fm&4?' checked':'')+(cur?'':' disabled')+'>⏱ 타이머</label></div>'+
+    '<div class="pxr"><label'+(cur?'':' class="off"')+'><input type="checkbox" data-fx="1"'+(fm&1?' checked':'')+(cur?'':' disabled')+'>2루타 필수</label><label'+(cur?'':' class="off"')+'><input type="checkbox" data-fx="2"'+(fm&2?' checked':'')+(cur?'':' disabled')+'>3루타 필수</label><label'+(cur?'':' class="off"')+'><input type="checkbox" data-fx="4"'+((fm&4||tmNames()[DAYS[pp.d].s[pp.s]])?' checked':'')+(cur?'':' disabled')+'>⏱ 타이머</label></div>'+
     '<div class="pf"><button type="button" data-act="popitem" data-nm=""'+(cur?'':' disabled style="opacity:.4"')+'>비우기</button><button type="button" data-act="popopt">항목 목록</button><button type="button" data-act="popsubj">분야 목록</button><button type="button" data-act="popdetail">자세히</button></div>';
   if(isSync(pp.s)&&pp.d<=4)h+='<div class="pn2">월~금 거실구장 칸은 함께 바뀌어요.</div>';
   return h+'</div>';
@@ -1407,6 +1411,7 @@ function showPop(){
     var fxb=e.target.closest('input[data-fx]');
     if(fxb&&S.pop){
       var pp=S.pop,bit=+fxb.dataset.fx;
+      if(bit===4){tmSetName(DAYS[pp.d].s[pp.s],fxb.checked);saveSched();refreshPop();return}
       syncTargets(pp.d,pp.s).forEach(function(t){
         var day=DAYS[t],x=day.x||(day.x={}),m=x[pp.s]||0;
         if(!day.s[pp.s])return;
@@ -1523,8 +1528,10 @@ function saveEditor(){
   var old0=DAYS[ed.d].s[ed.s];
   targets.forEach(function(t){DAYS[t].s[ed.s]=n});
   if(old0&&n&&old0!==n)migrateName(targets,old0,n);
-  var xm=($('x2')&&$('x2').checked?1:0)|($('x3')&&$('x3').checked?2:0)|($('x4')&&$('x4').checked?4:0);
+  var xm=($('x2')&&$('x2').checked?1:0)|($('x3')&&$('x3').checked?2:0)|0;
+  var tmOn=!!($('x4')&&$('x4').checked);
   targets.forEach(function(t){var fx=DAYS[t].x||(DAYS[t].x={});if(n&&xm)fx[ed.s]=xm;else delete fx[ed.s]});
+  if(n)tmSetName(n,tmOn);
   if(n)SUBJ[n]=sj;
   saveSched();S.ed=null;S.optMode=false;render();
 }
@@ -1857,9 +1864,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:173};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:174};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+  ['v1.74','타이머는 문제집 단위: 한 칸에서 ⏱를 켜면 같은 이름의 모든 칸에 적용'],
   ['v1.73','순공 타이머: 일정표에서 ⏱ 타이머를 체크한 항목에만 표시 · 스톱워치 아이콘과 버튼 크게'],
   ['v1.72','순공 타이머: 오늘 탭 항목마다 ⏱ 버튼, 기록 탭 순공시간 통계, 부모 확인 후 시간 수정'],
   ['v1.71','설정 > 화면 테마: 꾹꾹체·부산 단디고딕 테마 추가'],
