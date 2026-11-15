@@ -15,6 +15,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -89,12 +90,13 @@ h2{font-size:15px;font-weight:700;margin:0 0 10px}
 .sec{font-size:13px;font-weight:700;color:var(--muted);margin:18px 0 8px;display:flex;gap:8px;align-items:baseline}
 .sec:first-child{margin-top:0}
 .rw{position:relative;display:flow-root}
-.rw .row{padding-right:112px}
-.tmb{position:absolute;right:10px;top:calc((100% - 8px)/2);transform:translateY(-50%);min-width:92px;height:44px;border-radius:22px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-size:14px;display:flex;align-items:center;justify-content:center;gap:5px;padding:0 10px;cursor:pointer}
-.tmb b{font-weight:600;font-size:13px;color:var(--muted)}
+.rw .row{padding-right:132px}
+.tmb{position:absolute;right:10px;top:calc((100% - 8px)/2);transform:translateY(-50%);min-width:112px;height:48px;border-radius:24px;border:2px solid var(--navy);background:var(--panel);color:var(--navy);font:inherit;font-size:15px;display:flex;align-items:center;justify-content:center;gap:5px;padding:0 10px;cursor:pointer}
+.tmb b{font-weight:700;font-size:15px;color:inherit}
 .tmb.on{background:var(--navy);border-color:var(--navy);color:var(--on-navy)}
-.tmb.on b{color:var(--on-navy);font-variant-numeric:tabular-nums}
+.tmb.on b{font-variant-numeric:tabular-nums}
 .tmcard{display:flex;align-items:center;gap:12px;margin:0 0 12px;padding:10px 14px;border-radius:14px;background:var(--navy);color:var(--on-navy);font-size:17px;font-weight:700}
+/* tmcard */
 .tmcard span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tmcard b{font-variant-numeric:tabular-nums;font-size:22px}
 .tadj{display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--line);font-size:15px}
@@ -460,7 +462,7 @@ function applySched(x){
   DAYS=x.days.map(function(d,i){
     var s={};SLOTS.forEach(function(sl){s[sl.id]=(d&&d.s&&typeof d.s[sl.id]==='string')?d.s[sl.id]:''});
     var x={};
-    if(d&&d.x&&typeof d.x==='object')SLOTS.forEach(function(sl){var m=+d.x[sl.id];if(m>=1&&m<=3&&s[sl.id])x[sl.id]=m});
+    if(d&&d.x&&typeof d.x==='object')SLOTS.forEach(function(sl){var m=+d.x[sl.id];if(m>=1&&m<=7&&s[sl.id])x[sl.id]=m});
     return {n:DOW[i],s:s,e:(d&&d.e)||'엄마',x:x};
   });
   if(Array.isArray(x.subj)){SUBJ={};DIFF={};x.subj.forEach(function(y){SUBJ[y.n]=y.s;if(y.d>=1&&y.d<=3)DIFF[y.n]=y.d|0})}
@@ -1197,8 +1199,9 @@ function scoreboard(its,ds){
 }
 function viewCtx(r){var d=new Date(r.now.getFullYear(),r.now.getMonth(),r.now.getDate()+S.vo),ti=(d.getDay()+6)%7,dates=[];for(var i=0;i<7;i++)dates.push(new Date(d.getFullYear(),d.getMonth(),d.getDate()-ti+i));return {now:d,ti:ti,dates:dates,tk:key(d)}}
 function tmBtn(k,it,i){
+  if(!(it.m&4))return '';
   var on=S.timer&&S.timer.k===k&&S.timer.n===it.n,sec=tmSecs(k,it.n);
-  return '<button type="button" class="tmb'+(on?' on':'')+'" data-act="tm" data-ti="'+i+'" aria-pressed="'+!!on+'" aria-label="'+esc(it.n)+(on?' 타이머 멈추기':' 타이머 시작')+'">'+(on?'<span>■</span><b class="tv">'+tmFmt(tmElapsed())+'</b>':'<span>⏱</span>'+(sec?'<b>'+tmMin(sec)+'</b>':''))+'</button>';
+  return '<button type="button" class="tmb'+(on?' on':'')+'" data-act="tm" data-ti="'+i+'" aria-pressed="'+!!on+'" aria-label="'+esc(it.n)+(on?' 타이머 멈추기':' 타이머 시작')+'">'+(on?'<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2.5"/></svg><b class="tv">'+tmFmt(tmElapsed())+'</b>':'<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 2.5h5M12 2.5v3"/><circle cx="12" cy="14" r="7.5"/><path d="M12 14l3-3"/></svg><b>'+(sec?tmMin(sec):'시작')+'</b>')+'</button>';
 }
 function renderToday(c){
   var real=c,ro=!!S.vo;if(ro)c=viewCtx(real);
@@ -1301,7 +1304,7 @@ function renderWeek(c){
     DAYS.forEach(function(d,i){
       var nm=d.s[sl.id],ds=i<=c.ti?doneSet(key(c.dates[i])):new Set();
       var xm=(d.x||{})[sl.id]||0;
-      var inner=nm?'<div class="it'+(ds.has(nm)?' d':'')+'">'+esc(nm)+'</div>'+((xm&1)?'<span class="tg">2루타</span>':'')+((xm&2)?'<span class="tg">3루타</span>':''):(S.edit?'<span class="lbl">+</span>':'');
+      var inner=nm?'<div class="it'+(ds.has(nm)?' d':'')+'">'+esc(nm)+'</div>'+((xm&1)?'<span class="tg">2루타</span>':'')+((xm&2)?'<span class="tg">3루타</span>':'')+((xm&4)?'<span class="tg">⏱ 타이머</span>':''):(S.edit?'<span class="lbl">+</span>':'');
       h+='<td class="'+cellCls(i,sl.id)+(nm&&ds.has(nm)?' dn':'')+'"'+attr(i,sl.id)+'>'+inner+'</td>';
     });
     h+='</tr>';
@@ -1339,6 +1342,7 @@ function renderWeek(c){
         '<label class="fl" for="es2">새 과목으로 추가 (비워 두면 위 목록에서 선택한 과목)</label><input id="es2" type="text" maxlength="8" placeholder="예: 영어회화">'+
         '<label class="chk"><input type="checkbox" id="x2"'+((DAYS[ed.d].x||{})[ed.s]&1?' checked':'')+'>2루타 필수 요소</label>'+
         '<label class="chk"><input type="checkbox" id="x3"'+((DAYS[ed.d].x||{})[ed.s]&2?' checked':'')+'>3루타 필수 요소</label>'+
+        '<label class="chk"><input type="checkbox" id="x4"'+((DAYS[ed.d].x||{})[ed.s]&4?' checked':'')+'>⏱ 순공 타이머 사용</label>'+
         '<p class="lbl" style="margin:4px 0 0">체크한 항목을 그날 모두 끝내면 2루타(3루타)가 기록돼요. 모든 항목을 끝내면 홈런이에요.</p>'+
         '<div class="brow"><button type="button" class="btn2" data-act="up">▲ 위 칸과 바꾸기</button><button type="button" class="btn2" data-act="down">▼ 아래 칸과 바꾸기</button></div>'+
         (!cur?'':ed.del?'<div class="warn" style="margin-top:10px">정말 삭제할까요? '+(isSync(ed.s)&&ed.d<=4?'월~금 거실구장 칸이 함께 비워져요.':'이 칸이 비워져요.')+' 이미 한 체크 기록은 남아요.</div><div class="brow"><button type="button" class="btn" data-act="delyes" style="background:var(--red);color:#fff">삭제하기</button><button type="button" class="btn2" data-act="delno">아니요</button></div>':'<div class="brow"><button type="button" class="btn2" data-act="del" style="color:var(--red)">🗑 이 항목 삭제</button></div>')+
@@ -1388,7 +1392,7 @@ function popHtml(){
   });
   var fm=(DAYS[pp.d].x||{})[pp.s]||0;
   h+='<div class="pe" hidden>찾는 항목이 없어요. 아래 “항목 목록”에서 추가할 수 있어요.</div></div>'+
-    '<div class="pxr"><label'+(cur?'':' class="off"')+'><input type="checkbox" data-fx="1"'+(fm&1?' checked':'')+(cur?'':' disabled')+'>2루타 필수</label><label'+(cur?'':' class="off"')+'><input type="checkbox" data-fx="2"'+(fm&2?' checked':'')+(cur?'':' disabled')+'>3루타 필수</label></div>'+
+    '<div class="pxr"><label'+(cur?'':' class="off"')+'><input type="checkbox" data-fx="1"'+(fm&1?' checked':'')+(cur?'':' disabled')+'>2루타 필수</label><label'+(cur?'':' class="off"')+'><input type="checkbox" data-fx="2"'+(fm&2?' checked':'')+(cur?'':' disabled')+'>3루타 필수</label><label'+(cur?'':' class="off"')+'><input type="checkbox" data-fx="4"'+(fm&4?' checked':'')+(cur?'':' disabled')+'>⏱ 타이머</label></div>'+
     '<div class="pf"><button type="button" data-act="popitem" data-nm=""'+(cur?'':' disabled style="opacity:.4"')+'>비우기</button><button type="button" data-act="popopt">항목 목록</button><button type="button" data-act="popsubj">분야 목록</button><button type="button" data-act="popdetail">자세히</button></div>';
   if(isSync(pp.s)&&pp.d<=4)h+='<div class="pn2">월~금 거실구장 칸은 함께 바뀌어요.</div>';
   return h+'</div>';
@@ -1519,7 +1523,7 @@ function saveEditor(){
   var old0=DAYS[ed.d].s[ed.s];
   targets.forEach(function(t){DAYS[t].s[ed.s]=n});
   if(old0&&n&&old0!==n)migrateName(targets,old0,n);
-  var xm=($('x2')&&$('x2').checked?1:0)|($('x3')&&$('x3').checked?2:0);
+  var xm=($('x2')&&$('x2').checked?1:0)|($('x3')&&$('x3').checked?2:0)|($('x4')&&$('x4').checked?4:0);
   targets.forEach(function(t){var fx=DAYS[t].x||(DAYS[t].x={});if(n&&xm)fx[ed.s]=xm;else delete fx[ed.s]});
   if(n)SUBJ[n]=sj;
   saveSched();S.ed=null;S.optMode=false;render();
@@ -1853,9 +1857,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:172};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:173};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+  ['v1.73','순공 타이머: 일정표에서 ⏱ 타이머를 체크한 항목에만 표시 · 스톱워치 아이콘과 버튼 크게'],
   ['v1.72','순공 타이머: 오늘 탭 항목마다 ⏱ 버튼, 기록 탭 순공시간 통계, 부모 확인 후 시간 수정'],
   ['v1.71','설정 > 화면 테마: 꾹꾹체·부산 단디고딕 테마 추가'],
   ['v1.71','순공 타이머: 오늘 탭 항목마다 ⏱ 버튼, 기록 탭 순공시간 통계, 부모 확인 후 시간 수정'],
