@@ -17,6 +17,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -94,12 +95,30 @@ h2{font-size:15px;font-weight:700;margin:0 0 10px}
 .rw .row{padding-right:132px}
 .tmb{position:absolute;right:10px;top:calc((100% - 8px)/2);transform:translateY(-50%);min-width:112px;height:48px;border-radius:24px;border:2px solid var(--navy);background:var(--panel);color:var(--navy);font:inherit;font-size:15px;display:flex;align-items:center;justify-content:center;gap:5px;padding:0 10px;cursor:pointer}
 .tmb b{font-weight:700;font-size:15px;color:inherit}
+.tmb.pz{border-color:var(--amber);color:var(--amber);background:var(--amber-bg)}
 .tmb.on{background:var(--navy);border-color:var(--navy);color:var(--on-navy)}
 .tmb.on b{font-variant-numeric:tabular-nums}
-.tmcard{display:flex;align-items:center;gap:12px;margin:0 0 12px;padding:10px 14px;border-radius:14px;background:var(--navy);color:var(--on-navy);font-size:17px;font-weight:700}
-/* tmcard */
-.tmcard span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tmcard b{font-variant-numeric:tabular-nums;font-size:22px}
+.cardB{margin:0 0 12px;border-radius:16px;border:2px solid var(--navy);background:var(--panel);padding:14px 16px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.cardB .nm{font-size:16px;color:var(--muted)}
+.tmbig{font-size:52px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+.tsub{font-size:13px;color:var(--muted)}
+.cardB .bs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;margin-top:6px}
+.bB{height:58px;border-radius:14px;font:inherit;font-weight:700;font-size:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:var(--chip-bg,#E1E8F5);color:var(--ink);border:0;cursor:pointer}
+.bB.p{background:var(--navy);color:var(--on-navy)}
+.bB.f{background:var(--green,#177A4B);color:#fff}
+.bB[disabled]{opacity:.35;cursor:default}
+.status{font-size:13px;font-weight:700;padding:3px 12px;border-radius:999px;background:var(--chip-bg,#E1E8F5);color:var(--ink)}
+.status.run{background:var(--green-bg);color:var(--green)}
+.status.pz,.status.br{background:var(--amber-bg);color:var(--amber)}
+.tms{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+.tms th,.tms td{padding:7px 6px;border-top:1px solid var(--line);text-align:right;white-space:nowrap}
+.tms th:first-child,.tms td:first-child{text-align:left;white-space:normal}
+.tms th{font-size:12px;color:var(--muted);font-weight:600;border-top:0}
+.tdb{display:flex;align-items:flex-end;gap:8px;height:110px;margin-top:8px}
+.tdb div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%;font-size:11px;color:var(--muted)}
+.tdb i{width:100%;max-width:34px;border-radius:6px 6px 0 0;background:var(--navy);min-height:3px;display:block}
+.tdb .t i{background:var(--red)}
+.how{font-size:13px;color:var(--muted);line-height:1.6}.how b{color:var(--ink)}
 .tadj{display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--line);font-size:15px}
 .tadj span{flex:1;min-width:0}.tadj b{min-width:64px;text-align:right}
 .tadj button{height:38px;min-width:48px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;cursor:pointer}
@@ -645,22 +664,44 @@ function doRain(){var c=ctx();if(document.activeElement&&document.activeElement.
 document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target&&e.target.id==='rpin'){e.preventDefault();try{doRain()}catch(x){console.log('ERR',x.message)}}});
 /* ===== 순공 타이머: 항목별로 재서 날짜 메타(meta[날짜].st = {항목:초})에 쌓는다 ===== */
 S.timer=null;try{S.timer=JSON.parse(localStorage.getItem('seolho-timer')||'null')}catch(e){}
+S.tmFocus=40;S.tmBreak=10;
 function tp2(n){return (n<10?'0':'')+n}
 function tmFmt(s){s=Math.max(0,Math.round(s));var h=Math.floor(s/3600),m=Math.floor(s%3600/60);return (h?h+':'+tp2(m):tp2(m))+':'+tp2(s%60)}
 function tmMin(s){var m=Math.round(s/60);if(m<=0)return s>0?'1분 미만':'0분';return m>=60?Math.floor(m/60)+'시간'+(m%60?' '+(m%60)+'분':''):m+'분'}
-function tmElapsed(){return S.timer?Math.min(7200,Math.max(0,(Date.now()-S.timer.s)/1000)):0}
+/* 타이머 상태: mode = study(재는 중) | pause(일시정지) | due(공부 시간이 다 돼서 휴식 대기) | break(휴식 중) | bdone(휴식 끝)
+   s = 이번 구간 시작 시각, ss = 휴식 없이 이어서 공부한 시간(초), bs = 휴식 시작 시각 */
+function tmSave(){try{if(S.timer)localStorage.setItem('seolho-timer',JSON.stringify(S.timer));else localStorage.removeItem('seolho-timer')}catch(x){}}
+function tmRun(){var t=S.timer;return t&&t.mode==='study'?Math.max(0,(Date.now()-t.s)/1000):0}
+function tmStreak(){var t=S.timer;return t?(t.ss||0)+Math.min(7200,tmRun()):0}
 function tmSecs(k,n){return (((S.meta[k]||{}).st)||{})[n]||0}
-function tmStop(){
-  if(!S.timer)return;var t=S.timer,e=Math.round(tmElapsed());S.timer=null;
-  try{localStorage.removeItem('seolho-timer')}catch(x){}
-  if(e<=0)return;
-  var st=Object.assign({},(S.meta[t.k]||{}).st||{});st[t.n]=(st[t.n]||0)+e;setMeta(t.k,{st:st});
+function tmCommit(cap){var t=S.timer;if(!t||t.mode!=='study')return;var e=Math.round(Math.min(tmRun(),cap==null?7200:cap));t.ss=(t.ss||0)+e;t.s=Date.now();
+  if(e>0){var st=Object.assign({},(S.meta[t.k]||{}).st||{});st[t.n]=(st[t.n]||0)+e;setMeta(t.k,{st:st})}}
+function tmStart(k,n){tmEnd();S.timer={k:k,n:n,mode:'study',s:Date.now(),ss:0};tmSave()}
+function tmPause(){if(!S.timer||S.timer.mode!=='study')return;tmCommit();S.timer.mode='pause';tmSave()}
+function tmResume(){var t=S.timer;if(!t)return;if(t.mode!=='pause')t.ss=0;t.mode='study';t.s=Date.now();tmSave()}
+function tmBreak(){var t=S.timer;if(!t)return;tmCommit();t.mode='break';t.bs=Date.now();t.ss=0;tmSave()}
+function tmEnd(){if(S.timer){tmCommit();S.timer=null;tmSave()}}
+function tmStop(){tmEnd()}
+function tmStOf(k){var st=Object.assign({},(S.meta[k]||{}).st||{}),t=S.timer;if(t&&t.k===k&&t.mode==='study')st[t.n]=(st[t.n]||0)+Math.min(7200,tmRun());return st}
+function tmDayTotal(k){var t=0,st=(S.meta[k]||{}).st||{};Object.keys(st).forEach(function(n){t+=st[n]||0});return t+(S.timer&&S.timer.k===k&&S.timer.mode==='study'?Math.min(7200,tmRun()):0)}
+function tmView(){
+  var t=S.timer;if(!t)return null;var f=S.tmFocus*60,b=S.tmBreak*60,m=t.mode;
+  if(m==='study')return {st:'● 측정 중',cl:'run',big:tmFmt(tmStreak()),sub:'휴식까지 '+tmFmt(Math.max(0,f-tmStreak()))};
+  if(m==='pause')return {st:'❚❚ 일시정지',cl:'pz',big:tmFmt(t.ss||0),sub:'다시 시작을 누르면 이어서 재요'};
+  if(m==='due')return {st:'🍎 쉬는 시간이에요',cl:'br',big:tmFmt(t.ss||0),sub:S.tmFocus+'분 공부했어요. '+S.tmBreak+'분 쉬어요'};
+  if(m==='break')return {st:'☕ 휴식 중',cl:'br',big:tmFmt(Math.max(0,b-(Date.now()-t.bs)/1000)),sub:'휴식 시간은 순공에 안 들어가요'};
+  return {st:'💪 휴식 끝',cl:'run',big:'00:00',sub:'다시 시작을 눌러요'};
 }
-function tmStart(k,n){tmStop();S.timer={k:k,n:n,s:Date.now()};try{localStorage.setItem('seolho-timer',JSON.stringify(S.timer))}catch(x){}}
-setInterval(function(){
-  if(!S.timer)return;var e=tmElapsed(),a=document.getElementById('tmnow');if(a)a.textContent=tmFmt(e);
-  document.querySelectorAll('.tmb.on .tv').forEach(function(x){x.textContent=tmFmt(e)});
-},1000);
+function tmTick(){
+  var t=S.timer;if(!t)return;var f=S.tmFocus*60,b=S.tmBreak*60,ch=false;
+  if(t.mode==='study'&&tmStreak()>=f){tmCommit(Math.max(0,f-(t.ss||0)));t.mode='due';tmSave();fx('end');S.toast='🍎 '+S.tmFocus+'분 공부 끝! '+S.tmBreak+'분 쉬어요';clearTimeout(toastT);toastT=setTimeout(function(){S.toast='';render()},8000);ch=true}
+  else if(t.mode==='break'&&(Date.now()-t.bs)/1000>=b){t.mode='bdone';tmSave();fx('badge');S.toast='💪 휴식 끝! 다시 시작해요';clearTimeout(toastT);toastT=setTimeout(function(){S.toast='';render()},8000);ch=true}
+  if(ch){render();return}
+  var v=tmView(),a=document.getElementById('tmbig'),s=document.getElementById('tmsub');if(a&&v){a.textContent=v.big;if(s)s.textContent=v.sub}
+  document.querySelectorAll('.tmb.on .tv').forEach(function(x){x.textContent=tmFmt(tmStreak())});
+  var d=document.getElementById('tmday');if(d)d.textContent=tmMin(tmDayTotal(d.dataset.k));
+}
+setInterval(tmTick,1000);
 function saveMeta(){
   saveLocal();
   if(DB)DB.doc('settings/daymeta').set({m:S.meta}).catch(function(){S.store='error';renderSync()});
@@ -679,13 +720,14 @@ function tiersOf(){
 }
 function topGoal(){return tiersOf()[2].n}
 var AC=null,MG=null,NB=null;
-function prefsSave(){try{localStorage.setItem('seolho-prefs',JSON.stringify({sound:S.sound,vol:S.vol,theme:S.theme,skin:S.skin,haptic:S.haptic,voice:S.voice}))}catch(e){}}
+function prefsSave(){try{localStorage.setItem('seolho-prefs',JSON.stringify({sound:S.sound,vol:S.vol,theme:S.theme,skin:S.skin,haptic:S.haptic,voice:S.voice,tf:S.tmFocus,tb:S.tmBreak}))}catch(e){}}
 function applySkin(){try{var r=document.documentElement;if(S.skin==='giants'||S.skin==='kk'||S.skin==='bs')r.setAttribute('data-skin',S.skin);else r.removeAttribute('data-skin')}catch(e){}}
 function prefsLoad(){
   try{
     var j=JSON.parse(localStorage.getItem('seolho-prefs')||'null');
     if(j){
       if(typeof j.sound==='boolean')S.sound=j.sound;
+      if(+j.tf>=5&&+j.tf<=120)S.tmFocus=+j.tf;if(+j.tb>=1&&+j.tb<=60)S.tmBreak=+j.tb;
       if(typeof j.vol==='number')S.vol=Math.min(1,Math.max(0,j.vol));
       if(['park','arcade','giants'].indexOf(j.theme)>=0)S.theme=j.theme;
       if(j.skin==='giants'||j.skin==='basic'||j.skin==='kk'||j.skin==='bs')S.skin=j.skin;
@@ -1204,8 +1246,21 @@ function scoreboard(its,ds){
 function viewCtx(r){var d=new Date(r.now.getFullYear(),r.now.getMonth(),r.now.getDate()+S.vo),ti=(d.getDay()+6)%7,dates=[];for(var i=0;i<7;i++)dates.push(new Date(d.getFullYear(),d.getMonth(),d.getDate()-ti+i));return {now:d,ti:ti,dates:dates,tk:key(d)}}
 function tmBtn(k,it,i){
   if(!(it.m&4))return '';
-  var on=S.timer&&S.timer.k===k&&S.timer.n===it.n,sec=tmSecs(k,it.n);
-  return '<button type="button" class="tmb'+(on?' on':'')+'" data-act="tm" data-ti="'+i+'" aria-pressed="'+!!on+'" aria-label="'+esc(it.n)+(on?' 타이머 멈추기':' 타이머 시작')+'">'+(on?'<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2.5"/></svg><b class="tv">'+tmFmt(tmElapsed())+'</b>':'<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 2.5h5M12 2.5v3"/><circle cx="12" cy="14" r="7.5"/><path d="M12 14l3-3"/></svg><b>'+(sec?tmMin(sec):'시작')+'</b>')+'</button>';
+  var t=S.timer,mine=t&&t.k===k&&t.n===it.n,sec=tmSecs(k,it.n),cls='',inner;
+  if(mine&&t.mode==='study'){cls=' on';inner='<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="5" height="16" rx="1.5"/><rect x="14" y="4" width="5" height="16" rx="1.5"/></svg><b class="tv">'+tmFmt(tmStreak())+'</b>'}
+  else if(mine){cls=' pz';inner='<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg><b>'+(t.mode==='pause'?'이어서':'휴식')+'</b>'}
+  else inner='<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 2.5h5M12 2.5v3"/><circle cx="12" cy="14" r="7.5"/><path d="M12 14l3-3"/></svg><b>'+(sec?tmMin(sec):'시작')+'</b>';
+  return '<button type="button" class="tmb'+cls+'" data-act="tm" data-ti="'+i+'" aria-label="'+esc(it.n)+' 타이머">'+inner+'</button>';
+}
+function tmPanel(){
+  var t=S.timer,v=tmView();if(!t||!v)return '';
+  var m=t.mode,B=function(act,ic,lb,cls,dis){return '<button type="button" class="bB'+(cls?' '+cls:'')+'" data-act="'+act+'"'+(dis?' disabled':'')+'>'+ic+lb+'</button>'};
+  var I={p:'<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="5" height="16" rx="1.5"/><rect x="14" y="4" width="5" height="16" rx="1.5"/></svg>',g:'<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>',o:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>',c:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9h11v5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5z"/><path d="M16 10h2a2.5 2.5 0 0 1 0 5h-2"/><path d="M8 3v2M12 3v2"/></svg>'},bs;
+  if(m==='study')bs=B('tmpause',I.p,'정지','p')+B('tmresume',I.g,'다시 시작','',1)+B('tmend',I.o,'완료','f');
+  else if(m==='pause')bs=B('tmpause',I.p,'정지','',1)+B('tmresume',I.g,'다시 시작','p')+B('tmend',I.o,'완료','f');
+  else if(m==='due')bs=B('tmbreak',I.c,S.tmBreak+'분 휴식','p')+B('tmresume',I.g,'계속 공부','')+B('tmend',I.o,'완료','f');
+  else bs=B('tmpause',I.p,'정지','',1)+B('tmresume',I.g,m==='bdone'?'다시 시작':'바로 시작','p')+B('tmend',I.o,'완료','f');
+  return '<div class="cardB"><span class="status '+v.cl+'">'+v.st+'</span><div class="nm">'+esc(t.n)+'</div><div class="tmbig" id="tmbig">'+v.big+'</div><div class="tsub" id="tmsub">'+v.sub+'</div><div class="bs">'+bs+'</div></div>';
 }
 function renderToday(c){
   var real=c,ro=!!S.vo;if(ro)c=viewCtx(real);
@@ -1251,11 +1306,15 @@ function renderToday(c){
    (S.rainAsk?'<div class="card" style="margin:0 0 12px"><div class="lbl">'+(inf.rain?'우천 취소를 해제할까요?':'급한 일로 오늘 일정을 못 하게 됐나요? 우천 취소로 처리하면 오늘은 타율·달성률·이용권 조건에서 빠져요.')+' 부모 비밀번호를 입력하세요.</div><div class="brow"><input id="rpin" type="password" inputmode="numeric" maxlength="8" placeholder="비밀번호" aria-label="부모 비밀번호" style="flex:1;min-width:120px"><button type="button" class="btn" data-act="rainok" style="margin:0">확인</button><button type="button" class="btn2" data-act="rainask" style="margin:0">닫기</button></div>'+(S.rainErr?'<div class="warn" style="margin:8px 0 0">비밀번호가 맞지 않아요.</div>':'')+'</div>':'')+
    (inf.rain?'<div class="warn" style="margin:0 0 12px">☔ 오늘은 우천 취소예요. 오늘 항목은 타율·달성률·이용권 조건에서 빠져요.</div>':'')+
    (S.toast?'<div class="win" role="status" style="margin:0 0 12px">'+esc(S.toast)+'</div>':'')+
-   (S.timer?'<div class="tmcard"><span>⏱ '+esc(S.timer.n)+'</span><b id="tmnow">'+tmFmt(tmElapsed())+'</b><button type="button" class="btn2" data-act="tmstop" style="margin:0">정지</button></div>':'')+
+   (S.timer?tmPanel():'')+
    '<div class="today"><div>'+list+'</div><div class="side">'+
    '<div class="card"><div class="lbl">'+(ro?'이날의':'오늘의')+' 훈련</div><div class="big">'+n+' / '+total+'</div>'+scoreboard(its,ds)+diamondSvg(stage)+'<div class="stg">'+stageTxt+'</div><div class="lbl" style="margin-top:6px;text-align:center">'+msg+'</div></div>'+
    bat+(ro?'':mood)+((ro&&S.vo<0)?'<div class="card"><div class="lbl">체크를 빠뜨렸나요? 부모님 확인 번호로 이날 체크를 고칠 수 있어요.</div><div class="brow"><button type="button" class="btn2" data-act="pfix">🔒 이날 체크 고치기</button></div></div>':'')+note+
    '<div class="card"><div class="lbl">다음 할 일</div><div style="font-size:20px;font-weight:700">'+(nextI<0?'모두 완료':esc(its[nextI].n))+'</div></div>'+
+   (function(){var st=tmStOf(c.tk),ks=Object.keys(st).filter(function(n){return st[n]>0}).sort(function(a,b){return st[b]-st[a]});
+     if(!ks.length&&!its.some(function(q){return q.m&4}))return '';
+     return '<div class="card"><div class="lbl">'+(ro?'이날의':'오늘의')+' 순공시간</div><div class="big" id="tmday" data-k="'+c.tk+'">'+tmMin(tmDayTotal(c.tk))+'</div>'+
+       (ks.length?ks.map(function(n){return '<div class="xb"><span>'+esc(n)+'</span><span>'+tmMin(st[n])+'</span></div>'}).join(''):'<div class="lbl">⏱ 버튼으로 시간을 재면 여기에 모여요.</div>')+'</div>'})()+
    tixCard(real)+rew+
    '</div></div>'+
    (S.cele?'<div class="cele '+S.cele.k+'" role="status"><div>'+esc(S.cele.t)+'</div></div>':'');
@@ -1271,8 +1330,12 @@ function todayClick(e){
   if(a==='rainok'){doRain();return}
   if(a==='mkopen'){S.mkOpen=!S.mkOpen;render();return}
   if(a==='mk'){var md=+b.dataset.d,mid=b.dataset.id,mk0=key(c.dates[md]),nm0=(itemsOf(md).filter(function(q){return q.id===mid})[0]||{}).n;if(nm0){var cur=((S.meta[mk0]||{}).mk||[]).slice();if(cur.indexOf(nm0)<0)cur.push(nm0);setMeta(mk0,{mk:cur});fx('ck')}render();return}
-  if(a==='tm'){var itx=itemsOf(c.ti)[+b.dataset.ti];if(!itx||S.vo)return;if(S.timer&&S.timer.k===c.tk&&S.timer.n===itx.n)tmStop();else tmStart(c.tk,itx.n);fx('ck');render();return}
-  if(a==='tmstop'){tmStop();fx('un');render();return}
+  if(a==='tm'){var itx=itemsOf(c.ti)[+b.dataset.ti];if(!itx||S.vo)return;var tt=S.timer;
+    if(tt&&tt.k===c.tk&&tt.n===itx.n){if(tt.mode==='study')tmPause();else tmResume()}else tmStart(c.tk,itx.n);fx('ck');render();return}
+  if(a==='tmpause'){tmPause();fx('un');render();return}
+  if(a==='tmresume'){tmResume();fx('ck');render();return}
+  if(a==='tmbreak'){tmBreak();fx('ck');render();return}
+  if(a==='tmend'){tmEnd();fx('badge');render();return}
   if(a==='fold'){S.unfold=!S.unfold;render();return}
   if(a==='snd'){
     S.sound=!S.sound;prefsSave();
@@ -1712,15 +1775,23 @@ function renderLog(c){
     var ks=Object.keys(pl).sort(function(a,b){return pl[b]-pl[a]}),mx=pl[ks[0]]||1;
     return '<div class="card"><h2>과목별 주간 횟수 비중</h2><div class="lbl">일정표에 배치된 이번 주 횟수예요. 한 번(이닝)을 1회로 세요.</div>'+ks.map(function(k){var pc=pct(pl[k],tp);return '<div style="margin-top:10px"><div style="display:flex;justify-content:space-between;gap:8px"><b>'+esc(k)+'</b><span>'+pl[k]+'회 · '+pc+'%</span></div><div class="meter"><b style="width:'+Math.round(pl[k]/mx*100)+'%"></b></div><div class="lbl" style="margin-top:2px">지금까지 완료 '+(dn2[k]||0)+'회</div></div>'}).join('')+'<div class="lbl" style="margin-top:10px">합계 '+tp+'회 · 완료 '+td+'회</div></div>'})();
   var tmCard=(function(){
-    var wk=0,td=0,by={},bi={};
-    for(var i=0;i<7;i++){var k0=key(c.dates[i]),st0=(S.meta[k0]||{}).st||{},ds1=doneSet(k0);
-      Object.keys(st0).forEach(function(n){var s=st0[n]||0;if(!s)return;wk+=s;if(k0===c.tk)td+=s;var sj=subjOf({n:n},ds1);by[sj]=(by[sj]||0)+s;bi[n]=(bi[n]||0)+s})}
-    if(S.timer){var e=tmElapsed();wk+=e;td+=e}
+    var wkKeys=c.dates.map(key),by={},it={},dayT=[],today=0,wk=0,all=0,ndays=0;
+    Object.keys(S.meta).concat(S.timer?[S.timer.k]:[]).filter(function(k,ix,ar){return /^\d{4}-\d\d-\d\d$/.test(k)&&ar.indexOf(k)===ix}).forEach(function(k){
+      var st=tmStOf(k),ds1=doneSet(k),isW=wkKeys.indexOf(k)>=0,dt=0;
+      Object.keys(st).forEach(function(n){var s=st[n]||0;if(s<=0)return;dt+=s;var o=it[n]||(it[n]={t:0,w:0,d:0,days:0});o.t+=s;o.days++;if(isW)o.w+=s;if(k===c.tk)o.d+=s;
+        if(isW){var sj=subjOf({n:n},ds1);by[sj]=(by[sj]||0)+s}});
+      if(dt>0){all+=dt;ndays++;if(isW)wk+=dt;if(k===c.tk)today=dt}});
+    var mxd=1;wkKeys.forEach(function(k){var v=0,st=tmStOf(k);Object.keys(st).forEach(function(n){v+=st[n]||0});dayT.push(v);if(v>mxd)mxd=v});
+    var bars=dayT.map(function(v,i){return '<div'+(i===c.ti?' class="t"':'')+'><span>'+(v?tmMin(v).replace('시간 ','h').replace('분','m').replace('시간','h'):'')+'</span><i style="height:'+Math.max(3,Math.round(v/mxd*80))+'%"></i><span>'+DOW[i]+'</span></div>'}).join('');
     var ks=Object.keys(by).sort(function(a,b){return by[b]-by[a]}),mx=by[ks[0]]||1;
     var rows=ks.map(function(sj){return '<div class="xb"><span>'+esc(sj)+'</span><span>'+tmMin(by[sj])+'</span></div><div class="meter"><b style="width:'+Math.round(by[sj]/mx*100)+'%"></b></div>'}).join('');
-    var top=Object.keys(bi).sort(function(a,b){return bi[b]-bi[a]}).slice(0,5).map(function(n){return '<div class="kv"><span>'+esc(n)+'</span><span><b>'+tmMin(bi[n])+'</b></span></div>'}).join('');
-    return '<div class="card"><h2>순공시간 <span class="lbl">이번 주</span></h2><div class="kv" style="border-top:0"><span>오늘</span><span><b>'+tmMin(td)+'</b></span></div><div class="kv"><span>이번 주 합계</span><span><b>'+tmMin(wk)+'</b></span></div>'+
-      (rows?'<div class="lbl" style="margin-top:8px">과목별</div>'+rows+'<div class="lbl" style="margin-top:10px">오래 한 문제집</div>'+top:'<div class="lbl">오늘 탭에서 항목 옆 ⏱ 버튼으로 시간을 재 보세요.</div>')+'</div>';
+    var names=Object.keys(it).sort(function(a,b){return it[b].t-it[a].t});
+    var tbl=names.length?'<div style="overflow-x:auto"><table class="tms"><thead><tr><th>문제집</th><th>오늘</th><th>이번 주</th><th>누적</th><th>일 평균</th></tr></thead><tbody>'+names.map(function(n){var o=it[n];return '<tr><td>'+esc(n)+'</td><td>'+(o.d?tmMin(o.d):'-')+'</td><td>'+(o.w?tmMin(o.w):'-')+'</td><td>'+tmMin(o.t)+'</td><td>'+tmMin(o.t/o.days)+'</td></tr>'}).join('')+'</tbody></table></div>':'<div class="lbl">일정표에서 ⏱ 타이머를 켠 항목을 오늘 탭에서 재면 여기에 쌓여요.</div>';
+    return '<div class="card"><h2>순공시간 집계</h2><div class="kv" style="border-top:0"><span>오늘</span><span><b>'+tmMin(today)+'</b></span></div><div class="kv"><span>이번 주 합계</span><span><b>'+tmMin(wk)+'</b></span></div><div class="kv"><span>누적 ('+ndays+'일)</span><span><b>'+tmMin(all)+'</b></span></div>'+
+      '<div class="lbl" style="margin-top:10px">요일별 (이번 주)</div><div class="tdb">'+bars+'</div>'+
+      (rows?'<div class="lbl" style="margin-top:12px">과목별 (이번 주)</div>'+rows:'')+
+      '<div class="lbl" style="margin-top:12px">문제집별 통계</div>'+tbl+
+      '<details style="margin-top:12px"><summary class="lbl">집계 방식 보기</summary><div class="how"><p><b>무엇을 세나요</b> 정지하지 않고 ⏱가 돌아간 시간만 순공으로 세요. 정지·휴식 시간은 빠져요.</p><p><b>저장</b> 정지·완료·휴식 시작·체크할 때마다 그날 그 문제집 시간에 더해져요. 앱을 닫아도 재던 시간은 이어져요. 한 번에 최대 2시간까지만 인정해요.</p><p><b>오늘 / 이번 주 / 누적</b> 오늘은 오늘 날짜 합, 이번 주는 월~일 합, 누적은 지금까지 전부예요. 일 평균은 그 문제집을 잰 날만 나눠요.</p><p><b>과목별</b> 문제집이 속한 과목으로 모아요. 독서·교양은 세부 항목 규칙을 따라요.</p><p><b>고치기</b> 빠뜨린 시간은 아래 날짜별 관리에서 부모님 확인 후 5분씩 더하거나 뺄 수 있어요.</p></div></details></div>';
   })();
   var subs='',worst=null;
   axes().forEach(function(sj){
@@ -1864,9 +1935,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:174};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:175};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+  ['v1.75','순공 타이머: 큰 카드(정지·다시 시작·완료), 40분 공부→10분 휴식 알림, 오늘 순공 합계, 문제집별 통계·집계 방식 설명'],
   ['v1.74','타이머는 문제집 단위: 한 칸에서 ⏱를 켜면 같은 이름의 모든 칸에 적용'],
   ['v1.73','순공 타이머: 일정표에서 ⏱ 타이머를 체크한 항목에만 표시 · 스톱워치 아이콘과 버튼 크게'],
   ['v1.72','순공 타이머: 오늘 탭 항목마다 ⏱ 버튼, 기록 탭 순공시간 통계, 부모 확인 후 시간 수정'],
@@ -1950,6 +2022,10 @@ function renderSet(c){
    '<div class="card"><h2>효과음 테마</h2><div class="thms">'+th+'</div>'+
    '<div class="lbl" style="margin-top:12px">미리듣기 (고른 테마로 들려요)</div><div class="brow" style="margin-top:6px">'+pv+'</div></div>'+
    '<div class="card"><h2>진동</h2>'+sw('phap','진동 반응','체크할 때 짧게, 홈런일 때 길게 울려요'+(canVib?'':' (이 기기는 진동을 지원하지 않아요. 아이패드·아이폰은 진동이 없어요)'),S.haptic)+'</div>'+
+   '<div class="card"><h2>순공 타이머</h2><p class="lbl" style="margin:0 0 8px">공부 시간이 지나면 소리와 함께 쉬는 시간을 알려줘요. 이 기기에만 저장돼요.</p>'+
+   '<div class="kv" style="border-top:0"><span>공부</span><select id="tmf" style="width:auto">'+[20,25,30,40,50,60].map(function(n){return '<option value="'+n+'"'+(S.tmFocus===n?' selected':'')+'>'+n+'분</option>'}).join('')+'</select></div>'+
+   '<div class="kv"><span>휴식</span><select id="tmbk" style="width:auto">'+[5,10,15,20].map(function(n){return '<option value="'+n+'"'+(S.tmBreak===n?' selected':'')+'>'+n+'분</option>'}).join('')+'</select></div>'+
+   '<div class="how" style="margin-top:8px"><b>사용법</b> 오늘 탭에서 ⏱를 누르면 시작해요. 정지는 잠깐 멈춤, 다시 시작은 이어서, 완료는 끝내고 저장이에요. 항목을 체크하면 자동으로 완료돼요.</div></div>'+
    '</div><div>'+
    '<div class="card"><h2>앱 정보</h2>'+
    '<div class="kv"><span>업데이트</span><span><b>'+VS(APP.ver)+' · '+APP.date+'</b></span></div>'+
@@ -1957,6 +2033,9 @@ function renderSet(c){
    '<div class="kv"><span>새 버전 확인</span><button type="button" class="btn2" data-act="upd" id="updb" style="margin:0">업데이트 받기</button></div></div>'+
    '<details class="card"><summary>업데이트 내역</summary>'+log+'</details>'+
    '</div></div>';
+  var tf=$('tmf'),tk2=$('tmbk');
+  if(tf)tf.addEventListener('change',function(){S.tmFocus=+this.value;prefsSave();fx('ck')});
+  if(tk2)tk2.addEventListener('change',function(){S.tmBreak=+this.value;prefsSave();fx('ck')});
   var v=$('vol');
   if(v){
     v.addEventListener('input',function(){S.vol=(+this.value)/100;if(MG)MG.gain.value=S.vol;var t=$('volv');if(t)t.textContent=this.value+'%';prefsSave()});
