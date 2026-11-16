@@ -18,6 +18,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -98,7 +99,7 @@ h2{font-size:15px;font-weight:700;margin:0 0 10px}
 .tmb.pz{border-color:var(--amber);color:var(--amber);background:var(--amber-bg)}
 .tmb.on{background:var(--navy);border-color:var(--navy);color:var(--on-navy)}
 .tmb.on b{font-variant-numeric:tabular-nums}
-.cardB{margin:0 0 12px;border-radius:16px;border:2px solid var(--navy);background:var(--panel);padding:14px 16px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.cardB{margin:0 0 14px;border-radius:16px;border:2px solid var(--navy);background:var(--panel);padding:14px 16px;display:flex;flex-direction:column;align-items:center;gap:6px}
 .cardB .nm{font-size:16px;color:var(--muted)}
 .tmbig{font-size:52px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
 .tsub{font-size:13px;color:var(--muted)}
@@ -1306,8 +1307,7 @@ function renderToday(c){
    (S.rainAsk?'<div class="card" style="margin:0 0 12px"><div class="lbl">'+(inf.rain?'우천 취소를 해제할까요?':'급한 일로 오늘 일정을 못 하게 됐나요? 우천 취소로 처리하면 오늘은 타율·달성률·이용권 조건에서 빠져요.')+' 부모 비밀번호를 입력하세요.</div><div class="brow"><input id="rpin" type="password" inputmode="numeric" maxlength="8" placeholder="비밀번호" aria-label="부모 비밀번호" style="flex:1;min-width:120px"><button type="button" class="btn" data-act="rainok" style="margin:0">확인</button><button type="button" class="btn2" data-act="rainask" style="margin:0">닫기</button></div>'+(S.rainErr?'<div class="warn" style="margin:8px 0 0">비밀번호가 맞지 않아요.</div>':'')+'</div>':'')+
    (inf.rain?'<div class="warn" style="margin:0 0 12px">☔ 오늘은 우천 취소예요. 오늘 항목은 타율·달성률·이용권 조건에서 빠져요.</div>':'')+
    (S.toast?'<div class="win" role="status" style="margin:0 0 12px">'+esc(S.toast)+'</div>':'')+
-   (S.timer?tmPanel():'')+
-   '<div class="today"><div>'+list+'</div><div class="side">'+
+   '<div class="today"><div>'+(S.timer?tmPanel():'')+list+'</div><div class="side">'+
    '<div class="card"><div class="lbl">'+(ro?'이날의':'오늘의')+' 훈련</div><div class="big">'+n+' / '+total+'</div>'+scoreboard(its,ds)+diamondSvg(stage)+'<div class="stg">'+stageTxt+'</div><div class="lbl" style="margin-top:6px;text-align:center">'+msg+'</div></div>'+
    bat+(ro?'':mood)+((ro&&S.vo<0)?'<div class="card"><div class="lbl">체크를 빠뜨렸나요? 부모님 확인 번호로 이날 체크를 고칠 수 있어요.</div><div class="brow"><button type="button" class="btn2" data-act="pfix">🔒 이날 체크 고치기</button></div></div>':'')+note+
    '<div class="card"><div class="lbl">다음 할 일</div><div style="font-size:20px;font-weight:700">'+(nextI<0?'모두 완료':esc(its[nextI].n))+'</div></div>'+
@@ -1935,9 +1935,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:175};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:176};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+  ['v1.76','타이머 카드를 왼쪽 목록 폭에 맞춰 줄임'],
   ['v1.75','순공 타이머: 큰 카드(정지·다시 시작·완료), 40분 공부→10분 휴식 알림, 오늘 순공 합계, 문제집별 통계·집계 방식 설명'],
   ['v1.74','타이머는 문제집 단위: 한 칸에서 ⏱를 켜면 같은 이름의 모든 칸에 적용'],
   ['v1.73','순공 타이머: 일정표에서 ⏱ 타이머를 체크한 항목에만 표시 · 스톱워치 아이콘과 버튼 크게'],
