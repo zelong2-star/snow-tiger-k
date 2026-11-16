@@ -28,6 +28,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -2047,9 +2048,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:185};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:186};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+  ['v1.86','선수 카드를 실제 롯데 자이언츠 선수 이름으로 변경(응원 친구 8종 포함, 총 25종)'],
   ['v1.85','놀이 탭 추가: 퀴즈 타석 · 홈런 더비(쉬는 시간 미니게임) · 오답 복습 · 선수 카드 뽑기'],
   ['v1.84','타이머 알약을 길게 누르면 그 항목의 오늘 기록 리셋'],
   ['v1.83','체크 표시 모양을 화면 테마(글꼴)별로 다르게'],
@@ -2278,19 +2280,16 @@ var QB=[
 ['상식','우리 태양계의 중심에 있는 별은?',['태양','달','지구','화성']]
 ];
 var CARDS=[
-['c1','🐿️','다람이','1루수','N','도토리 대신 홈런이다!'],['c2','🐻','곰돌','포수','N','내 미트는 철벽이야!'],
-['c3','🐰','깡총이','2루수','N','깡총깡총 병살타!'],['c4','🐯','호돌','3루수','N','핫코너는 내 차지야'],
-['c5','🦅','매솔','중견수','N','하늘 끝까지 잡는다!'],['c6','🐢','느림보','유격수','N','천천히, 하지만 정확히'],
-['c7','🐶','멍멍','좌익수','N','공은 내가 물어 온다!'],['c8','🐱','나비','우익수','N','살금살금 다이빙 캐치'],
-['c9','🐧','뒤뚱','선발 투수','N','뒤뚱뒤뚱 직구 쾅!'],['c10','🦆','꽥꽥','대타','N','꽥! 대타 나갑니다'],
-['c11','🐸','개굴','구원 투수','N','개굴개굴 삼진!'],['c12','🐼','판다','지명타자','N','든든하게 한 방'],
-['c13','🦒','키다리','1루수','N','높이 뻗어 잡는다'],['c14','🐷','꿀꿀','코치','N','꿀꿀! 힘내자!'],
-['r1','🦁','사자왕','4번 타자','R','담장 너머로 날려 줄게!'],['r2','🐺','번개늑대','도루왕','R','번쩍! 벌써 2루!'],
-['r3','🦈','상어','마무리 투수','R','9회는 내가 끝낸다'],['r4','🦉','올빼미','심판','R','내 눈은 못 속여!'],
-['r5','🐬','돌고래','유격수','R','물 흐르듯 병살 플레이'],['r6','🦌','사슴','중견수','R','쭉쭉 달려 잡는다'],
-['s1','🐉','불꽃용','에이스 투수','S','불꽃 강속구 간다!'],['s2','🦄','유니콘','홈런왕','S','전설의 홈런을 쏜다'],
-['s3','🔥','불사조','클린업 타자','S','쓰러져도 다시 타석에!'],
-['l1','🏆','황금 거인','전설의 4번 타자','L','모두의 응원이 내 힘!']
+['p1','👑','최동원','투수 · 영원한 11번','L','부산의 무쇠팔, 영원한 에이스!'],['p2','👑','이대호','내야수 · 영원한 10번','L','부산의 4번 타자, 영원한 거인!'],
+['p3','⚾','박세웅','투수','S','마운드를 지켜 줘!'],['p4','⚾','김원중','투수 · 마무리','S','9회는 믿고 맡길게!'],['p5','🏏','한동희','내야수','S','시원한 한 방 부탁해!'],
+['p6','🏃','윤동희','외야수','R','외야를 시원하게 달려라!'],['p7','🏏','나승엽','내야수','R','멀리멀리 날려 버려!'],['p8','🏏','고승민','내야수','R','연속 안타 가자!'],
+['p9','🏃','황성빈','외야수','R','번개처럼 도루!'],['p10','🏏','손호영','야수','R','사직을 뜨겁게!'],['p11','🏃','전준우','외야수','R','베테랑의 한 방!'],
+['p12','🧤','유강남','포수','N','안방을 든든하게!'],['p13','🏏','박승욱','내야수','N','깔끔한 수비 부탁해!'],['p14','⚾','정철원','투수','N','씩씩하게 던져라!'],
+['p15','⚾','이민석','투수','N','강속구로 삼진!'],['p16','🏏','한태양','내야수','N','내야를 책임져!'],['p17','🏏','노진혁','내야수','N','한 방 기대할게!'],
+['c1','🐿️','다람이','1루수 · 응원 친구','N','도토리 대신 홈런이다!'],['c2','🐻','곰돌','포수 · 응원 친구','N','내 미트는 철벽이야!'],
+['c3','🐰','깡총이','2루수 · 응원 친구','N','깡총깡총 병살타!'],['c4','🐯','호돌','3루수 · 응원 친구','N','핫코너는 내 차지야'],
+['c5','🦅','매솔','중견수 · 응원 친구','N','하늘 끝까지 잡는다!'],['c6','🐢','느림보','유격수 · 응원 친구','N','천천히, 하지만 정확히'],
+['c7','🐶','멍멍','좌익수 · 응원 친구','N','공은 내가 물어 온다!'],['c8','🐱','나비','우익수 · 응원 친구','N','살금살금 다이빙 캐치']
 ];
 var RAR={N:{n:'일반',w:65,c:'#7A8AA8'},R:{n:'레어',w:24,c:'#2F7FD6'},S:{n:'슈퍼',w:9,c:'#8E44D0'},L:{n:'전설',w:2,c:'#E8A800'}};
 function plGet(){
@@ -2364,10 +2363,10 @@ function plDrawCard(){var p=plGet();if(plTix()<1)return;
 function plCardHtml(c,own,big){
   var rr=RAR[c[4]],h=0;for(var i=0;i<c[0].length;i++)h+=c[0].charCodeAt(i);
   var st=[['파워',1+(h*3)%5],['스피드',1+(h*7)%5],['수비',1+(h*11)%5]];
-  if(c[4]==='L')st=[['파워',5],['스피드',5],['수비',5]];
+  
   if(!own)return '<div class="pc lock"><div class="pce">❔</div><div class="pcn">???</div></div>';
   return '<div class="pc r'+c[4]+(big?' big':'')+'" style="--rc:'+rr.c+'"><div class="pcr">'+rr.n+'</div><div class="pce">'+c[1]+'</div><div class="pcn">'+esc(c[2])+'</div><div class="pcp">'+esc(c[3])+'</div>'+
-    (big?'<div class="pcs">'+st.map(function(x){return '<span>'+x[0]+' '+'★'.repeat(x[1])+'<i>'+'★'.repeat(5-x[1])+'</i></span>'}).join('')+'</div><div class="pcl">“'+esc(c[5])+'”</div>':'')+'</div>';
+    (big?(c[0].charAt(0)==='c'?'<div class="pcs">'+st.map(function(x){return '<span>'+x[0]+' '+'★'.repeat(x[1])+'<i>'+'★'.repeat(5-x[1])+'</i></span>'}).join('')+'</div>':'')+'<div class="pcl">📣 '+esc(c[5])+'</div>':'')+'</div>';
 }
 /* 화면 */
 function plBack(){return '<button type="button" class="btn2" data-act="plhub" style="margin:0 0 12px">← 놀이터로</button>'}
