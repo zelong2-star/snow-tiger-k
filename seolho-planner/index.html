@@ -34,6 +34,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -518,7 +519,7 @@ input[type=range]{height:34px;padding:0;accent-color:#DD032F}
 .kbr{position:absolute;left:0;right:0;bottom:0;height:1.8cqw;background:var(--tc);z-index:4}
 .kgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}.kcb2{appearance:none;border:0;background:none;padding:0;cursor:pointer;display:block;width:100%}.kmore{grid-column:1/-1}
 .kq{flex:1;min-width:180px;max-width:360px;font:inherit;padding:10px 14px;border-radius:99px;border:2px solid var(--navy);background:var(--panel);color:var(--ink)}
-.ktab{flex-wrap:wrap}
+.ktab{flex-wrap:wrap}.kgl{position:relative}.kgl.big{max-width:340px;margin:0 auto}.kmk2{position:absolute;right:14px;top:54px;z-index:6;display:flex;gap:4px}.kmk2 em{font-style:normal;font-size:16px;line-height:1;background:#fffbe8;color:#c0392b;border:1px solid #c9a24a;border-radius:99px;padding:3px 6px}.kmk2 em.ok{color:#1f7a3d}
 </style>
 
 <div class="app">
@@ -704,7 +705,7 @@ function toggle(i,keepSubs){
   if(postY.b2&&!preY.b2){msgs.push('🥈 2루타!');cele={t:'2루타!',k:'x2'};snd='bt'}
   if(postY.b3&&!preY.b3){msgs.push('🥉 3루타!');cele={t:'3루타!',k:'x3'};snd='bt'}
   if(postY.hr&&!preY.hr){msgs.push('💥 홈런!');cele={t:'홈런!',k:'hr'};snd='hr'}
-  if(inf.fin&&!preF&&!inf.rain){msgs.push('⚾ 경기 종료! 오늘 타율 '+avg(inf.y.h,inf.y.ab));if(plGrant('f:'+c.tk))msgs.push('🎴 뽑기권 1장!');if(snd!=='hr'&&snd!=='bt')snd='end'}
+  if(inf.fin&&!preF&&!inf.rain){msgs.push('⚾ 경기 종료! 오늘 타율 '+avg(inf.y.h,inf.y.ab));if(snd!=='hr'&&snd!=='bt')snd='end'}
   var nowS=seasonStats(c),recMsg=[];
   if(nowS.hsBest>preS.hsBest&&nowS.hsBest>=3)recMsg.push('연속 안타 '+nowS.hsBest+'경기');
   if(nowS.apBest>preS.apBest&&nowS.apBest>=3)recMsg.push('연속 출전 '+nowS.apBest+'경기');
@@ -2103,9 +2104,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:191};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:192};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+  ['v1.92','레전드 카드(KBO 레전드 40 + 이대호)를 선수 도감 ‘레전드’ 탭으로 이동 · 기존 선수 카드(뽑기)와 뽑기권 제거 (모은 카드는 도감 수집으로 이어짐)'],
   ['v1.91','놀이터에 ‘KBO 2026 선수 도감’ 추가: 10개 구단 621명 카드(구단·포지션 필터, 이름·번호 검색, 즐겨찾기·수집 표시). 그림은 준비 중'],
   ['v1.90','놀이터는 쉬는 시간에만 열림(그 외엔 부모 번호로 30분 열기) · 카드 모음을 수집북처럼 한 줄 8장'],
   ['v1.89','카드 그림 자리를 등번호/포지션 + 구단 엠블럼 문양 디자인으로 변경'],
@@ -2381,24 +2383,9 @@ var CARDS=[
 ['k38','박진만','유격수','삼성','N','K','철벽 유격수!','근성의 야수'],
 ['k39','더스틴 니퍼트','투수 · 외국인','두산','N','K','두산의 듬직한 에이스!','불굴의 의지'],
 ['k40','배영수','투수','삼성','N','K','삼성 마운드의 투혼!','불굴의 의지'],
-['l1','이대호','내야수 · 영구결번 10','롯데','S','L','부산의 4번 타자, 영원한 거인!'],
-['l2','박세웅','투수','롯데','R','L','마운드를 지켜 줘!'],
-['l3','김원중','투수 · 마무리','롯데','R','L','9회는 믿고 맡길게!'],
-['l4','한동희','내야수','롯데','R','L','시원한 한 방 부탁해!'],
-['l5','윤동희','외야수','롯데','R','L','외야를 시원하게 달려라!'],
-['l6','나승엽','내야수','롯데','N','L','멀리멀리 날려 버려!'],
-['l7','고승민','내야수','롯데','N','L','연속 안타 가자!'],
-['l8','황성빈','외야수','롯데','N','L','번개처럼 도루!'],
-['l9','손호영','야수','롯데','N','L','사직을 뜨겁게!'],
-['l10','전준우','외야수','롯데','N','L','베테랑의 한 방!'],
-['l11','유강남','포수','롯데','N','L','안방을 든든하게!'],
-['l12','박승욱','내야수','롯데','N','L','깔끔한 수비 부탁해!'],
-['l13','정철원','투수','롯데','N','L','씩씩하게 던져라!'],
-['l14','이민석','투수','롯데','N','L','강속구로 삼진!'],
-['l15','한태양','내야수','롯데','N','L','내야를 책임져!'],
-['l16','노진혁','내야수','롯데','N','L','한 방 기대할게!']
+['l1','이대호','내야수 · 영구결번 10','롯데','S','L','부산의 4번 타자, 영원한 거인!']
 ];
-var CSETS={K:'KBO 레전드 40',L:'롯데 자이언츠'};
+var CSETS={K:'KBO 레전드 40',L:'롯데 레전드'};
 var TCOL={'롯데':['#041E42','#D00F31'],'삼성':['#074CA1','#7EA3D6'],'해태':['#B3001B','#F5B5BE'],'LG':['#C30452','#222'],'두산':['#131230','#7C7CB8'],'OB':['#131230','#7C7CB8'],'한화':['#E85D04','#FFC891'],'빙그레':['#E85D04','#FFC891'],'MBC':['#C30452','#222'],'SK':['#CE0E2D','#F5C242'],'현대':['#0A3E8C','#6FA4E8'],'쌍방울':['#1F3A5F','#9FB6D3']};
 var RAR={N:{n:'일반',w:65,c:'#7A8AA8'},R:{n:'레어',w:24,c:'#2F7FD6'},S:{n:'슈퍼',w:9,c:'#8E44D0'},L:{n:'전설',w:2,c:'#E8A800'}};
 function plGet(){
@@ -2408,8 +2395,6 @@ function plGet(){
   return p;
 }
 function plSave(){plGet();saveLocal();if(DB)DB.doc('settings/play').set(S.play).catch(function(){S.store='error';renderSync()})}
-function plTix(){var p=plGet(),u=0;Object.keys(p.cards).forEach(function(k){u+=p.cards[k]||0});return Math.max(0,Object.keys(p.tg).length-u)}
-function plGrant(id){var p=plGet();if(p.tg[id])return false;p.tg[id]=1;plSave();return true}
 function plRnd(n){return Math.floor(Math.random()*n)}
 function plShuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=plRnd(i+1),t=a[i];a[i]=a[j];a[j]=t}return a}
 function plToast(m){S.toast=m;clearTimeout(toastT);toastT=setTimeout(function(){S.toast='';render()},5000)}
@@ -2434,7 +2419,7 @@ function plAnswer(j){var q=S.q;if(!q||q.pick>=0)return;var cur=q.list[q.i],p=plG
   plSave();fx(ok?'bt':'un')}
 function plNext(){var q=S.q;if(!q)return;q.i++;q.pick=-1;
   if(q.i>=q.list.length){q.end=true;var p=plGet(),today=key(new Date());
-    if(q.mode==='quiz'){p.qd[today]={c:q.right,t:q.list.length};if(q.right>=2&&plGrant('q:'+today))q.tix=1;plSave()}
+    if(q.mode==='quiz'){p.qd[today]={c:q.right,t:q.list.length};plSave()}
     fx(q.right>=q.list.length?'hr':'end')}
   else fx('ck')}
 /* 홈런 더비 */
@@ -2458,17 +2443,11 @@ function plSwing(j){var g=S.g;if(!g||!g.live||g.res)return;clearTimeout(g.to);
     if(g.i>=10){g.live=false;g.end=true;var p=plGet(),today=key(new Date());
       if(!p.gd[today]||g.score>p.gd[today])p.gd[today]=g.score;
       p.best=Math.max(p.best||0,g.score);g.rec=g.score>=p.best&&g.score>0;
-      if(g.score>=80&&plGrant('g:'+today))g.tix=1;plSave();fx(g.score>=80?'hr':'end')}
+      plSave();fx(g.score>=80?'hr':'end')}
     else{g.pitch=plMakePitch();g.res=null;g.show=null;plArm()}
     plDraw()},g.res==='miss'||g.res==='late'?1100:800);
 }
 /* 카드 뽑기 */
-function plDrawCard(){var p=plGet();if(plTix()<1)return;
-  var tot=0;Object.keys(RAR).forEach(function(k){tot+=RAR[k].w});var r=plRnd(tot),rk='N';
-  for(var k in RAR){if(r<RAR[k].w){rk=k;break}r-=RAR[k].w}
-  var pool=CARDS.filter(function(c){return c[4]===rk}),c=pool[plRnd(pool.length)];
-  var isNew=!p.cards[c[0]];p.cards[c[0]]=(p.cards[c[0]]||0)+1;plSave();
-  S.dc={id:c[0],isNew:isNew};S.pv='draw';fx(rk==='N'?'ck':rk==='R'?'bt':'hr')}
 var NUMS={'최동원':11,'이대호':10};
 function plCardHtml(c,own,big){
   if(!own)return '<div class="pc lock"><div class="pck">?</div><div class="pcn">???</div></div>';
@@ -2478,7 +2457,7 @@ function plCardHtml(c,own,big){
     '<div class="pca"><svg class="pcst" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M-10 70L60 -10M10 110L110 0M40 110L110 30" stroke="#fff" stroke-opacity=".13" stroke-width="9" fill="none"/></svg><div class="pcnum"><b>'+(NUMS[c[1]]!=null?NUMS[c[1]]:pcode)+'</b>'+(NUMS[c[1]]!=null?'<small>'+pcode+'</small>':'')+'</div><div class="pcem"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="rgba(255,255,255,.14)" stroke="rgba(255,255,255,.75)" stroke-width="3"/><path d="M22 18C34 34 34 66 22 82M78 18C66 34 66 66 78 82" stroke="rgba(255,255,255,.55)" stroke-width="2.5" fill="none" stroke-dasharray="3 4"/></svg><span>'+esc(c[3])+'</span></div>'+(c[5]==='K'?'<em class="pcrb">'+esc(c[7]||'LEGEND')+'</em>':'')+'</div>'+
     '<div class="pcn">'+esc(c[1])+'</div><div class="pcp">'+esc(c[2])+' · '+esc(c[3])+'</div>'+
     (big?'<div class="pcl">📣 '+esc(c[5]==='K'||1?c[6]:'')+'</div>':'')+
-    '<div class="pcf"><span>No.'+String(no).padStart(3,'0')+' / '+CARDS.length+'</span><span>'+(c[5]==='K'?'2021 40주년':'2026 시즌')+'</span></div></div>'+
+    '<div class="pcf"><span>No.'+String(no).padStart(3,'0')+' / '+CARDS.length+'</span><span>'+(c[5]==='K'?'2021 40주년':'롯데 레전드')+'</span></div></div>'+
     (c[4]==='S'||c[4]==='L'?'<div class="pcs2"></div>':'')+'</div>';
 }
 /* 화면 */
@@ -2497,7 +2476,10 @@ var KBP=['투수','포수','내야수','외야수'],KBN=[[1,'외국인'],[2,'신
 var KB=[[1,0,"김강률","37",0,0],[2,0,"김대현","12",0,0],[3,0,"김영우","67",0,0],[4,0,"김유영","0",0,0],[5,0,"김주온","57",0,0],[6,0,"김진성","42",0,0],[7,0,"김진수","45",0,0],[8,0,"박명근","39",0,0],[9,0,"박시원","58",0,0],[10,0,"배재준","25",0,0],[11,0,"백승현","61",0,0],[12,0,"성동현","34",0,0],[13,0,"손주영","29",0,0],[14,0,"송승기","13",0,0],[15,0,"우강훈","20",0,0],[16,0,"유영찬","54",0,0],[17,0,"이민호","26",0,0],[18,0,"이우찬","21",0,0],[19,0,"이정용","31",0,0],[20,0,"이지강","32",0,0],[21,0,"임찬규","1",0,0],[22,0,"장시환","28",0,0],[23,0,"장현식","50",0,0],[24,0,"정우영","18",0,0],[25,0,"조건희","48",0,0],[26,0,"조원태","38",0,0],[27,0,"최지명","16",0,0],[28,0,"함덕주","11",0,0],[29,0,"라클란웰스","68",0,1],[30,0,"요니치리노스","46",0,1],[31,0,"앤더스톨허스트","30",0,1],[32,0,"권우준","49",0,2],[33,0,"김동현","43",0,2],[34,0,"박준성","59",0,2],[35,0,"양우진","65",0,2],[36,0,"우명현","69",0,2],[37,0,"김민수","62",1,0],[38,0,"김준태","44",1,0],[39,0,"박동원","27",1,0],[40,0,"이주헌","63",1,0],[41,0,"구본혁","6",2,0],[42,0,"김성진","36",2,0],[43,0,"김정율","14",2,0],[44,0,"문보경","2",2,0],[45,0,"문정빈","56",2,0],[46,0,"손용준","15",2,0],[47,0,"신민재","4",2,0],[48,0,"오지환","10",2,0],[49,0,"이영빈","7",2,0],[50,0,"천성호","53",2,0],[51,0,"추세현","35",2,0],[52,0,"오스틴딘","23",2,1],[53,0,"김주성","5",3,0],[54,0,"김현종","66",3,0],[55,0,"문성주","8",3,0],[56,0,"박관우","64",3,0],[57,0,"박해민","17",3,4],[58,0,"서영준","60",3,0],[59,0,"송찬의","55",3,0],[60,0,"이재원","52",3,0],[61,0,"최원영","3",3,0],[62,0,"함창건","24",3,0],[63,0,"홍창기","51",3,0],[64,1,"강재민","55",0,0],[65,1,"권민규","64",0,0],[66,1,"김도빈","46",0,0],[67,1,"김민우","53",0,0],[68,1,"김범준","40",0,0],[69,1,"김서현","44",0,0],[70,1,"김종수","38",0,0],[71,1,"류현진","99",0,0],[72,1,"문동주","1",0,0],[73,1,"박상원","58",0,0],[74,1,"박재규","39",0,0],[75,1,"박준영","96",0,0],[76,1,"배민서","45",0,0],[77,1,"양수호","47",0,0],[78,1,"엄상백","11",0,0],[79,1,"원종혁","48",0,0],[80,1,"윤산흠","49",0,0],[81,1,"이민우","27",0,0],[82,1,"이상규","18",0,0],[83,1,"정우주","61",0,0],[84,1,"정이황","34",0,0],[85,1,"조동욱","57",0,0],[86,1,"주현상","66",0,0],[87,1,"한서구","67",0,0],[88,1,"황준서","29",0,0],[89,1,"윌켈에르난데스","12",0,1],[90,1,"왕옌청","19",0,1],[91,1,"오웬화이트","24",0,1],[92,1,"강건우","69",0,2],[93,1,"하동준","97",0,2],[94,1,"박상언","42",1,0],[95,1,"이재원","20",1,8],[96,1,"장규현","32",1,0],[97,1,"최재훈","13",1,0],[98,1,"허관회","26",1,0],[99,1,"허인서","59",1,0],[100,1,"강백호","50",2,0],[101,1,"노시환","8",2,0],[102,1,"박정현","63",2,0],[103,1,"배승수","98",2,0],[104,1,"심우준","7",2,0],[105,1,"이도윤","5",2,0],[106,1,"이승현","60",2,0],[107,1,"정민규","2",2,0],[108,1,"채은성","22",2,4],[109,1,"최원준","3",2,0],[110,1,"하주석","16",2,0],[111,1,"한지윤","36",2,0],[112,1,"황영묵","95",2,0],[113,1,"권현규","94",2,2],[114,1,"최유빈","93",2,2],[115,1,"권광민","17",3,0],[116,1,"김태연","25",3,0],[117,1,"문현빈","51",3,0],[118,1,"손아섭","31",3,0],[119,1,"유로결","33",3,0],[120,1,"유민","65",3,0],[121,1,"이민재","68",3,0],[122,1,"이원석","37",3,0],[123,1,"이진영","10",3,0],[124,1,"임종찬","9",3,0],[125,1,"최인호","41",3,0],[126,1,"요나단페라자","30",3,1],[127,1,"오재원","54",3,2],[128,2,"김건우","39",0,0],[129,2,"김광현","29",0,0],[130,2,"김민","1",0,0],[131,2,"김성민","11",0,0],[132,2,"김택형","43",0,0],[133,2,"노경은","38",0,0],[134,2,"문승원","42",0,0],[135,2,"박기호","66",0,0],[136,2,"박시후","57",0,0],[137,2,"박종훈","50",0,0],[138,2,"백승건","59",0,0],[139,2,"서진용","22",0,0],[140,2,"송영진","90",0,0],[141,2,"신지환","60",0,0],[142,2,"윤태현","12",0,0],[143,2,"이건욱","16",0,0],[144,2,"이기순","4",0,0],[145,2,"이로운","92",0,0],[146,2,"장지훈","21",0,0],[147,2,"전영준","28",0,0],[148,2,"정동윤","51",0,0],[149,2,"조병현","19",0,0],[150,2,"조요한","98",0,0],[151,2,"천범석","68",0,0],[152,2,"최민준","30",0,0],[153,2,"한두솔","34",0,0],[154,2,"앤서니베니지아노","41",0,1],[155,2,"타케다쇼타","23",0,1],[156,2,"미치화이트","55",0,1],[157,2,"김민준","40",0,2],[158,2,"김규민","44",1,0],[159,2,"김민식","24",1,0],[160,2,"신범수","25",1,0],[161,2,"이율예","00",1,0],[162,2,"이지영","56",1,0],[163,2,"조형우","20",1,0],[164,2,"고명준","18",2,0],[165,2,"김민준","47",2,0],[166,2,"김성현","6",2,8],[167,2,"김수윤","5",2,0],[168,2,"김태윤","36",2,0],[169,2,"문상준","53",2,0],[170,2,"박성한","2",2,0],[171,2,"석정우","52",2,0],[172,2,"안상현","10",2,0],[173,2,"정준재","3",2,0],[174,2,"최윤석","65",2,0],[175,2,"최정","14",2,0],[176,2,"현원회","8",2,0],[177,2,"홍대인","97",2,0],[178,2,"김요셉","46",2,2],[179,2,"김성욱","31",3,0],[180,2,"김재환","32",3,0],[181,2,"김창평","64",3,0],[182,2,"류효승","45",3,0],[183,2,"박지환","93",3,0],[184,2,"오태곤","37",3,4],[185,2,"이승민","9",3,0],[186,2,"이정범","33",3,0],[187,2,"임근우","63",3,0],[188,2,"채현우","15",3,0],[189,2,"최준우","7",3,0],[190,2,"최지훈","54",3,0],[191,2,"하재훈","13",3,0],[192,2,"한유섬","35",3,0],[193,2,"기예르모에레디아","27",3,1],[194,2,"장재율","49",3,2],[195,3,"김대호","44",0,0],[196,3,"김무신","48",0,0],[197,3,"김재윤","62",0,0],[198,3,"김태훈","27",0,0],[199,3,"배찬승","55",0,0],[200,3,"백정현","29",0,0],[201,3,"양창섭","42",0,0],[202,3,"양현","19",0,0],[203,3,"원태인","18",0,0],[204,3,"육선엽","4",0,0],[205,3,"이승민","28",0,0],[206,3,"이승현","26",0,0],[207,3,"이승현","57",0,0],[208,3,"이재익","45",0,0],[209,3,"이재희","17",0,0],[210,3,"이호성","1",0,0],[211,3,"임기영","38",0,0],[212,3,"정민성","49",0,0],[213,3,"최원태","20",0,0],[214,3,"최지광","11",0,0],[215,3,"최하늘","37",0,0],[216,3,"홍원표","65",0,0],[217,3,"맷매닝","9",0,1],[218,3,"미야지유라","15",0,1],[219,3,"아리엘후라도","75",0,1],[220,3,"김상호","67",0,2],[221,3,"박용재","68",0,2],[222,3,"이호범","41",0,2],[223,3,"장찬희","60",0,2],[224,3,"정재훈","69",0,2],[225,3,"강민호","47",1,0],[226,3,"김도환","24",1,0],[227,3,"김재성","2",1,0],[228,3,"박세혁","52",1,0],[229,3,"박진우","12",1,0],[230,3,"이병헌","23",1,0],[231,3,"장승현","46",1,0],[232,3,"김영웅","30",2,0],[233,3,"김재상","14",2,0],[234,3,"류지혁","16",2,0],[235,3,"심재훈","6",2,0],[236,3,"양우현","53",2,0],[237,3,"이재현","7",2,0],[238,3,"이창용","50",2,0],[239,3,"이해승","3",2,0],[240,3,"전병우","61",2,0],[241,3,"차승준","35",2,0],[242,3,"르윈디아즈","0",2,1],[243,3,"구자욱","5",3,4],[244,3,"김성윤","39",3,0],[245,3,"김재혁","8",3,0],[246,3,"김지찬","58",3,0],[247,3,"김태훈","25",3,0],[248,3,"김헌곤","32",3,0],[249,3,"류승민","43",3,0],[250,3,"박승규","66",3,0],[251,3,"윤정빈","31",3,0],[252,3,"이성규","13",3,0],[253,3,"최형우","34",3,0],[254,3,"함수호","40",3,0],[255,3,"홍현빈","51",3,0],[256,4,"구창모","59",0,0],[257,4,"김녹원","1",0,0],[258,4,"김영규","17",0,0],[259,4,"김재열","21",0,0],[260,4,"김진호","54",0,0],[261,4,"김태경","60",0,0],[262,4,"김태훈","69",0,0],[263,4,"류진욱","41",0,0],[264,4,"목지훈","20",0,0],[265,4,"박지한","56",0,0],[266,4,"배재환","61",0,0],[267,4,"손주환","46",0,0],[268,4,"신민혁","18",0,0],[269,4,"신영우","43",0,0],[270,4,"원종해","63",0,0],[271,4,"이세민","68",0,0],[272,4,"이재학","51",0,0],[273,4,"이준혁","40",0,0],[274,4,"임정호","30",0,0],[275,4,"임지민","19",0,0],[276,4,"전사민","57",0,0],[277,4,"정구범","8",0,0],[278,4,"조민석","47",0,0],[279,4,"최성영","26",0,0],[280,4,"최우석","64",0,0],[281,4,"하준영","29",0,0],[282,4,"라일리톰슨","3",0,1],[283,4,"커티스테일러","66",0,1],[284,4,"토다나츠키","11",0,1],[285,4,"최요한","67",0,2],[286,4,"김정호","42",1,0],[287,4,"김형준","25",1,0],[288,4,"신민우","62",1,0],[289,4,"안중열","22",1,0],[290,4,"이희성","32",1,2],[291,4,"김주원","7",2,0],[292,4,"김한별","13",2,0],[293,4,"김휘집","44",2,0],[294,4,"도태훈","16",2,0],[295,4,"박민우","2",2,4],[296,4,"서호철","5",2,0],[297,4,"오영수","34",2,0],[298,4,"오태양","6",2,0],[299,4,"윤준혁","31",2,0],[300,4,"최정원","14",2,0],[301,4,"한재환","35",2,0],[302,4,"홍종표","10",2,0],[303,4,"맷데이비슨","24",2,1],[304,4,"김건","52",2,2],[305,4,"신재인","9",2,2],[306,4,"허윤","4",2,2],[307,4,"고승완","58",3,0],[308,4,"권희동","36",3,0],[309,4,"박건우","37",3,0],[310,4,"박시원","53",3,0],[311,4,"오장한","65",3,0],[312,4,"이우성","55",3,0],[313,4,"천재환","23",3,0],[314,4,"한석현","33",3,0],[315,4,"고준휘","49",3,2],[316,5,"강건","99",0,0],[317,5,"고영표","1",0,0],[318,5,"권성준","15",0,0],[319,5,"김동현","40",0,0],[320,5,"김민수","26",0,0],[321,5,"김정운","61",0,0],[322,5,"문용익","18",0,0],[323,5,"박건우","46",0,0],[324,5,"박영현","60",0,0],[325,5,"배제성","19",0,0],[326,5,"소형준","30",0,0],[327,5,"손동현","41",0,0],[328,5,"오원석","47",0,0],[329,5,"우규민","12",0,0],[330,5,"원상현","63",0,0],[331,5,"이상동","37",0,0],[332,5,"이원재","64",0,0],[333,5,"이정현","21",0,0],[334,5,"이채호","17",0,0],[335,5,"임준형","14",0,0],[336,5,"전용주","29",0,0],[337,5,"조이현","54",0,0],[338,5,"주권","38",0,0],[339,5,"최동환","16",0,0],[340,5,"한승혁","35",0,0],[341,5,"한차현","2",0,0],[342,5,"케일럽보쉴리","36",0,1],[343,5,"맷사우어","32",0,1],[344,5,"스기모토코우키","11",0,1],[345,5,"고준혁","68",0,2],[346,5,"박지훈","66",0,2],[347,5,"강현우","55",1,0],[348,5,"김민석","44",1,0],[349,5,"장성우","22",1,4],[350,5,"조대현","42",1,0],[351,5,"한승택","45",1,0],[352,5,"강민성","5",2,0],[353,5,"권동진","52",2,0],[354,5,"김상수","7",2,0],[355,5,"류현인","9",2,0],[356,5,"문상철","24",2,0],[357,5,"안인산","50",2,0],[358,5,"오서진","25",2,0],[359,5,"오윤석","4",2,0],[360,5,"장준원","56",2,0],[361,5,"허경민","13",2,0],[362,5,"샘힐리어드","34",2,1],[363,5,"김건휘","97",2,2],[364,5,"이강민","6",2,2],[365,5,"임상우","94",2,2],[366,5,"김민혁","53",3,0],[367,5,"김현수","10",3,0],[368,5,"배정대","27",3,0],[369,5,"안치영","8",3,0],[370,5,"안현민","23",3,0],[371,5,"유준규","67",3,0],[372,5,"이정훈","33",3,0],[373,5,"장진혁","51",3,0],[374,5,"최성민","31",3,0],[375,5,"최원준","3",3,0],[376,5,"이재원","105",3,2],[377,6,"구승민","22",0,0],[378,6,"김강현","19",0,0],[379,6,"김상수","24",0,0],[380,6,"김영준","35",0,0],[381,6,"김원중","34",0,0],[382,6,"김진욱","15",0,0],[383,6,"나균안","43",0,0],[384,6,"박세웅","21",0,0],[385,6,"박세진","41",0,0],[386,6,"박시영","62",0,0],[387,6,"박준우","58",0,0],[388,6,"박진","44",0,0],[389,6,"송재영","59",0,0],[390,6,"윤성빈","55",0,0],[391,6,"이민석","37",0,0],[392,6,"이영재","40",0,0],[393,6,"이진하","45",0,0],[394,6,"정성종","18",0,0],[395,6,"정철원","65",0,0],[396,6,"정현수","57",0,0],[397,6,"최이준","49",0,0],[398,6,"최준용","56",0,0],[399,6,"최충연","61",0,0],[400,6,"한현희","1",0,0],[401,6,"현도훈","17",0,0],[402,6,"홍민기","38",0,0],[403,6,"엘빈로드리게스","31",0,1],[404,6,"제레미비슬리","23",0,1],[405,6,"쿄야마마사야","48",0,1],[406,6,"박정민","36",0,2],[407,6,"신동건","67",0,2],[408,6,"이준서","54",0,2],[409,6,"박재엽","26",1,0],[410,6,"손성빈","28",1,0],[411,6,"유강남","27",1,0],[412,6,"정보근","42",1,0],[413,6,"정문혁","143",1,2],[414,6,"고승민","2",2,0],[415,6,"김민성","16",2,0],[416,6,"김세민","5",2,0],[417,6,"나승엽","51",2,0],[418,6,"노진혁","52",2,0],[419,6,"박승욱","53",2,0],[420,6,"박찬형","60",2,0],[421,6,"이태경","69",2,0],[422,6,"이호준","30",2,0],[423,6,"전민재","13",2,0],[424,6,"최항","14",2,0],[425,6,"한동희","25",2,0],[426,6,"한태양","6",2,0],[427,6,"이서준","63",2,2],[428,6,"김동혁","50",3,0],[429,6,"김동현","64",3,0],[430,6,"손호영","33",3,0],[431,6,"신윤후","3",3,0],[432,6,"윤동희","91",3,0],[433,6,"장두성","7",3,0],[434,6,"전준우","8",3,4],[435,6,"조세진","12",3,0],[436,6,"황성빈","0",3,0],[437,6,"빅터레이예스","29",3,1],[438,6,"김한홀","95",3,2],[439,7,"곽도규","0",0,0],[440,7,"김건국","43",0,0],[441,7,"김기훈","53",0,0],[442,7,"김대유","69",0,0],[443,7,"김도현","60",0,0],[444,7,"김범수","49",0,0],[445,7,"김사윤","21",0,0],[446,7,"김시훈","61",0,0],[447,7,"김정엽","46",0,0],[448,7,"김태형","10",0,0],[449,7,"김현수","17",0,0],[450,7,"성영탁","65",0,0],[451,7,"양현종","54",0,0],[452,7,"유지성","4",0,0],[453,7,"윤영철","13",0,0],[454,7,"윤중현","19",0,0],[455,7,"이도현","66",0,0],[456,7,"이성원","58",0,0],[457,7,"이의리","48",0,0],[458,7,"이준영","20",0,0],[459,7,"이태양","44",0,0],[460,7,"이형범","28",0,0],[461,7,"이호민","63",0,0],[462,7,"장재혁","38",0,0],[463,7,"전상현","51",0,0],[464,7,"정해영","62",0,0],[465,7,"조상우","11",0,0],[466,7,"최지민","39",0,0],[467,7,"한재승","55",0,0],[468,7,"홍건희","52",0,0],[469,7,"홍민규","67",0,0],[470,7,"황동하","41",0,0],[471,7,"제임스네일","40",0,1],[472,7,"아담올러","33",0,1],[473,7,"김현수","64",0,2],[474,7,"정찬화","45",0,2],[475,7,"김태군","42",1,0],[476,7,"주효상","22",1,0],[477,7,"한준수","25",1,0],[478,7,"김규성","14",2,0],[479,7,"김도영","5",2,0],[480,7,"김선빈","3",2,0],[481,7,"박민","2",2,0],[482,7,"박상준","50",2,0],[483,7,"변우혁","29",2,0],[484,7,"오선우","56",2,0],[485,7,"윤도현","16",2,0],[486,7,"이호연","36",2,0],[487,7,"정현창","12",2,0],[488,7,"최정용","23",2,0],[489,7,"황대인","34",2,0],[490,7,"제리드데일","32",2,1],[491,7,"고종욱","57",3,0],[492,7,"김석환","35",3,0],[493,7,"김호령","27",3,0],[494,7,"나성범","47",3,4],[495,7,"박재현","15",3,0],[496,7,"박정우","1",3,0],[497,7,"이창진","8",3,0],[498,7,"정해원","9",3,0],[499,7,"한승연","31",3,0],[500,7,"해럴드카스트로","26",3,1],[501,7,"김민규","37",3,2],[502,8,"곽빈","47",0,0],[503,8,"김명신","46",0,0],[504,8,"김민규","19",0,0],[505,8,"김유성","55",0,0],[506,8,"김정우","16",0,0],[507,8,"김지윤","104",0,0],[508,8,"김택연","63",0,0],[509,8,"김한중","95",0,0],[510,8,"김호준","56",0,0],[511,8,"박신지","49",0,0],[512,8,"박정수","17",0,0],[513,8,"박치국","1",0,0],[514,8,"양재훈","30",0,0],[515,8,"윤태호","65",0,0],[516,8,"이교훈","36",0,0],[517,8,"이병헌","29",0,0],[518,8,"이영하","50",0,0],[519,8,"이용찬","45",0,0],[520,8,"이주엽","43",0,0],[521,8,"최민석","68",0,0],[522,8,"최승용","28",0,0],[523,8,"최우인","101",0,0],[524,8,"최원준","61",0,0],[525,8,"최종인","40",0,0],[526,8,"최준호","59",0,0],[527,8,"최지강","42",0,0],[528,8,"잭로그","39",0,1],[529,8,"타무라이치로","18",0,1],[530,8,"크리스플렉센","77",0,1],[531,8,"서준오","41",0,2],[532,8,"이주호","35",0,2],[533,8,"최주형","15",0,2],[534,8,"김기연","22",1,0],[535,8,"류현준","67",1,0],[536,8,"박민준","26",1,0],[537,8,"양의지","25",1,4],[538,8,"윤준호","27",1,0],[539,8,"강승호","23",2,0],[540,8,"김동준","11",2,0],[541,8,"김민혁","10",2,0],[542,8,"박계범","14",2,0],[543,8,"박준순","52",2,0],[544,8,"박지훈","37",2,0],[545,8,"박찬호","7",2,0],[546,8,"안재석","62",2,0],[547,8,"양석환","53",2,0],[548,8,"오명진","6",2,0],[549,8,"이유찬","13",2,0],[550,8,"임종성","3",2,0],[551,8,"심건보","117",2,2],[552,8,"김대한","32",3,0],[553,8,"김민석","2",3,0],[554,8,"김인태","33",3,0],[555,8,"전다민","9",3,0],[556,8,"정수빈","31",3,0],[557,8,"조수행","51",3,0],[558,8,"홍성호","34",3,0],[559,8,"다즈카메론","24",3,1],[560,8,"김주오","66",3,2],[561,8,"신우열","38",3,2],[562,9,"김동규","99",0,0],[563,9,"김선기","49",0,0],[564,9,"김성민","8",0,0],[565,9,"김성진","21",0,0],[566,9,"김연주","68",0,0],[567,9,"김윤하","19",0,0],[568,9,"김재웅","28",0,0],[569,9,"박윤성","35",0,0],[570,9,"박정훈","94",0,0],[571,9,"박주성","0",0,0],[572,9,"박진형","40",0,0],[573,9,"배동현","61",0,0],[574,9,"안우진","41",0,0],[575,9,"오석주","31",0,0],[576,9,"원종현","46",0,0],[577,9,"윤석원","95",0,0],[578,9,"이준우","42",0,0],[579,9,"임진묵","69",0,0],[580,9,"전준표","62",0,0],[581,9,"정세영","64",0,0],[582,9,"정현우","13",0,0],[583,9,"조영건","20",0,0],[584,9,"하영민","50",0,0],[585,9,"라울알칸타라","54",0,1],[586,9,"네이선와일스","34",0,1],[587,9,"가나쿠보유토","48",0,1],[588,9,"박준현","18",0,2],[589,9,"박지성","37",0,2],[590,9,"이태양","66",0,2],[591,9,"정다훈","45",0,2],[592,9,"김건희","12",1,0],[593,9,"김동헌","44",1,0],[594,9,"김재현","32",1,0],[595,9,"박성빈","56",1,0],[596,9,"김병휘","23",2,0],[597,9,"김웅빈","10",2,0],[598,9,"김태진","1",2,0],[599,9,"서건창","14",2,0],[600,9,"송지후","86",2,0],[601,9,"안치홍","9",2,0],[602,9,"양현종","60",2,0],[603,9,"어준서","92",2,0],[604,9,"여동욱","93",2,0],[605,9,"염승원","39",2,0],[606,9,"오선진","6",2,0],[607,9,"최주환","53",2,0],[608,9,"김지석","26",2,2],[609,9,"박한결","4",2,2],[610,9,"최재영","38",2,2],[611,9,"박수종","87",3,0],[612,9,"박주홍","57",3,0],[613,9,"박찬혁","43",3,0],[614,9,"이용규","15",3,8],[615,9,"이주형","2",3,0],[616,9,"이형종","36",3,0],[617,9,"임병욱","17",3,0],[618,9,"임지열","29",3,4],[619,9,"주성원","25",3,0],[620,9,"추재현","27",3,0],[621,9,"트렌턴브룩스","22",3,1]];
 function kbId(r){return 'KBO26-'+String(r[0]).padStart(3,'0')}
 function kbSt(){if(!S.kb)S.kb={t:6,p:-1,q:'',f:0,n:40};return S.kb}
-function kbPl(){var p=plGet();p.kb=p.kb||{};p.kb.f=p.kb.f||{};p.kb.c=p.kb.c||{};return p.kb}
+function kbPl(){var p=plGet();p.kb=p.kb||{};p.kb.f=p.kb.f||{};p.kb.c=p.kb.c||{};
+  if(!p.kb.m){p.kb.m=1;CARDS.forEach(function(cd){if(p.cards[cd[0]])p.kb.c[cd[0]]=1})}return p.kb}
+function kbLg(id){return CARDS.filter(function(c){return c[0]===id})[0]}
+function kbLeg(c){var k=kbPl(),f=k.f[c[0]],o=k.c[c[0]];return '<div class="kgl">'+plCardHtml(c,1,0)+((f||o)?'<div class="kmk kmk2">'+(f?'<em>♥</em>':'')+(o?'<em class="ok">✓</em>':'')+'</div>':'')+'</div>'}
 function kbCard(r,big){
   var t=KBT[r[1]],id=kbId(r),k=kbPl(),f=k.f[id],c=k.c[id],nb=KBN.filter(function(x){return r[5]&x[0]}).map(function(x){return '<i>'+x[1]+'</i>'}).join('');
   return '<div class="kc'+(big?' big':'')+'" style="--tc:'+t[3]+'" role="img" aria-label="'+esc(t[0]+' '+KBP[r[4]]+' '+r[3]+'번 '+r[2])+'">'+
@@ -2508,17 +2490,21 @@ function kbCard(r,big){
   '<div class="kpl"><div class="kpm"><div class="knm">'+esc(r[2])+'</div><div class="ktm">'+t[1]+'</div></div><div class="kwm">'+t[2]+'</div></div><div class="kbr"></div></div></div>';
 }
 function kbFilter(){var s=kbSt(),k=kbPl(),q=s.q.trim();return KB.filter(function(r){return r[1]===s.t&&(s.p<0||r[4]===s.p)&&(!q||r[2].indexOf(q)>=0||String(r[3])===q)&&(!s.f||k.f[kbId(r)])})}
-function kbGrid(){var s=kbSt(),L=kbFilter(),sh=L.slice(0,s.n);
+function kbGrid(){var s=kbSt();if(s.t===10){var q=s.q.trim(),k=kbPl(),LL=CARDS.filter(function(c){return (!q||c[1].indexOf(q)>=0)&&(!s.f||k.f[c[0]])});return {cnt:LL.length+'명',html:LL.map(function(c){return '<button type="button" class="kcb2" data-act="plkv" data-id="'+c[0]+'" aria-label="'+esc(c[1])+'">'+kbLeg(c)+'</button>'}).join('')||'<div class="lbl">조건에 맞는 선수가 없어요.</div>'}}
+  var L=kbFilter(),sh=L.slice(0,s.n);
   return {cnt:L.length+'명',html:(sh.map(function(r){return '<button type="button" class="kcb2" data-act="plkv" data-id="'+kbId(r)+'">'+kbCard(r)+'</button>'}).join('')+(L.length>sh.length?'<button type="button" class="btn2 kmore" data-act="plkmore">더 보기 ('+(L.length-sh.length)+'명)</button>':''))||'<div class="lbl">조건에 맞는 선수가 없어요.</div>'}}
 function kbHtml(){var s=kbSt(),k=kbPl(),tot=Object.keys(k.c).length,fv=Object.keys(k.f).length,g=kbGrid(),tc={};KB.forEach(function(r){tc[r[1]]=(tc[r[1]]||0)+1});
-  return '<button type="button" class="btn2" data-act="plhub" style="margin:0 0 12px">← 놀이터로</button><div class="plq" style="max-width:none"><div class="plp">📚 KBO 2026 선수 도감 <span class="plcat">수집 '+tot+' / '+KB.length+'명 · ♥ '+fv+'</span></div>'+
-  '<div class="lbl" style="margin:4px 0 10px">2026 KBO 가이드북 선수단 현황 기준 621명 · 실시간 등록 상태와 다를 수 있어요. 카드를 누르면 자세히 보고, ♥와 ✓를 표시할 수 있어요.</div>'+
-  '<div class="brow ktab" style="margin:0 0 8px">'+KBT.map(function(t,i){return '<button type="button" class="btn2'+(s.t===i?' on':'')+'" data-act="plkt" data-v="'+i+'" style="margin:0">'+t[0].split(' ')[0]+' '+tc[i]+'</button>'}).join('')+'</div>'+
-  '<div class="brow" style="margin:0 0 10px">'+[['-1','전체'],['0','투수'],['1','포수'],['2','내야수'],['3','외야수']].map(function(x){return '<button type="button" class="btn2'+(s.p===+x[0]?' on':'')+'" data-act="plkp" data-v="'+x[0]+'" style="margin:0">'+x[1]+'</button>'}).join('')+
+  return '<button type="button" class="btn2" data-act="plhub" style="margin:0 0 12px">← 놀이터로</button><div class="plq" style="max-width:none"><div class="plp">📚 KBO 2026 선수 도감 <span class="plcat">수집 '+tot+' / '+(KB.length+CARDS.length)+'명 · ♥ '+fv+'</span></div>'+
+  '<div class="lbl" style="margin:4px 0 10px">2026 KBO 가이드북 선수단 현황 621명 + 레전드 '+CARDS.length+'명 · 실시간 등록 상태와 다를 수 있어요. 카드를 누르면 자세히 보고, ♥와 ✓를 표시할 수 있어요.</div>'+
+  '<div class="brow ktab" style="margin:0 0 8px">'+KBT.map(function(t,i){return '<button type="button" class="btn2'+(s.t===i?' on':'')+'" data-act="plkt" data-v="'+i+'" style="margin:0">'+t[0].split(' ')[0]+' '+tc[i]+'</button>'}).join('')+'<button type="button" class="btn2'+(s.t===10?' on':'')+'" data-act="plkt" data-v="10" style="margin:0">🏆 레전드 '+CARDS.length+'</button></div>'+
+  '<div class="brow" style="margin:0 0 10px">'+(s.t===10?'':[['-1','전체'],['0','투수'],['1','포수'],['2','내야수'],['3','외야수']].map(function(x){return '<button type="button" class="btn2'+(s.p===+x[0]?' on':'')+'" data-act="plkp" data-v="'+x[0]+'" style="margin:0">'+x[1]+'</button>'}).join(''))+
   '<button type="button" class="btn2'+(s.f?' on':'')+'" data-act="plkff" style="margin:0">♥ 즐겨찾기만</button></div>'+
   '<div class="brow" style="margin:0 0 12px;align-items:center"><input id="plkq" type="search" class="kq" placeholder="선수 이름 또는 등번호 검색" aria-label="선수 검색" value="'+esc(s.q)+'" autocomplete="off"><span id="kcnt" class="lbl" style="margin:0 0 0 10px">'+g.cnt+'</span></div>'+
   '<div class="kgrid" id="kgrid">'+g.html+'</div></div>';}
-function kbView(){var id=(S.kd||{}).id,r=KB.filter(function(x){return kbId(x)===id})[0];if(!r){S.pv='kbo';return kbHtml()}
+function kbView(){var id=(S.kd||{}).id,lg=kbLg(id),r=lg?null:KB.filter(function(x){return kbId(x)===id})[0];if(!r&&!lg){S.pv='kbo';return kbHtml()}
+  if(lg){var k0=kbPl(),f0=k0.f[id],c0=k0.c[id];return '<button type="button" class="btn2" data-act="plkbo" style="margin:0 0 12px">← 도감으로</button><div class="pcshow">'+kbLeg(lg).replace('class="kgl"','class="kgl big"')+
+   '<div class="brow" style="justify-content:center;margin-top:14px"><button type="button" class="btn2'+(f0?' on':'')+'" data-act="plkfav" data-id="'+id+'" style="margin:0">'+(f0?'♥ 즐겨찾기 해제':'♡ 즐겨찾기')+'</button><button type="button" class="btn'+(c0?'':'2')+'" data-act="plkcol" data-id="'+id+'" style="margin:0">'+(c0?'✓ 수집 완료':'수집 완료로 표시')+'</button></div>'+
+   '<div class="card" style="margin-top:14px;text-align:left"><div class="kv"><span>선수</span><span>'+esc(lg[1])+'</span></div><div class="kv"><span>구단</span><span>'+esc(lg[3])+'</span></div><div class="kv"><span>포지션</span><span>'+esc(lg[2])+'</span></div>'+(lg[7]?'<div class="kv"><span>KBO 레전드 40</span><span>'+esc(lg[7])+'</span></div>':'')+'<div class="kv"><span>응원 한마디</span><span>'+esc(lg[6])+'</span></div></div></div>'}
   var t=KBT[r[1]],k=kbPl(),f=k.f[id],c=k.c[id];
   return '<button type="button" class="btn2" data-act="plkbo" style="margin:0 0 12px">← 도감으로</button><div class="pcshow">'+kbCard(r,1)+
   '<div class="brow" style="justify-content:center;margin-top:14px"><button type="button" class="btn2'+(f?' on':'')+'" data-act="plkfav" data-id="'+id+'" style="margin:0">'+(f?'♥ 즐겨찾기 해제':'♡ 즐겨찾기')+'</button><button type="button" class="btn'+(c?'':'2')+'" data-act="plkcol" data-id="'+id+'" style="margin:0">'+(c?'✓ 수집 완료':'수집 완료로 표시')+'</button></div>'+
@@ -2540,29 +2526,27 @@ main.addEventListener('input',function(e){var t=e.target;if(!t||t.id!=='plkq')re
 
 function renderPlay(c){
   if(!plOpen()){main.innerHTML=plLockHtml();return}
-  var p=plGet(),today=key(new Date()),tix=plTix(),v=S.pv||'hub',h='';
+  var p=plGet(),today=key(new Date()),v=S.pv||'hub',h='';
   var own=Object.keys(p.cards).length;
-  var head='<div class="head"><div><h1>놀이터</h1><div class="date">공부 쉬는 시간에 가볍게 한 판!</div></div><span class="chip">🎴 뽑기권 '+tix+'장</span></div>'+
+  var head='<div class="head"><div><h1>놀이터</h1><div class="date">공부 쉬는 시간에 가볍게 한 판!</div></div></div>'+
     (S.toast?'<div class="win" role="status" style="margin:0 0 12px">'+esc(S.toast)+'</div>':'');
   if(v==='hub'){
     var qd=p.qd[today],wn=Object.keys(p.wr).filter(function(i){return QB[+i]}).length,bt=p.gd[today];
     var t=S.timer,brk=t&&(t.mode==='break'||t.mode==='bdone');
     h=(brk?'<div class="win" style="margin:0 0 12px;background:var(--green-bg);color:var(--green)">☕ 쉬는 시간이에요! 홈런 더비 한 판 어때요?</div>':'')+
     '<div class="plg">'+
-    '<button type="button" class="plc" data-act="plquiz"><b>⚾ 퀴즈 타석</b><span>하루 3문제 · 2개 이상 맞히면 뽑기권!</span><em>'+(qd?'오늘 완료 · '+qd.c+'/'+qd.t+' 맞힘':'오늘의 타석 시작')+'</em></button>'+
-    '<button type="button" class="plc" data-act="plgame"><b>🏏 홈런 더비</b><span>10구 · 80점 이상이면 뽑기권!</span><em>오늘 최고 '+(bt||0)+'점 · 나의 최고 '+(p.best||0)+'점</em></button>'+
+    '<button type="button" class="plc" data-act="plquiz"><b>⚾ 퀴즈 타석</b><span>하루 3문제 · 매일 도전!</span><em>'+(qd?'오늘 완료 · '+qd.c+'/'+qd.t+' 맞힘':'오늘의 타석 시작')+'</em></button>'+
+    '<button type="button" class="plc" data-act="plgame"><b>🏏 홈런 더비</b><span>10구 · 점수를 높여 봐요!</span><em>오늘 최고 '+(bt||0)+'점 · 나의 최고 '+(p.best||0)+'점</em></button>'+
     '<button type="button" class="plc" data-act="plrev"'+(wn?'':' disabled')+'><b>📝 오답 복습</b><span>틀렸던 문제를 다시 쳐서 지워요</span><em>'+(wn?'복습할 문제 '+wn+'개':'복습할 문제가 없어요 👍')+'</em></button>'+
-    '<button type="button" class="plc" data-act="plcards"><b>🎴 선수 카드</b><span>뽑기권으로 카드를 모아요</span><em>모은 카드 '+own+' / '+CARDS.length+'종 · 뽑기권 '+tix+'장</em></button>'+
-    '<button type="button" class="plc" data-act="plkbo"><b>📚 KBO 2026 선수 도감</b><span>10개 구단 621명 카드 · 구단/포지션/이름 검색</span><em>수집 '+Object.keys(kbPl().c).length+' / '+KB.length+'명</em></button>'+
-    '</div><div class="card" style="margin-top:14px"><b>뽑기권은 이렇게 얻어요</b><div class="lbl" style="margin-top:6px">⚾ 오늘 경기 종료 · 🧠 퀴즈 2개 이상 · 🏏 홈런 더비 80점 이상 (각각 하루 1장)</div></div>';
+    '<button type="button" class="plc" data-act="plkbo"><b>📚 KBO 2026 선수 도감</b><span>10개 구단 621명 + 레전드 41명 · 구단/포지션/이름 검색</span><em>수집 '+Object.keys(kbPl().c).length+' / '+(KB.length+CARDS.length)+'명</em></button>'+
+    '</div>';
   }else if(v==='quiz'){
     var q=S.q;
     if(!q){S.pv='hub';return renderPlay(c)}
     if(q.end){
       var tot=q.list.length;
       h=plBack()+'<div class="card plres"><div class="plbig">'+(q.right===tot?'🎉 만점 안타!':q.right>=2?'⚾ 안타!':'💪 다음엔 더!')+'</div><div class="pl2">'+tot+'타수 '+q.right+'안타'+(q.mode==='rev'?' · 오답 '+q.fixed+'개 지웠어요':'')+'</div>'+
-        (q.tix?'<div class="win">🎴 뽑기권 1장을 받았어요!</div>':'')+
-        '<div class="brow"><button type="button" class="btn" data-act="plhub">놀이터로</button>'+(q.tix||plTix()?'<button type="button" class="btn2" data-act="plcards">카드 뽑으러 가기</button>':'')+'</div></div>';
+        '<div class="brow"><button type="button" class="btn" data-act="plhub">놀이터로</button>'+'</div></div>';
     }else{
       var cur=q.list[q.i],ans=q.pick>=0;
       h=plBack()+'<div class="plq"><div class="plp">'+(q.mode==='rev'?'📝 오답 복습':'⚾ 퀴즈 타석')+' · '+(q.i+1)+' / '+q.list.length+'타석 <span class="plcat">'+esc(cur.c)+'</span></div>'+
@@ -2575,7 +2559,7 @@ function renderPlay(c){
     var g=S.g;if(!g){S.pv='hub';return renderPlay(c)}
     if(g.end){
       h=plBack()+'<div class="card plres"><div class="plbig">'+(g.score>=80?'💥 홈런왕!':g.score>=50?'⚾ 좋은 타격!':'💪 수고했어요!')+'</div><div class="pl2">'+g.score+'점 · 안타 '+g.hits+'개 · 홈런 '+g.hr+'개'+(g.rec?'<br>🏅 나의 최고 기록!':'')+'</div>'+
-        (g.tix?'<div class="win">🎴 뽑기권 1장을 받았어요!</div>':'<div class="lbl">80점 이상이면 뽑기권을 줘요.</div>')+
+        ''+
         '<div class="brow"><button type="button" class="btn" data-act="plgame">한 판 더!</button><button type="button" class="btn2" data-act="plhub">놀이터로</button></div></div>';
     }else{
       var pt=g.pitch;
@@ -2586,20 +2570,8 @@ function renderPlay(c){
           return '<button type="button" class="'+cl+'" data-act="plswing" data-j="'+j+'"'+(g.res?' disabled':'')+'>'+n+'</button>'}).join('')+'</div>'+
         '<div class="plfb '+(g.res==='hit'||g.res==='hr'?'g':g.res?'r':'')+'" style="min-height:52px">'+(g.res==='hr'?'💥 홈런!! (3연속 보너스 +30)':g.res==='hit'?'⚾ 안타! +10':g.res==='late'?'⏰ 헛스윙… 정답은 '+g.show:g.res==='miss'?'❌ 아쉬워요! 정답은 '+g.show:'공이 날아와요! 정답을 골라 치세요')+'</div></div>';
     }
-  }else if(v==='cards'){
-    h=plBack()+'<div class="plq" style="max-width:none"><div class="plp">🎴 선수 카드 <span class="plcat">'+own+' / '+CARDS.length+'종</span></div>'+
-      '<div class="brow" style="margin:6px 0 14px"><button type="button" class="btn" data-act="pldraw"'+(tix?'':' disabled')+' style="margin:0">🎴 카드 뽑기 (뽑기권 '+tix+'장)</button></div>'+
-      (tix?'':'<div class="lbl" style="margin:-6px 0 12px">뽑기권이 없어요. 경기를 마치거나 퀴즈·홈런 더비로 모아요.</div>')+
-      '<div class="brow" style="margin:0 0 12px">'+[['','전체'],['K','KBO 레전드'],['L','롯데']].map(function(f){return '<button type="button" class="btn2'+((S.cf||'')===f[0]?' on':'')+'" data-act="plcf" data-f="'+f[0]+'" style="margin:0">'+f[1]+'</button>'}).join('')+'</div>'+(function(){var L=CARDS.filter(function(cd){return !S.cf||cd[5]===S.cf}),pg=[];for(var i=0;i<L.length;i+=16)pg.push(L.slice(i,i+16));
-      return '<div class="bnd">'+pg.map(function(ch,pi){return '<section class="bpg"><div class="pcg">'+ch.map(function(cd){var n=p.cards[cd[0]]||0,no=CARDS.indexOf(cd)+1;
-        return n?'<button type="button" class="pcb pk" data-act="plview" data-id="'+cd[0]+'" aria-label="'+esc(cd[1])+'">'+plCardHtml(cd,n,0)+(n>1?'<span class="pcx">×'+n+'</span>':'')+'</button>':'<div class="pk em" aria-label="아직 못 모은 카드">'+String(no).padStart(3,'0')+'</div>'}).join('')+'</div><div class="bpn">PAGE '+(pi+1)+' / '+pg.length+'</div></section>'}).join('')+'</div>'})()+'</div>';
   }else if(v==='kbo'){h=kbHtml();main.innerHTML=head+h;return
   }else if(v==='kview'){h=kbView();main.innerHTML=head+h;return
-  }else if(v==='draw'||v==='view'){
-    var dc=S.dc,cd=CARDS.filter(function(x){return x[0]===(dc&&dc.id)})[0];
-    if(!cd){S.pv='cards';return renderPlay(c)}
-    h=plBack().replace('plhub','plcards').replace('놀이터로','카드 모음으로')+'<div class="pcshow">'+(v==='draw'?'<div class="plbig">'+(dc.isNew?'✨ 새 카드!':'같은 카드가 또 나왔어요')+'</div>':'')+plCardHtml(cd,1,1)+
-      '<div class="brow" style="justify-content:center"><button type="button" class="btn2" data-act="plcards">카드 모음 보기</button>'+(v==='draw'&&tix?'<button type="button" class="btn" data-act="pldraw">한 장 더 뽑기 ('+tix+')</button>':'')+'</div></div>';
   }
   main.innerHTML=head+h;
 }
@@ -2616,10 +2588,6 @@ function playClick(e){
   else if(a==='plans'){plAnswer(+b.dataset.j)}
   else if(a==='plnext'){plNext()}
   else if(a==='plswing'){plSwing(+b.dataset.j);return}
-  else if(a==='plcards'){S.pv='cards';fx('ck')}
-  else if(a==='plcf'){S.cf=b.dataset.f;fx('ck')}
-  else if(a==='pldraw'){plDrawCard()}
-  else if(a==='plview'){S.dc={id:b.dataset.id};S.pv='view';fx('ck')}
   else if(!kbAct(a,b))return;
   renderPlay(ctx());renderSync();main.scrollTop=0;
 }
