@@ -50,6 +50,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -551,6 +552,25 @@ input[type=range]{height:34px;padding:0;accent-color:#DD032F}
 .kdet{display:grid;grid-template-columns:minmax(240px,340px) minmax(0,1fr);gap:22px;align-items:start}
 .kdl{position:sticky;top:8px;max-width:none}.kdr .card:first-child{margin-top:0!important}
 @media (max-width:760px){.kdet{grid-template-columns:1fr}.kdl{position:static;max-width:460px;margin:0 auto}}
+.wgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.wcard{appearance:none;text-align:left;font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;padding:0;cursor:pointer;display:flex;flex-direction:column}
+.wcard:focus-visible{outline:3px solid #FFC83D;outline-offset:2px}
+.wph{display:block;aspect-ratio:4/3;background:var(--bg);overflow:hidden}
+.wph img{width:100%;height:100%;object-fit:cover;display:block}
+.wcm{display:flex;flex-direction:column;gap:5px;padding:9px 11px}
+.wr1{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.wsub{font-size:14px;padding:2px 9px;border-radius:7px;background:var(--chip-bg);color:var(--chip-ink)}
+.wst{font-size:13.5px;padding:2px 9px;border-radius:7px;font-weight:700}
+.wst.n{background:var(--done-bg);color:var(--done)}.wst.m{background:var(--amber-bg);color:var(--amber)}.wst.g{background:var(--green-bg);color:var(--green)}
+.wmm{font-size:14px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wbig{display:block;width:100%;max-height:72vh;object-fit:contain;background:var(--bg);border:1px solid var(--line);border-radius:14px}
+.wdet{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(250px,1fr);gap:18px;align-items:start;margin-top:10px}
+.wdl{position:sticky;top:0}
+.wdr>*:first-child{margin-top:0!important}
+@media (max-width:760px){.wdet{grid-template-columns:1fr}.wdl{position:static}}
+.wsteps{display:flex;gap:6px;margin:12px 0}
+.wsteps span{flex:1;text-align:center;padding:8px 2px;border-radius:10px;background:var(--chip-bg);color:var(--muted);font-weight:700;font-size:15px}
+.wsteps .on.n{background:var(--done-bg);color:var(--done)}.wsteps .on{background:var(--amber-bg);color:var(--amber)}.wsteps .on.g{background:var(--green-bg);color:var(--green)}
 </style>
 
 <div class="app">
@@ -559,7 +579,8 @@ input[type=range]{height:34px;padding:0;accent-color:#DD032F}
     <button data-t="home" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11L12 4l8.5 7"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg>홈</button>
     <button data-t="today"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M3.5 6l1.5 1.5L7 5M3.5 12l1.5 1.5L7 11M3.5 18l1.5 1.5L7 17"/></svg>오늘</button>
     <button data-t="week"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>일정</button>
-    <button data-t="play"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M5.5 7.5c3 1.5 3 7.5 0 9M18.5 7.5c-3 1.5-3 7.5 0 9"/></svg>놀이</button>
+    <button data-t="play"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M5.5 7.5c3 1.5 3 7.5 0 9M18.5 7.5c-3 1.5-3 7.5 0 9"/></svg>휴식</button>
+    <button data-t="wrong"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M9 8.5h6M9 12h6M9 15.5h3"/></svg>오답</button>
     <button data-t="log"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V11M12 20V5M19 20v-6"/></svg>기록</button>
     <button data-t="set"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</button>
     <div class="sync" id="sync"></div>
@@ -2135,9 +2156,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:207};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:208};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+  ['v2.08','📝 오답 탭 추가: 가족 링크에서 오답 사진을 올리고 복습 · 메뉴 이름 놀이 → 휴식'],
   ['v2.07','카드 뽑기는 일러스트가 완성된 선수 중에서만 나오도록 변경'],
   ['v2.06','일러스트 5장 추가(최준용·최충연·한현희·현도훈·홍민기)'],
   ['v2.05','비슬리·김강현 일러스트 No. 수정판 교체'],
@@ -2312,7 +2334,7 @@ function render(){
   if(S.tab==='play'&&S.pv==='game'&&S.g&&S.g.live)return;
   var c=ctx();
   document.querySelectorAll('#nav button').forEach(function(b){b.classList.toggle('on',b.dataset.t===S.tab)});
-  if(S.tab==='home')renderHome(c);else if(S.tab==='today')renderToday(c);else if(S.tab==='week')renderWeek(c);else if(S.tab==='set')renderSet(c);else if(S.tab==='play')renderPlay(c);else renderLog(c);
+  if(S.tab==='home')renderHome(c);else if(S.tab==='today')renderToday(c);else if(S.tab==='week')renderWeek(c);else if(S.tab==='set')renderSet(c);else if(S.tab==='play')renderPlay(c);else if(S.tab==='wrong')renderWrong();else renderLog(c);
   renderSync();
 }
 
@@ -2674,6 +2696,109 @@ function playClick(e){
   renderPlay(ctx());renderSync();main.scrollTop=0;
 }
 
+/* ===== 오답 노트: 사진은 공유 저장소(assets), 정보는 가족 공유 DB(wrong). 링크 버전에서만 동작, PWA는 링크 안내 ===== */
+var WR_LINK='https://claude.ai/artifact/L5UKfZVaQkTeNEo3ZdS3GQ';
+var WR_WEB=!!(window.claude&&window.claude.use);
+var WR_SUBJ=['수학','영어','국어','한자','기타'];
+var WR={list:null,as:null,sub:'전체',sf:'todo',v:'list',id:null,add:null,busy:false,err:'',edit:false,del:false,perr:false};
+function wrImg(x){return x.u||(x.a?'/_blob/'+x.a:'')}
+function wrDate(t){var d=new Date(t||Date.now());return (d.getMonth()+1)+'/'+d.getDate()}
+function wrTodo(){return (WR.list||[]).filter(function(x){return (x.st||0)!==2}).length}
+function wrGet(id){var r=null;(WR.list||[]).forEach(function(x){if(x.id===id)r=x});return r}
+function wrLbl(x){var s=x.st||0;return s===2?'졸업 ✓':s===1?'복습 중 '+(x.n||0)+'회':'새 오답'}
+function wrCard(x){var cl=['n','m','g'][x.st||0];
+  return '<button type="button" class="wcard" data-act="owopen" data-id="'+esc(x.id)+'"><span class="wph"><img src="'+esc(wrImg(x))+'" alt="'+esc(x.s||'')+' 오답 사진" loading="lazy"></span><span class="wcm"><span class="wr1"><b class="wsub">'+esc(x.s||'기타')+'</b><b class="wst '+cl+'">'+wrLbl(x)+'</b></span><span class="wmm">'+wrDate(x.t)+(x.m?' · '+esc(x.m):'')+'</span></span></button>'}
+function wrShrink(file){return new Promise(function(res,rej){var u=URL.createObjectURL(file),im=new Image();
+  im.onload=function(){var w=im.naturalWidth,h=im.naturalHeight,k=Math.min(1,1200/Math.max(w,h)),cw=Math.max(1,Math.round(w*k)),ch=Math.max(1,Math.round(h*k)),cv=document.createElement('canvas');
+    cv.width=cw;cv.height=ch;var cx=cv.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,cw,ch);cx.drawImage(im,0,0,cw,ch);URL.revokeObjectURL(u);
+    cv.toBlob(function(b){b?res(b):rej(new Error('blob'))},'image/jpeg',.82)};
+  im.onerror=function(){URL.revokeObjectURL(u);rej(new Error('img'))};im.src=u})}
+function wrChips(){
+  var h='<div class="seg">';
+  ['전체'].concat(WR_SUBJ).forEach(function(s){h+='<button type="button" class="btn2'+(WR.sub===s?' on':'')+'" data-act="owf" data-k="sub" data-v="'+s+'">'+s+'</button>'});
+  h+='</div><div class="seg">';
+  [['todo','🔴 복습할 것'],['all','전체'],['done','졸업 ✓']].forEach(function(o){h+='<button type="button" class="btn2'+(WR.sf===o[0]?' on':'')+'" data-act="owf" data-k="sf" data-v="'+o[0]+'">'+o[1]+'</button>'});
+  return h+'</div>'}
+function wrListHtml(){
+  var h='';
+  if(WR.as)h+='<button type="button" class="btn" data-act="owadd" style="width:100%;height:58px;font-size:20px;background:var(--red);color:#fff;margin:0 0 6px">📷 오답 사진 올리기</button>';
+  else h+='<div class="warn" style="margin:0 0 8px">사진 올리기는 편집 권한이 있는 계정으로 열었을 때만 보여요. 목록과 복습은 그대로 쓸 수 있어요.</div>';
+  h+=wrChips();
+  var L=(WR.list||[]).filter(function(x){var st=x.st||0;if(WR.sub!=='전체'&&(x.s||'기타')!==WR.sub)return false;if(WR.sf==='todo')return st!==2;if(WR.sf==='done')return st===2;return true}).sort(function(a,b){return (b.t||0)-(a.t||0)});
+  if(!L.length)return h+'<div class="card" style="margin-top:14px;text-align:center;color:var(--muted)">'+((WR.list||[]).length?'이 조건에 맞는 문제가 없어요 👍':'아직 올린 오답이 없어요.<br>틀린 문제를 사진으로 찍어 올려 보세요!')+'</div>';
+  return h+'<div class="wgrid" style="margin-top:14px">'+L.map(wrCard).join('')+'</div>'}
+function wrAddHtml(){
+  var a=WR.add||{},h='<button type="button" class="btn2" data-act="owcancel" style="margin:0 0 12px">← 목록으로</button>';
+  h+='<div class="card"><h2>📷 오답 사진 올리기</h2>';
+  h+=a.pv?'<img class="wbig" src="'+a.pv+'" alt="고른 사진 미리보기">':'<div class="card" style="text-align:center;color:var(--muted);border-style:dashed;margin:0"><div style="font-size:42px">📸</div>사진을 찍거나 갤러리에서 골라요<br><small>올릴 때 자동으로 작게 줄여서 저장해요</small></div>';
+  h+='<div class="brow"><button type="button" class="btn2" data-act="owcam">📷 카메라</button><button type="button" class="btn2" data-act="owgal">🖼️ 갤러리</button></div>';
+  h+='<input type="file" accept="image/*" capture="environment" id="owcamI" hidden><input type="file" accept="image/*" id="owgalI" hidden>';
+  h+='<div class="fl">과목</div><div class="seg">'+WR_SUBJ.map(function(s){return '<button type="button" class="btn2'+(a.s===s?' on':'')+'" data-act="owsub" data-s="'+s+'">'+s+'</button>'}).join('')+'</div>';
+  h+='<label class="fl" for="owm">메모 (선택)</label><input id="owm" maxlength="40" placeholder="예: 받아내림에서 헷갈렸어요" value="'+esc(a.m||'')+'">';
+  if(WR.err)h+='<p class="err" role="alert">'+esc(WR.err)+'</p>';
+  h+='<button type="button" class="btn" data-act="owsave" style="width:100%"'+((a.blob&&!WR.busy)?'':' disabled')+'>'+(WR.busy?'저장하는 중…':'저장하기')+'</button></div>';
+  return h}
+function wrDetHtml(){
+  var x=wrGet(WR.id);if(!x)return '<button type="button" class="btn2" data-act="owback">← 목록으로</button><div class="card" style="margin-top:12px">이 문제를 찾을 수 없어요.</div>';
+  var st=x.st||0,h='<button type="button" class="btn2" data-act="owback" style="margin:0 0 12px">← 목록으로</button>';
+  h+='<div class="card"><div class="go"><h2 style="margin:0">'+esc(x.s||'기타')+' · '+wrDate(x.t)+'</h2><span class="wst '+['n','m','g'][st]+'">'+wrLbl(x)+'</span></div>';
+  h+='<div class="wdet"><div class="wdl"><img class="wbig" src="'+esc(wrImg(x))+'" alt="오답 사진"></div><div class="wdr">';
+  if(WR.edit)h+='<label class="fl" for="owme">메모</label><input id="owme" maxlength="40" value="'+esc(x.m||'')+'"><div class="brow"><button type="button" class="btn" data-act="owmsave">저장</button><button type="button" class="btn2" data-act="owmno">취소</button></div>';
+  else h+='<p style="margin:10px 0 0">'+(x.m?'📝 '+esc(x.m):'<span class="lbl">메모가 없어요</span>')+'</p>';
+  h+='<div class="wsteps">'+['새 오답','복습 중','졸업'].map(function(t,i){return '<span'+(i===st?' class="on '+['n','','g'][i]+'"':'')+'>'+t+'</span>'}).join('')+'</div>';
+  h+='<div class="lbl">다시 풀어본 횟수 <b style="color:var(--ink)">'+(x.n||0)+'회</b>'+(x.l?' · 마지막 '+wrDate(x.l):'')+'</div>';
+  h+='<div class="brow">'+(st===2?'<button type="button" class="btn2" data-act="owre">↩ 다시 복습하기</button>':'<button type="button" class="btn" data-act="owrev" style="background:var(--green);color:#fff">✅ 다시 풀어봤어요</button><button type="button" class="btn2" data-act="owgrad">🎓 졸업!</button>')+'<button type="button" class="btn2" data-act="owedit">✏️ 메모 고치기</button><button type="button" class="btn2" data-act="owdel">🗑️ 삭제</button></div>';
+  if(WR.del)h+='<div class="warn" style="margin-top:12px">삭제하면 사진도 목록에서 사라져요. 부모님 확인 번호를 입력해 주세요.<div class="brow"><input id="owpin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" style="width:140px" aria-label="확인 번호"><button type="button" class="btn" data-act="owdelok" style="margin-top:0">삭제하기</button><button type="button" class="btn2" data-act="owdelno" style="margin-top:0">취소</button></div>'+(WR.perr?'<p class="err" role="alert">번호가 달라요</p>':'')+'</div>';
+  return h+'</div></div></div>'}
+function renderWrong(){
+  var head='<div class="head"><div><h1>오답 노트</h1><div class="date">틀린 문제를 사진으로 찍어 두고 다시 봐요</div></div>'+(WR_WEB&&DB&&WR.list?'<span class="chip">복습할 문제 '+wrTodo()+'개</span>':'')+'</div>'+(S.toast?'<div class="win" role="status" style="margin:0 0 12px">'+esc(S.toast)+'</div>':'');
+  if(!WR_WEB){main.innerHTML=head+'<div class="card" style="max-width:560px"><h2>📝 오답 노트는 가족 링크에서 열려요</h2><p style="margin:0 0 6px">사진은 폰과 태블릿이 함께 쓰는 <b>가족 공유 페이지</b>에 저장돼요. 아래 버튼으로 열고, 그곳의 <b>오답</b> 탭에서 사진을 올리고 복습해요.</p><a class="btn" href="'+WR_LINK+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none">가족 링크 열기 ↗</a></div>';return}
+  if(!DB||!WR.list){main.innerHTML=head+'<div class="card" style="max-width:560px">'+(DB?'오답 목록을 불러오는 중이에요…':'가족 공유 저장소에 연결하는 중이에요…')+'</div>';return}
+  main.innerHTML=head+(WR.v==='add'?wrAddHtml():WR.v==='det'?wrDetHtml():wrListHtml())}
+function wrUp(id,patch,msg){if(!DB)return;DB.doc('wrong/'+id).update(patch).then(function(){if(msg){fx('hr');plToast(msg)}else fx('ck')}).catch(function(){fx('un');plToast('저장하지 못했어요. 잠시 뒤에 다시 해 주세요')})}
+function wrSave(){var a=WR.add;if(!a||!a.blob||WR.busy||!WR.as||!DB)return;
+  var m=document.getElementById('owm');if(m)a.m=m.value.trim();
+  WR.busy=true;WR.err='';renderWrong();
+  WR.as.upload(a.blob).then(function(r){
+    var id='w'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+    return DB.doc('wrong/'+id).set({a:r.id,u:r.url,s:a.s,m:a.m||'',st:0,n:0,t:Date.now(),l:0}).then(function(){return id})
+  }).then(function(){WR.busy=false;if(a.pv)URL.revokeObjectURL(a.pv);WR.add=null;WR.v='list';fx('hr');plToast('📝 오답을 저장했어요');renderWrong()})
+  .catch(function(){WR.busy=false;WR.err='저장하지 못했어요. 사진을 다시 골라 주세요';renderWrong()})}
+function wrClick(e){
+  var b=e.target.closest('button[data-act]');if(!b||S.tab!=='wrong')return;var a=b.dataset.act;if(a.indexOf('ow')!==0)return;
+  var m=document.getElementById('owm');if(m&&WR.add)WR.add.m=m.value;
+  if(a==='owcam'){document.getElementById('owcamI').click();return}
+  if(a==='owgal'){document.getElementById('owgalI').click();return}
+  if(a==='owadd'){WR.add={s:'수학',m:'',blob:null,pv:''};WR.err='';WR.v='add';fx('ck')}
+  else if(a==='owsub'){if(WR.add)WR.add.s=b.dataset.s;fx('ck')}
+  else if(a==='owsave'){wrSave();return}
+  else if(a==='owcancel'){if(WR.add&&WR.add.pv)URL.revokeObjectURL(WR.add.pv);WR.add=null;WR.v='list';WR.err=''}
+  else if(a==='owf'){WR[b.dataset.k]=b.dataset.v;fx('ck')}
+  else if(a==='owopen'){WR.v='det';WR.id=b.dataset.id;WR.edit=false;WR.del=false;WR.perr=false;fx('ck')}
+  else if(a==='owback'){WR.v='list';WR.id=null}
+  else if(a==='owrev'){var x=wrGet(WR.id);if(x){wrUp(x.id,{st:1,n:(x.n||0)+1,l:Date.now()},'✅ 복습 '+((x.n||0)+1)+'회! 잘했어요')}}
+  else if(a==='owgrad'){var g=wrGet(WR.id);if(g){wrUp(g.id,{st:2,l:Date.now()},'🎓 졸업! 이 문제는 이제 다 알아요')}}
+  else if(a==='owre'){var r=wrGet(WR.id);if(r)wrUp(r.id,{st:1})}
+  else if(a==='owedit'){WR.edit=true}
+  else if(a==='owmno'){WR.edit=false}
+  else if(a==='owmsave'){var me=document.getElementById('owme'),e2=wrGet(WR.id);if(e2&&me){wrUp(e2.id,{m:me.value.trim()})}WR.edit=false}
+  else if(a==='owdel'){WR.del=true;WR.perr=false}
+  else if(a==='owdelno'){WR.del=false;WR.perr=false}
+  else if(a==='owdelok'){var pi=document.getElementById('owpin');
+    if(pi&&pi.value===String(S.settings.pin)){var d=wrGet(WR.id);if(d&&DB){DB.doc('wrong/'+d.id).delete().then(function(){fx('ck');plToast('삭제했어요')}).catch(function(){fx('un');plToast('삭제하지 못했어요')});
+        if(WR.as&&d.a){try{WR.as.delete(d.a).catch(function(){})}catch(x2){}}}
+      WR.v='list';WR.id=null;WR.del=false;WR.perr=false}
+    else{WR.perr=true;fx('un')}}
+  else return;
+  if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();
+  renderWrong();main.scrollTop=0}
+function wrChange(e){var t=e.target;if(!t||(t.id!=='owcamI'&&t.id!=='owgalI')||!t.files||!t.files[0]||!WR.add)return;
+  var f=t.files[0],m=document.getElementById('owm');if(m)WR.add.m=m.value;
+  WR.err='';WR.busy=true;renderWrong();
+  wrShrink(f).then(function(b){if(WR.add&&WR.add.pv)URL.revokeObjectURL(WR.add.pv);WR.add.blob=b;WR.add.pv=URL.createObjectURL(b);WR.busy=false;renderWrong()})
+  .catch(function(){WR.busy=false;WR.err='사진을 읽지 못했어요. 다른 사진으로 해 볼까요?';renderWrong()})}
+main.addEventListener('click',wrClick);main.addEventListener('change',wrChange);
+
 prefsLoad();applySkin();
 loadLocal();adoptShipped();
 try{var rs=JSON.parse(localStorage.getItem('seolho-resume')||'null');localStorage.removeItem('seolho-resume');
@@ -2710,6 +2835,11 @@ render();
   DB.doc('settings/daymeta').onSnapshot(function(s){
     if(s.exists){var x=s.data()||{};S.meta=(x.m&&typeof x.m==='object')?x.m:{};saveLocal();render()}
   },function(){});
+  try{window.claude.use('assets').then(function(a){WR.as=a||null;if(S.tab==='wrong')render()},function(){WR.as=null})}catch(e){WR.as=null}
+  DB.collection('wrong').onSnapshot(function(snap){
+    WR.list=snap.docs.map(function(d){var x=d.data()||{};x.id=d.id;return x}).filter(function(x){return x.a||x.u});
+    if(S.tab==='wrong')render();
+  },function(){WR.list=WR.list||[];if(S.tab==='wrong')render()});
 })();
 })();
 
