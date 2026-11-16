@@ -54,6 +54,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -2042,14 +2043,17 @@ function renderLog(c){
   var fd=keyToDate(fixKey),fdi=(fd.getDay()+6)%7,fits=itemsOf(fdi),fds=doneSet(fixKey),fm=S.meta[fixKey]||{},frows='';
   fits.forEach(function(it,i){
     var d=fds.has(it.n);
-    frows+='<button type="button" class="row'+(d?' d':'')+'" data-fx="'+i+'" aria-pressed="'+d+'" style="min-height:52px"><span class="ck">'+ICON_CK+'</span><span class="tm">'+esc(it.t)+'</span><span class="nm" style="font-size:18.5px">'+esc(it.n)+'</span></button>';
+    var fps=partsOf(it.n);
+    frows+='<div class="rw"><button type="button" class="row'+(d?' d':'')+'" data-fx="'+i+'" aria-pressed="'+d+'" style="min-height:52px"><span class="ck">'+ICON_CK+'</span><span class="tm">'+esc(it.t)+'</span><span class="nm" style="font-size:18.5px">'+esc(it.n)+(fps?' ▾':'')+'</span></button>';
+    if(fps&&S.fxo===fixKey+':'+i)frows+='<div class="subs" role="group" aria-label="'+esc(it.n)+' 세부 항목">'+fps.map(function(q,j){var sd=subDone(fds,it.n,q,fps);return '<button type="button" class="sub'+(sd?' d':'')+'" data-fxs="'+i+':'+j+'" aria-pressed="'+sd+'">'+(sd?'✓ ':'')+esc(q)+'</button>'}).join('')+'</div>';
+    frows+='</div>';
   });
   var tadj=fits.map(function(it,i){var s=((fm.st)||{})[it.n]||0;return '<div class="tadj"><span>'+esc(it.n)+'</span><b>'+tmMin(s)+'</b><button type="button" data-act="tadj" data-ti="'+i+'" data-d="-1" aria-label="5분 빼기">−5</button><button type="button" data-act="tadj" data-ti="'+i+'" data-d="1" aria-label="5분 더하기">+5</button></div>'}).join('')||'<div class="lbl">이 요일은 항목이 없어요.</div>';
   var fixCard='<div class="card"><h2>날짜별 관리</h2><label class="fl" for="fixd" style="margin-top:0">날짜 고르기 (최근 14일)</label><select id="fixd">'+opts+'</select>'+
     '<div class="brow"><button type="button" class="btn2'+(fm.r?' on':'')+'" data-act="rain" aria-pressed="'+(!!fm.r)+'">☔ 우천 취소'+(fm.r?' (켜짐)':'')+'</button><button type="button" class="btn2'+(fm.o?' on':'')+'" data-act="okd" aria-pressed="'+(!!fm.o)+'">🧢 감독 확인 도장'+(fm.o?' (찍힘)':'')+'</button></div>'+
     '<label class="fl" for="fxn">감독의 한마디 (60자)</label><input id="fxn" type="text" maxlength="60" value="'+esc(fm.n||'')+'" placeholder="예: 문장제 집중력 최고!"><div class="brow"><button type="button" class="btn2" data-act="notesave">한마디 저장</button></div>'+
     '<h2 style="margin-top:14px">그날 순공시간 고치기</h2>'+tadj+
-    '<h2 style="margin-top:14px">그날 체크 고치기</h2>'+(frows||'<div class="lbl">이 요일은 항목이 없어요.</div>')+
+    '<h2 style="margin-top:14px">그날 체크 고치기</h2><div class="lbl" style="margin:0 0 6px">▾ 표시 항목은 눌러서 세부 항목을 고르세요. 바꾸면 바로 저장돼요.</div>'+(frows||'<div class="lbl">이 요일은 항목이 없어요.</div>')+
     '<p class="lbl" style="margin:6px 0 0">우천 취소를 켜면 그날은 타율과 달성률에서 빠져요. 감독 확인 도장은 성장 점수 +10점이에요.</p></div>';
   /* 컨디션 기록 */
   var mh='';
@@ -2134,10 +2138,26 @@ function doImport(){
 }
 function logClick(e){
   if(S.tab!=='log'||!S.unlocked)return;
-  var c=ctx(),k=S.fixDate||c.tk,f=e.target.closest('.row[data-fx]');
+  var c=ctx(),k=S.fixDate||c.tk,fs=e.target.closest('.sub[data-fxs]');
+  if(fs){
+    var sp=fs.dataset.fxs.split(':'),sit=itemsOf((keyToDate(k).getDay()+6)%7)[+sp[0]],sps=sit&&partsOf(sit.n);
+    if(sps&&sps[+sp[1]]){
+      var sds=doneSet(k),pd=sds.has(sit.n);
+      if(pd&&!sps.some(function(q){return sds.has(subKey(sit.n,q))}))setSubs(k,sit.n,true);
+      flip(k,subKey(sit.n,sps[+sp[1]]));
+      var saf=doneSet(k),sall=sps.some(function(q){return saf.has(subKey(sit.n,q))});
+      if(sall!==pd)flip(k,sit.n);
+      fx(saf.has(subKey(sit.n,sps[+sp[1]]))?'ck':'un');render();
+    }
+    return;
+  }
+  var f=e.target.closest('.row[data-fx]');
   if(f){
     var it=itemsOf((keyToDate(k).getDay()+6)%7)[+f.dataset.fx];
-    if(it){flip(k,it.n);render()}
+    if(it){
+      if(partsOf(it.n)){var fk=k+':'+f.dataset.fx;S.fxo=(S.fxo===fk?null:fk);fx('ck');render()}
+      else{flip(k,it.n);render()}
+    }
     return;
   }
   var b=e.target.closest('button[data-act]');if(!b)return;
@@ -2159,9 +2179,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:211};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:212};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+['v2.12','지난 날짜 체크 고치기에서 마무리 운동 등 세부 항목이 펼쳐지지 않던 문제 수정'],
 ['v2.11','교양 타석 문제 98개 추가(3000장 48 + 궁금증 연구소 50): 문제마다 쉬움·보통·도전, 틀리면 정답 근거와 다시 읽을 장 표시 · 하루 3문제는 쉬움·보통·도전 1개씩 · 연속 2번 맞히면 한 달 쉬기'],
 ['v2.10','🔤 영어 타석 추가: 초등 필수 영단어 800 + 설호의 영어 연구소 · 퀴즈 타석은 교양 타석으로 이름 변경, 영어·한자 문제는 각 타석으로 분리'],
 ['v2.09','🈶 한자 타석 추가: 한국어문회 6·7·8급 한자 300자, 하루 5문제 · 기존 한자 8문제는 새 한자 타석으로 대체'],
