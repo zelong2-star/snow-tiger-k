@@ -55,6 +55,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -129,6 +130,7 @@ h2{font-size:17px;font-weight:700;margin:0 0 10px}
 .sec{font-size:15px;font-weight:700;color:var(--muted);margin:18px 0 8px;display:flex;gap:8px;align-items:baseline}
 .sec:first-child{margin-top:0}
 .rw{position:relative;display:flow-root}
+.kcb2.kpk{outline:4px solid var(--acc);outline-offset:2px;border-radius:12px;animation:kpk 1.2s ease-in-out infinite}@keyframes kpk{50%{outline-color:transparent}}@media (prefers-reduced-motion:reduce){.kcb2.kpk{animation:none}}
 .rw .row{padding-right:132px}
 .tmb{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;position:absolute;right:10px;top:calc((100% - 8px)/2);transform:translateY(-50%);min-width:112px;height:48px;border-radius:24px;border:2px solid var(--navy);background:var(--panel);color:var(--navy);font:inherit;font-size:17px;display:flex;align-items:center;justify-content:center;gap:5px;padding:0 10px;cursor:pointer}
 .tmb b{font-weight:700;font-size:17px;color:inherit}
@@ -2179,9 +2181,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:212};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:213};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+['v2.13','뽑기권 규칙 변경: 교양 5문제 중 4개 · 오답 복습 5문제 모두 맞히면 뽑기권 1장 · 뽑기권 3장으로 선수 카드 1장을 직접 고르기'],
 ['v2.12','지난 날짜 체크 고치기에서 마무리 운동 등 세부 항목이 펼쳐지지 않던 문제 수정'],
 ['v2.11','교양 타석 문제 98개 추가(3000장 48 + 궁금증 연구소 50): 문제마다 쉬움·보통·도전, 틀리면 정답 근거와 다시 읽을 장 표시 · 하루 3문제는 쉬움·보통·도전 1개씩 · 연속 2번 맞히면 한 달 쉬기'],
 ['v2.10','🔤 영어 타석 추가: 초등 필수 영단어 800 + 설호의 영어 연구소 · 퀴즈 타석은 교양 타석으로 이름 변경, 영어·한자 문제는 각 타석으로 분리'],
@@ -2588,7 +2591,7 @@ function plGet(){
   return p;
 }
 function plSave(){plGet();saveLocal();if(DB)DB.doc('settings/play').set(S.play).catch(function(){S.store='error';renderSync()})}
-function plTix(){var p=plGet(),u=0;Object.keys(p.cards).forEach(function(k){u+=p.cards[k]||0});u+=(p.kb&&p.kb.d)||0;return Math.max(0,Object.keys(p.tg).length-u)}
+function plTix(){var p=plGet(),u=0;Object.keys(p.cards).forEach(function(k){u+=p.cards[k]||0});u+=((p.kb&&p.kb.d)||0)+3*((p.kb&&p.kb.n)||0);return Math.max(0,Object.keys(p.tg).length-u)}
 function plGrant(id){var p=plGet();if(p.tg[id])return false;p.tg[id]=1;plSave();return true}
 function plRnd(n){return Math.floor(Math.random()*n)}
 function plShuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=plRnd(i+1),t=a[i];a[i]=a[j];a[j]=t}return a}
@@ -2710,22 +2713,24 @@ function enAnswer(cur,ok){var p=plGet(),today=key(new Date());p.es=p.es||{};p.ew
   if(ok){h.s++;delete p.ew[cur.id];if(h.s>=2)h.u=key(new Date(Date.now()+30*864e5))}
   else{h.s=0;h.u='';p.ew[cur.id]=today}
   p.es[cur.id]=h;plSave()}
-/* 교양 3문제 고르기: 틀린 문제 복습(하루 이상 지난 것) 최대 1개 + 안 본 문제 */
+/* 교양 5문제 고르기(쉬움2·보통2·도전1): 틀린 문제 복습(하루 이상 지난 것) 최대 1개 + 안 본 문제 */
 function plPickDaily(){
   var p=plGet(),today=key(new Date()),pick=[],qs=p.qs=p.qs||{},got={};
   function hid(i){var h=qs[i];return h&&h.u&&h.u>today}
   var due=Object.keys(p.wr).filter(function(i){return p.wr[i]!==today&&plOk(+i)});
   if(due.length){var d=+due[plRnd(due.length)];pick.push(d);got[plLv(d)]=1}
+  var need={'쉬움':2,'보통':2,'도전':1};
   ['쉬움','보통','도전'].forEach(function(lv){
-    if(got[lv])return;
+   for(var nn=(got[lv]||0);nn<need[lv];nn++){
     var all=QB.map(function(_,i){return i}).filter(function(i){return plOk(i)&&plLv(i)===lv&&pick.indexOf(i)<0&&!hid(i)});
     var pool=all.filter(function(i){return p.seen.indexOf(i)<0});
     if(!pool.length){p.seen=p.seen.filter(function(i){return !QB[i]||plLv(i)!==lv});pool=all}
     var nw=pool.filter(function(i){return QB[i][4]});
     if(nw.length&&nw.length<pool.length&&plRnd(10)<7)pool=nw;
     if(pool.length)pick.push(pool[plRnd(pool.length)])
+   }
   });
-  var guard=0;while(pick.length<3&&guard++<200){var i=plRnd(QB.length);if(plOk(i)&&pick.indexOf(i)<0&&!hid(i))pick.push(i)}
+  var guard=0;while(pick.length<5&&guard++<200){var i=plRnd(QB.length);if(plOk(i)&&pick.indexOf(i)<0&&!hid(i))pick.push(i)}
   return plShuf(pick);
 }
 function plStartQuiz(){var p=plGet(),today=key(new Date());if(p.qd[today])return;
@@ -2741,7 +2746,8 @@ function plAnswer(j){var q=S.q;if(!q||q.pick>=0)return;var cur=q.list[q.i],p=plG
   plSave();fx(ok?'bt':'un')}
 function plNext(){var q=S.q;if(!q)return;q.i++;q.pick=-1;
   if(q.i>=q.list.length){q.end=true;var p=plGet(),today=key(new Date());
-    if(q.mode==='quiz'){p.qd[today]={c:q.right,t:q.list.length};if(q.right>=2&&plGrant('q:'+today))q.tix=1;plSave()}
+    if(q.mode==='quiz'){p.qd[today]={c:q.right,t:q.list.length};if(q.right>=4&&plGrant('q:'+today))q.tix=1;plSave()}
+    if(q.mode==='rev'){if(q.list.length>=5&&q.right>=5&&plGrant('r:'+today))q.tix=1;plSave()}
     if(q.mode==='en'){p.ed=p.ed||{};p.ed[today]={c:q.right,t:q.list.length};if(q.right>=4&&plGrant('e:'+today))q.tix=1;plSave()}
     if(q.mode==='hj'){p.hd=p.hd||{};p.hd[today]={c:q.right,t:q.list.length};if(q.right>=4&&plGrant('h:'+today))q.tix=1;plSave()}
     fx(q.right>=q.list.length?'hr':'end')}
@@ -2822,12 +2828,11 @@ function kbCard(r,big){
 function kbFilter(){var s=kbSt(),k=kbPl(),q=s.q.trim();return KB.filter(function(r){return r[1]===s.t&&(s.p<0||r[4]===s.p)&&(!q||(kbOwn(kbId(r))&&(r[2].indexOf(q)>=0||String(r[3])===q)))&&(!s.f||k.f[kbId(r)])})}
 function kbGrid(){var s=kbSt();if(s.t===10){var q=s.q.trim(),k=kbPl(),LL=CARDS.filter(function(c){return (!q||(kbOwn(c[0])&&c[1].indexOf(q)>=0))&&(!s.f||k.f[c[0]])});return {cnt:LL.length+'명',html:LL.map(function(c){return '<button type="button" class="kcb2" data-act="plkv" data-id="'+c[0]+'" aria-label="'+esc(c[1])+'">'+kbLeg(c)+'</button>'}).join('')||'<div class="lbl">조건에 맞는 선수가 없어요.</div>'}}
   var L=kbFilter(),sh=L.slice(0,s.n);
-  return {cnt:L.length+'명',html:(sh.map(function(r){return '<button type="button" class="kcb2" data-act="plkv" data-id="'+kbId(r)+'">'+kbCard(r)+'</button>'}).join('')+(L.length>sh.length?'<button type="button" class="btn2 kmore" data-act="plkmore">더 보기 ('+(L.length-sh.length)+'명)</button>':''))||'<div class="lbl">조건에 맞는 선수가 없어요.</div>'}}
+  return {cnt:L.length+'명',html:(sh.map(function(r){return '<button type="button" class="kcb2'+(S.kpk&&KBFULL[kbId(r)]&&!kbOwn(kbId(r))?' kpk':'')+'" data-act="plkv" data-id="'+kbId(r)+'">'+kbCard(r)+'</button>'}).join('')+(L.length>sh.length?'<button type="button" class="btn2 kmore" data-act="plkmore">더 보기 ('+(L.length-sh.length)+'명)</button>':''))||'<div class="lbl">조건에 맞는 선수가 없어요.</div>'}}
 function kbHtml(){var s=kbSt(),k=kbPl(),tot=Object.keys(k.c).length,fv=Object.keys(k.f).length,g=kbGrid(),tc={};KB.forEach(function(r){tc[r[1]]=(tc[r[1]]||0)+1});
   return '<button type="button" class="btn2" data-act="plhub" style="margin:0 0 12px">← 놀이터로</button><div class="plq" style="max-width:none"><div class="plp">📚 KBO 2026 선수 도감 <span class="plcat">수집 '+tot+' / '+(KB.length+CARDS.length)+'명 · ♥ '+fv+'</span></div>'+
-  '<div class="lbl" style="margin:4px 0 10px">2026 KBO 가이드북 선수단 현황 621명 + 레전드 '+CARDS.length+'명 · 실시간 등록 상태와 다를 수 있어요. 카드는 뽑기권으로 한 장씩 뽑아야 열려요. 뽑기는 일러스트가 완성된 선수 중에서 나와요. 열린 카드를 누르면 자세히 볼 수 있고 ♥를 표시할 수 있어요.</div>'+
-  '<div class="brow" style="margin:0 0 12px;align-items:center"><button type="button" class="btn" data-act="plkdraw"'+(plTix()&&kbPool().length?'':' disabled')+' style="margin:0">🎴 카드 뽑기 (뽑기권 '+plTix()+'장)</button>'+(plTix()?'':'<span class="lbl" style="margin:0 0 0 10px">뽑기권은 경기 종료·교양·한자·영어·홈런 더비로 얻어요.</span>')+(!kbPool().length?'<span class="lbl" style="margin:0 0 0 10px">'+(plTix()?'지금 나온 일러스트 카드를 모두 모았어요! 새 카드가 생기면 뽑을 수 있어요 🎉':'지금 나온 일러스트 카드를 모두 모았어요! 🎉')+'</span>':'')+'</div>'+
-  '<div class="brow ktab" style="margin:0 0 8px">'+KBT.map(function(t,i){return '<button type="button" class="btn2'+(s.t===i?' on':'')+'" data-act="plkt" data-v="'+i+'" style="margin:0">'+t[0].split(' ')[0]+' '+tc[i]+'</button>'}).join('')+'<button type="button" class="btn2'+(s.t===10?' on':'')+'" data-act="plkt" data-v="10" style="margin:0">🏆 레전드 '+CARDS.length+'</button></div>'+
+  '<div class="lbl" style="margin:4px 0 10px">2026 KBO 가이드북 선수단 현황 621명 + 레전드 '+CARDS.length+'명 · 실시간 등록 상태와 다를 수 있어요. 뽑기권 3장으로 선수 카드 1장을 직접 골라 열 수 있어요. 지금은 일러스트가 완성된 선수 중에서 고를 수 있어요. 열린 카드를 누르면 자세히 볼 수 있고 ♥를 표시할 수 있어요.</div>'+
+  '<div class="brow" style="margin:0 0 12px;align-items:center"><button type="button" class="btn" data-act="plkpk"'+(plTix()>=3&&kbPool().length?'':' disabled')+' style="margin:0">'+(S.kpk?'✖ 고르기 그만':'🎴 카드 고르기 (뽑기권 '+plTix()+'장 · 3장 필요)')+'</button>'+(plTix()<3?'<span class="lbl" style="margin:0 0 0 10px">뽑기권 3장이 모이면 선수 카드 1장을 직접 고를 수 있어요. 뽑기권은 경기 종료·교양·한자·영어·오답 복습·홈런 더비로 얻어요.</span>':'')+(!kbPool().length?'<span class="lbl" style="margin:0 0 0 10px">지금 나온 일러스트 카드를 모두 모았어요! 🎉</span>':'')+'</div>'+(S.kpk?'<div class="card" style="margin:0 0 12px;border-color:var(--acc)"><b>'+(S.kcf?'이 선수를 받을까요?':'받고 싶은 선수 카드를 눌러 보세요')+'</b><div class="lbl" style="margin-top:4px">'+(S.kcf?(function(){var rr=KB.filter(function(x){return kbId(x)===S.kcf})[0];return rr?esc(KBT[rr[1]][0]+' '+rr[2]):''})()+' · 뽑기권 3장을 써요.':'테두리가 반짝이는 카드가 지금 고를 수 있는 선수예요.')+'</div>'+(S.kcf?'<div class="brow"><button type="button" class="btn" data-act="plkok">받기 (뽑기권 3장)</button><button type="button" class="btn2" data-act="plkno">취소</button></div>':'')+'</div>':'')+  '<div class="brow ktab" style="margin:0 0 8px">'+KBT.map(function(t,i){return '<button type="button" class="btn2'+(s.t===i?' on':'')+'" data-act="plkt" data-v="'+i+'" style="margin:0">'+t[0].split(' ')[0]+' '+tc[i]+'</button>'}).join('')+'<button type="button" class="btn2'+(s.t===10?' on':'')+'" data-act="plkt" data-v="10" style="margin:0">🏆 레전드 '+CARDS.length+'</button></div>'+
   '<div class="brow" style="margin:0 0 10px">'+(s.t===10?'':[['-1','전체'],['0','투수'],['1','포수'],['2','내야수'],['3','외야수']].map(function(x){return '<button type="button" class="btn2'+(s.p===+x[0]?' on':'')+'" data-act="plkp" data-v="'+x[0]+'" style="margin:0">'+x[1]+'</button>'}).join(''))+
   '<button type="button" class="btn2'+(s.f?' on':'')+'" data-act="plkff" style="margin:0">♥ 즐겨찾기만</button></div>'+
   '<div class="brow" style="margin:0 0 12px;align-items:center"><input id="plkq" type="search" class="kq" placeholder="선수 이름 또는 등번호 검색" aria-label="선수 검색" value="'+esc(s.q)+'" autocomplete="off"><span id="kcnt" class="lbl" style="margin:0 0 0 10px">'+g.cnt+'</span></div>'+
@@ -2857,20 +2862,24 @@ function kbView(){var id=(S.kd||{}).id,lg=kbLg(id),r=lg?null:KB.filter(function(
   '<div class="brow" style="justify-content:center;margin-top:14px"><button type="button" class="btn2'+(f?' on':'')+'" data-act="plkfav" data-id="'+id+'" style="margin:0">'+(f?'♥ 즐겨찾기 해제':'♡ 즐겨찾기')+'</button></div></div>'+
   '<div class="kdr">'+kbProf(r,id)+'</div></div>';}
 function kbPool(){var k=kbPl(),pool=[];KB.forEach(function(r){var i=kbId(r);if(KBFULL[i]&&!k.c[i])pool.push(i)});return pool}
-function kbDraw(){var k=kbPl();if(plTix()<1)return;var pool=kbPool();if(!pool.length)return;
-  var id=pool[plRnd(pool.length)];k.c[id]=1;k.d=(k.d||0)+1;plSave();S.kdr={id:id};S.pv='kdraw';fx('hr')}
+function kbPick(id){var k=kbPl();if(plTix()<3||kbPool().indexOf(id)<0)return;
+  k.c[id]=1;k.n=(k.n||0)+1;plSave();S.kcf=null;S.kpk=false;S.kdr={id:id};S.pv='kdraw';fx('hr')}
 function kbDrawView(){var id=(S.kdr||{}).id,lg=kbLg(id),r=lg?null:KB.filter(function(x){return kbId(x)===id})[0];if(!r&&!lg){S.pv='kbo';return kbHtml()}
   var tix=plTix();
   return '<button type="button" class="btn2" data-act="plkbo" style="margin:0 0 12px">← 도감으로</button><div class="pcshow"><div class="plbig">✨ 새 카드!</div>'+(lg?kbLeg(lg).replace('class="kgl"','class="kgl big"'):kbCard(r,1))+
-  '<div class="brow" style="justify-content:center;margin-top:14px"><button type="button" class="btn2" data-act="plkv" data-id="'+id+'" style="margin:0">자세히 보기</button>'+(tix?'<button type="button" class="btn" data-act="plkdraw" style="margin:0">🎴 한 번 더 뽑기 ('+tix+'장)</button>':'')+'</div></div>'}
+  '<div class="brow" style="justify-content:center;margin-top:14px"><button type="button" class="btn2" data-act="plkv" data-id="'+id+'" style="margin:0">자세히 보기</button>'+(tix>=3?'<button type="button" class="btn" data-act="plkpk" style="margin:0">🎴 카드 더 고르기 (뽑기권 '+tix+'장)</button>':'')+'</div></div>'}
 function kbAct(a,b){var s=kbSt(),k=kbPl();S.toast='';
   if(a==='plkbo'){S.pv='kbo'}
   else if(a==='plkt'){s.t=+b.dataset.v;s.n=40}
   else if(a==='plkp'){s.p=+b.dataset.v;s.n=40}
   else if(a==='plkff'){s.f=s.f?0:1;s.n=40}
   else if(a==='plkmore'){s.n+=60}
-  else if(a==='plkv'){var vid=b.dataset.id;if(!kbOwn(vid)){plToast('아직 못 만난 선수예요. 뽑기권으로 뽑아 보세요! 🎴');return true}S.kd={id:vid};S.pv='kview'}
-  else if(a==='plkdraw'){kbDraw()}
+  else if(a==='plkv'){var vid=b.dataset.id;if(!kbOwn(vid)){
+    if(S.kpk&&plTix()>=3&&kbPool().indexOf(vid)>=0){S.kcf=vid;return true}
+    plToast(KBFULL[vid]?'뽑기권 3장을 모으면 이 선수를 고를 수 있어요. 🎴':'아직 카드 일러스트를 준비하고 있어요. ✏️');return true}S.kd={id:vid};S.pv='kview'}
+  else if(a==='plkpk'){if(plTix()<3){plToast('뽑기권이 3장 모이면 선수 카드를 고를 수 있어요. 🎴');return true}S.kpk=!S.kpk;S.kcf=null;S.pv='kbo'}
+  else if(a==='plkok'){kbPick(S.kcf)}
+  else if(a==='plkno'){S.kcf=null}
   else if(a==='plkall'){S.kpin=!S.kpin;S.kperr=false}
   else if(a==='plkallok'){var pi=document.getElementById('kpin');if(pi&&pi.value===String(S.settings.pin)){k.all=1;S.kpin=false;S.kperr=false;plSave();fx('hr')}else{S.kperr=true;fx('un')}}
   else if(a==='plkalloff'){delete k.all;plSave()}
@@ -2891,19 +2900,19 @@ function renderPlay(c){
     var t=S.timer,brk=t&&(t.mode==='break'||t.mode==='bdone');
     h=(brk?'<div class="win" style="margin:0 0 12px;background:var(--green-bg);color:var(--green)">☕ 쉬는 시간이에요! 홈런 더비 한 판 어때요?</div>':'')+
     '<div class="plg">'+
-    '<button type="button" class="plc" data-act="plquiz"><b>⚾ 교양 타석</b><span>하루 3문제 · 2개 이상 맞히면 뽑기권!</span><em>'+(qd?'오늘 완료 · '+qd.c+'/'+qd.t+' 맞힘':'오늘의 타석 시작')+'</em></button>'+
+    '<button type="button" class="plc" data-act="plquiz"><b>⚾ 교양 타석</b><span>하루 5문제 · 4개 이상 맞히면 뽑기권!</span><em>'+(qd?'오늘 완료 · '+qd.c+'/'+qd.t+' 맞힘':'오늘의 타석 시작')+'</em></button>'+
     '<button type="button" class="plc" data-act="plhj"><b>🈶 한자 타석</b><span>하루 5문제 · 4개 이상 맞히면 뽑기권!</span><em>'+(hd?'오늘 완료 · '+hd.c+'/'+hd.t+' 맞힘':'오늘의 한자 시작')+'</em></button>'+
     '<button type="button" class="plc" data-act="plen"><b>🔤 영어 타석</b><span>하루 5문제 · 4개 이상 맞히면 뽑기권!</span><em>'+(ed?'오늘 완료 · '+ed.c+'/'+ed.t+' 맞힘':'오늘의 영어 시작')+'</em></button>'+
     '<button type="button" class="plc" data-act="plgame"><b>🏏 홈런 더비</b><span>10구 · 80점 이상이면 뽑기권!</span><em>오늘 최고 '+(bt||0)+'점 · 나의 최고 '+(p.best||0)+'점</em></button>'+
-    '<button type="button" class="plc" data-act="plrev"'+(wn?'':' disabled')+'><b>📝 오답 복습</b><span>틀렸던 문제를 다시 쳐서 지워요</span><em>'+(wn?'복습할 문제 '+wn+'개':'복습할 문제가 없어요 👍')+'</em></button>'+
+    '<button type="button" class="plc" data-act="plrev"'+(wn?'':' disabled')+'><b>📝 오답 복습</b><span>5문제 모두 맞히면 뽑기권! (하루 1장)</span><em>'+(wn?'복습할 문제 '+wn+'개':'복습할 문제가 없어요 👍')+'</em></button>'+
     '<button type="button" class="plc" data-act="plkbo"><b>📚 KBO 2026 선수 도감</b><span>10개 구단 621명 + 레전드 41명 · 구단/포지션/이름 검색</span><em>수집 '+Object.keys(kbPl().c).length+' / '+(KB.length+CARDS.length)+'명 · 뽑기권 '+plTix()+'장</em></button>'+
-    '</div><div class="card" style="margin-top:14px"><b>뽑기권은 이렇게 얻어요</b><div class="lbl" style="margin-top:6px">⚾ 오늘 경기 종료 · 🧠 교양 2개 이상 · 🈶 한자 4개 이상 · 🔤 영어 4개 이상 · 🏏 홈런 더비 80점 이상 (각각 하루 1장)</div></div>';
+    '</div><div class="card" style="margin-top:14px"><b>뽑기권은 이렇게 얻어요</b><div class="lbl" style="margin-top:6px">⚾ 오늘 경기 종료 · 🧠 교양 4개 이상 · 🈶 한자 4개 이상 · 🔤 영어 4개 이상 · 📝 오답 복습 5개 모두 · 🏏 홈런 더비 80점 이상 (각각 하루 1장) · 🎴 뽑기권 3장을 모으면 선수 카드 1장을 직접 고를 수 있어요</div></div>';
   }else if(v==='quiz'){
     var q=S.q;
     if(!q){S.pv='hub';return renderPlay(c)}
     if(q.end){
       var tot=q.list.length;
-      h=plBack()+'<div class="card plres"><div class="plbig">'+(q.right===tot?'🎉 만점 안타!':q.right>=2?'⚾ 안타!':'💪 다음엔 더!')+'</div><div class="pl2">'+tot+'타수 '+q.right+'안타'+(q.mode==='rev'?' · 오답 '+q.fixed+'개 지웠어요':'')+'</div>'+
+      h=plBack()+'<div class="card plres"><div class="plbig">'+(q.right===tot?'🎉 만점 안타!':q.right>=(q.mode==='rev'?5:4)?'⚾ 안타!':'💪 다음엔 더!')+'</div><div class="pl2">'+tot+'타수 '+q.right+'안타'+(q.mode==='rev'?' · 오답 '+q.fixed+'개 지웠어요':'')+'</div>'+(q.mode==='rev'&&!q.tix&&q.list.length<5?'<div class="lbl">오답이 5개 이상 쌓이면 5개를 모두 맞혀 뽑기권을 받을 수 있어요.</div>':'')+
         (q.tix?'<div class="win">🎴 뽑기권 1장을 받았어요!</div>':'')+
         '<div class="brow"><button type="button" class="btn" data-act="plhub">놀이터로</button>'+(q.tix||plTix()?'<button type="button" class="btn2" data-act="plkbo">카드 뽑으러 가기</button>':'')+'</div></div>';
     }else{
