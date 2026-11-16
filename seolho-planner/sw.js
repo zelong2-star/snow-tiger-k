@@ -1,5 +1,5 @@
 /* 설호 학습 플래너 서비스 워커: 앱 파일을 저장해 두어 인터넷이 없어도 열린다. */
-var V = 'seolho-app-v177';
+var V = 'seolho-app-v178';
 var FONTS = 'seolho-fonts-v1';
 var CORE = ['./', 'index.html', 'manifest.webmanifest', 'face.jpg',
   'fonts/kk.woff2', 'fonts/bsB.woff2', 'fonts/bsM.woff2', 'fonts/Giants-Regular.ttf', 'fonts/Giants-Bold.ttf', 'fonts/Giants-Inline.ttf',
@@ -33,6 +33,12 @@ self.addEventListener('fetch', function (e) {
     return;
   }
   if (url.origin !== location.origin) return;
+
+  /* 업데이트 확인용 요청(?_=…)은 저장본을 거치지 않고 항상 서버에서 받는다 */
+  if (url.searchParams.has('_')) {
+    e.respondWith(fetch(req.url, { cache: 'no-store' }));
+    return;
+  }
 
   /* 앱 파일: 저장본을 먼저 보여 주고, 뒤에서 새 버전을 받아 둔다 */
   e.respondWith(caches.open(V).then(function (c) {
