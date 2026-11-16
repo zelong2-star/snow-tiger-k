@@ -30,6 +30,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -2065,9 +2066,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:187};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:188};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+  ['v1.88','레전드 카드에 KBO 레전드 40 공식 분류(최다 득표자·원년의 스타 등) 표시'],
   ['v1.87','선수 카드를 실제 야구 카드 느낌으로 새 디자인 · KBO 40주년 레전드 40명 + 롯데 선수 카드 56종'],
   ['v1.86','선수 카드를 실제 롯데 자이언츠 선수 이름으로 변경(응원 친구 8종 포함, 총 25종)'],
   ['v1.85','놀이 탭 추가: 퀴즈 타석 · 홈런 더비(쉬는 시간 미니게임) · 오답 복습 · 선수 카드 뽑기'],
@@ -2298,46 +2300,46 @@ var QB=[
 ['상식','우리 태양계의 중심에 있는 별은?',['태양','달','지구','화성']]
 ];
 var CARDS=[
-['k1','선동열','투수','해태','L','K','무등산 폭격기, 전설의 에이스!'],
-['k2','최동원','투수 · 영구결번 11','롯데','L','K','부산의 무쇠팔, 영원한 에이스!'],
-['k3','이종범','유격수','해태','L','K','야구 천재의 질주!'],
-['k4','이승엽','타자','삼성','L','K','국민 홈런 타자!'],
-['k5','송진우','투수','한화','S','K','21시즌 마운드를 지킨 철인!'],
-['k6','구대성','투수','한화','S','K','선발도 마무리도 OK!'],
-['k7','박철순','투수','OB','S','K','불사조 에이스!'],
-['k8','이만수','포수','삼성','S','K','헐크의 호쾌한 한 방!'],
-['k9','김용수','투수','LG','S','K','LG의 영원한 마운드!'],
-['k10','양준혁','타자','삼성','S','K','최고의 좌타자!'],
-['k11','임창용','투수','해태','R','K','사이드암 강속구!'],
-['k12','백인천','타자','MBC','R','K','원년의 4할 타자!'],
-['k13','김성한','타자','해태','R','K','투타를 모두 잡은 이도류!'],
-['k14','이상훈','투수','LG','R','K','LG의 불꽃 좌완!'],
-['k15','장효조','타자','삼성','R','K','타격의 달인!'],
-['k16','박용택','타자','LG','R','K','LG 유니폼만 입은 안타 장인!'],
-['k17','장종훈','타자','빙그레','R','K','홈런 타자의 원조!'],
-['k18','이강철','투수','해태','R','K','컨트롤의 마법사!'],
-['k19','정민철','투수','한화','R','K','독수리 군단의 에이스!'],
-['k20','김재박','유격수','MBC','R','K','날쌘 수비의 대가!'],
-['k21','이병규','외야수','LG','R','K','리그 최고의 외야수!'],
-['k22','박정태','2루수 · 롯데 원클럽','롯데','R','K','악바리 2루수!'],
-['k23','김시진','투수','삼성','N','K','정교한 제구의 에이스!'],
-['k24','한대화','3루수','해태','N','K','핫코너의 거포!'],
-['k25','김기태','타자','쌍방울','N','K','좌타 거포의 주장!'],
-['k26','김동주','타자','두산','N','K','두산의 우직한 거포!'],
-['k27','심정수','타자','현대','N','K','담장 넘기는 우타 거포!'],
-['k28','타이론 우즈','타자 · 외국인','두산','N','K','두산의 홈런 용병!'],
-['k29','정민태','투수','현대','N','K','현대 왕조의 에이스!'],
-['k30','조계현','투수','해태','N','K','해태 마운드의 기둥!'],
-['k31','김태균','타자','한화','N','K','한화의 영원한 4번!'],
-['k32','박재홍','외야수','현대','N','K','호타준족의 상징!'],
-['k33','박경완','포수','SK','N','K','안방마님의 정석!'],
-['k34','홍성흔','포수 · 지명타자','두산','N','K','응원을 부르는 타격!'],
-['k35','전준호','외야수','롯데','N','K','도루의 달인!'],
-['k36','이순철','외야수','해태','N','K','빠른 발의 외야수!'],
-['k37','정근우','내야수','SK','N','K','투지의 2루수!'],
-['k38','박진만','유격수','삼성','N','K','철벽 유격수!'],
-['k39','더스틴 니퍼트','투수 · 외국인','두산','N','K','두산의 듬직한 에이스!'],
-['k40','배영수','투수','삼성','N','K','삼성 마운드의 투혼!'],
+['k1','선동열','투수','해태','L','K','무등산 폭격기, 전설의 에이스!','최다 득표자'],
+['k2','최동원','투수 · 영구결번 11','롯데','L','K','부산의 무쇠팔, 영원한 에이스!','최다 득표자'],
+['k3','이종범','유격수','해태','L','K','야구 천재의 질주!','최다 득표자'],
+['k4','이승엽','타자','삼성','L','K','국민 홈런 타자!','최다 득표자'],
+['k5','송진우','투수','한화','S','K','21시즌 마운드를 지킨 철인!','전천후 투수'],
+['k6','구대성','투수','한화','S','K','선발도 마무리도 OK!','전천후 투수'],
+['k7','박철순','투수','OB','S','K','불사조 에이스!','원년의 스타'],
+['k8','이만수','포수','삼성','S','K','헐크의 호쾌한 한 방!','원년의 스타'],
+['k9','김용수','투수','LG','S','K','LG의 영원한 마운드!','전천후 투수'],
+['k10','양준혁','타자','삼성','S','K','최고의 좌타자!','최강 좌타자'],
+['k11','임창용','투수','해태','R','K','사이드암 강속구!','전천후 투수'],
+['k12','백인천','타자','MBC','R','K','원년의 4할 타자!','원년의 스타'],
+['k13','김성한','타자','해태','R','K','투타를 모두 잡은 이도류!','원년의 스타'],
+['k14','이상훈','투수','LG','R','K','LG의 불꽃 좌완!','불굴의 의지'],
+['k15','장효조','타자','삼성','R','K','타격의 달인!','82 세계선수권 주역'],
+['k16','박용택','타자','LG','R','K','LG 유니폼만 입은 안타 장인!','최강 좌타자'],
+['k17','장종훈','타자','빙그레','R','K','홈런 타자의 원조!','우타 거포 계보'],
+['k18','이강철','투수','해태','R','K','컨트롤의 마법사!','최강 선발'],
+['k19','정민철','투수','한화','R','K','독수리 군단의 에이스!','최강 선발'],
+['k20','김재박','유격수','MBC','R','K','날쌘 수비의 대가!','82 세계선수권 주역'],
+['k21','이병규','외야수','LG','R','K','리그 최고의 외야수!','최강 좌타자'],
+['k22','박정태','2루수 · 롯데 원클럽','롯데','R','K','악바리 2루수!','불굴의 의지'],
+['k23','김시진','투수','삼성','N','K','정교한 제구의 에이스!','82 세계선수권 주역'],
+['k24','한대화','3루수','해태','N','K','핫코너의 거포!','82 세계선수권 주역'],
+['k25','김기태','타자','쌍방울','N','K','좌타 거포의 주장!','최강 좌타자'],
+['k26','김동주','타자','두산','N','K','두산의 우직한 거포!','우타 거포 계보'],
+['k27','심정수','타자','현대','N','K','담장 넘기는 우타 거포!','우타 거포 계보'],
+['k28','타이론 우즈','타자 · 외국인','두산','N','K','두산의 홈런 용병!','우타 거포 계보'],
+['k29','정민태','투수','현대','N','K','현대 왕조의 에이스!','최강 선발'],
+['k30','조계현','투수','해태','N','K','해태 마운드의 기둥!','최강 선발'],
+['k31','김태균','타자','한화','N','K','한화의 영원한 4번!','성실함의 대명사'],
+['k32','박재홍','외야수','현대','N','K','호타준족의 상징!','성실함의 대명사'],
+['k33','박경완','포수','SK','N','K','안방마님의 정석!','성실함의 대명사'],
+['k34','홍성흔','포수 · 지명타자','두산','N','K','응원을 부르는 타격!','성실함의 대명사'],
+['k35','전준호','외야수','롯데','N','K','도루의 달인!','근성의 야수'],
+['k36','이순철','외야수','해태','N','K','빠른 발의 외야수!','근성의 야수'],
+['k37','정근우','내야수','SK','N','K','투지의 2루수!','근성의 야수'],
+['k38','박진만','유격수','삼성','N','K','철벽 유격수!','근성의 야수'],
+['k39','더스틴 니퍼트','투수 · 외국인','두산','N','K','두산의 듬직한 에이스!','불굴의 의지'],
+['k40','배영수','투수','삼성','N','K','삼성 마운드의 투혼!','불굴의 의지'],
 ['l1','이대호','내야수 · 영구결번 10','롯데','S','L','부산의 4번 타자, 영원한 거인!'],
 ['l2','박세웅','투수','롯데','R','L','마운드를 지켜 줘!'],
 ['l3','김원중','투수 · 마무리','롯데','R','L','9회는 믿고 맡길게!'],
@@ -2431,7 +2433,7 @@ function plCardHtml(c,own,big){
   var rr=RAR[c[4]],tc=TCOL[c[3]]||['#334','#99a'],no=CARDS.indexOf(c)+1,pos=c[2],em=/투수/.test(pos)?'⚾':/포수/.test(pos)?'🧤':/외야/.test(pos)?'🏃':/유격|내야|2루|3루|1루/.test(pos)?'🧢':'🏏';
   return '<div class="pc r'+c[4]+(big?' big':'')+'" style="--c1:'+tc[0]+';--c2:'+tc[1]+';--rc:'+rr.c+'">'+
     '<div class="pci"><div class="pct"><span>'+(c[5]==='K'?'KBO LEGEND':'LOTTE GIANTS')+'</span><b>'+rr.n+'</b></div>'+
-    '<div class="pca"><i class="pcw">'+esc(c[3])+'</i><span class="pce">'+em+'</span>'+(c[5]==='K'?'<em class="pcrb">LEGEND</em>':'')+'</div>'+
+    '<div class="pca"><i class="pcw">'+esc(c[3])+'</i><span class="pce">'+em+'</span>'+(c[5]==='K'?'<em class="pcrb">'+esc(c[7]||'LEGEND')+'</em>':'')+'</div>'+
     '<div class="pcn">'+esc(c[1])+'</div><div class="pcp">'+esc(c[2])+' · '+esc(c[3])+'</div>'+
     (big?'<div class="pcl">📣 '+esc(c[5]==='K'||1?c[6]:'')+'</div>':'')+
     '<div class="pcf"><span>No.'+String(no).padStart(3,'0')+' / '+CARDS.length+'</span><span>'+(c[5]==='K'?'2021 40주년':'2026 시즌')+'</span></div></div>'+
