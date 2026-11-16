@@ -23,6 +23,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -567,7 +568,8 @@ function subjOf(it,ds){
   return it.id==='f'?'기타':(SUBJ[it.n]||'기타');
 }
 function axes(){var a=SUBJ_ORDER.slice();if(a.indexOf('교양')<0)a.push('교양');a.push('기타');return a}
-function partsOf(n){var p=String(n).split('/').map(function(x){return x.trim()}).filter(Boolean);return p.length>=2?p:null}
+var SUBMAP={'SH PROJECT':['독서','잡학','필사','스케치']};
+function partsOf(n){if(SUBMAP[String(n).trim()])return SUBMAP[String(n).trim()].slice();var p=String(n).split('/').map(function(x){return x.trim()}).filter(Boolean);return p.length>=2?p:null}
 function subKey(n,p){return n+'#'+p}
 function subDone(ds,n,p,ps){
   if(ds.has(subKey(n,p)))return true;
@@ -1982,9 +1984,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:180};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:181};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+  ['v1.81','SH PROJECT 안에서 독서 · 잡학 · 필사 · 스케치 고르기'],
   ['v1.80','전체 글자 크기 15% 키움'],
   ['v1.79','하루 첫 ⏱ 시작 때 오늘의 선발 라인업 팝업 · 타이머 아래 "이 문제집 오늘" 문구 삭제'],
   ['v1.78','업데이트 받기가 "이미 최신"이라고만 나오던 문제 수정'],
