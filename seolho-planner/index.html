@@ -25,6 +25,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -156,6 +157,17 @@ h2{font-size:17px;font-weight:700;margin:0 0 10px}
 .row .tm{font-size:16px;color:var(--muted);min-width:56px}
 .row .nm{white-space:pre-line;font-size:20.5px;font-weight:500;flex:1;min-width:0}
 .row.d{background:var(--done-bg);border-color:transparent}
+.row .ck svg path{display:none}
+.row .ck svg .k-b{display:block}
+:root[data-skin="giants"] .row .ck svg .k-b,:root[data-skin="kk"] .row .ck svg .k-b,:root[data-skin="bs"] .row .ck svg .k-b{display:none}
+:root[data-skin="giants"] .row .ck svg .k-g{display:block;stroke-width:4;stroke-linecap:square;stroke-linejoin:miter}
+:root[data-skin="giants"] .row .ck{border-radius:5px}
+:root[data-skin="kk"] .row .ck svg .k-k{display:block;stroke-width:3.2}
+:root[data-skin="kk"] .row .ck svg{width:30px;height:30px;overflow:visible}
+:root[data-skin="kk"] .row .ck{border-radius:52% 48% 55% 45%/48% 55% 45% 52%;transform:rotate(-3deg)}
+:root[data-skin="bs"] .row .ck svg .k-s{display:block;stroke-width:4.2;stroke-linecap:butt;stroke-linejoin:miter}
+:root[data-skin="bs"] .row .ck svg{width:28px;height:28px}
+:root[data-skin="bs"] .row .ck{border-radius:12px}
 .row.d .ck{background:var(--done);border-color:var(--done);color:var(--on-done)}
 .row.d .nm{color:var(--muted);text-decoration:line-through}
 .card{border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px;background:var(--panel)}
@@ -898,7 +910,7 @@ function migrateName(days,oldN,newN){
 function pct(a,b){return b?Math.round(a/b*100):0}
 function subjOpts(sel){return SUBJ_ORDER.concat(['기타']).map(function(o){return '<option'+(o===sel?' selected':'')+'>'+o+'</option>'}).join('')}
 
-var ICON_CK='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+var ICON_CK='<svg viewBox="0 0 24 24" aria-hidden="true"><path class="k-b" d="M5 12.5l4.5 4.5L19 7.5"/><path class="k-g" d="M4 12.5l5 5.5L20.5 5.5"/><path class="k-k" d="M4.6 12.8c1.4 1.2 2.8 2.9 4.2 4.6 2.8-4.3 6.2-7.6 10.4-10.6M6 11.4c1.2.8 2.4 2.2 3.6 3.8"/><path class="k-s" d="M5.5 12l4 4.5 9-9"/></svg>';
 
 var PF=[['grade','학년'],['pos','포지션'],['hand','투 / 타'],['body','신장 / 체중'],['birth','생년월일'],['team','응원 팀'],['debut','데뷔']];
 var PF_EDIT=[['name','이름',20],['no','등번호',4],['grade','학년',12],['pos','포지션',12],['hand','투 / 타',12],['body','신장 / 체중',16],['birth','생년월일',16],['team','응원 팀',16],['debut','데뷔',16],['motto','한 줄 좌우명',40]];
@@ -1985,9 +1997,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:182};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:183};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+  ['v1.83','체크 표시 모양을 화면 테마(글꼴)별로 다르게'],
   ['v1.82','SH PROJECT를 터치하면 소항목 선택창이 열리고, 하나만 골라도 완료 처리'],
   ['v1.81','SH PROJECT 안에서 독서 · 잡학 · 필사 · 스케치 고르기'],
   ['v1.80','전체 글자 크기 15% 키움'],
