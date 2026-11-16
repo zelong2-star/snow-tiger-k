@@ -21,6 +21,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -101,6 +102,26 @@ h2{font-size:15px;font-weight:700;margin:0 0 10px}
 .tmb.pz{border-color:var(--amber);color:var(--amber);background:var(--amber-bg)}
 .tmb.on{background:var(--navy);border-color:var(--navy);color:var(--on-navy)}
 .tmb.on b{font-variant-numeric:tabular-nums}
+.luo{position:fixed;inset:0;z-index:50;background:rgba(4,30,66,.6);display:flex;align-items:center;justify-content:center;padding:16px}
+.lub{width:100%;max-width:400px;max-height:92vh;display:flex;flex-direction:column;background:var(--panel);border-radius:18px;overflow:hidden;box-shadow:0 18px 48px rgba(0,0,0,.4)}
+.lut{background:var(--navy);color:var(--on-navy);padding:14px 18px 13px;position:relative;flex:none}
+.lut::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:#D00F31}
+.lut small{opacity:.78;font-size:12px;letter-spacing:.08em}
+.lut h3{margin:2px 0 0;font-size:22px}
+.lub ol{list-style:none;margin:0;padding:8px 12px;display:flex;flex-direction:column;overflow-y:auto;min-height:0}
+.lub li{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:8px;padding:7px 4px;border-bottom:1px dashed var(--line);font-size:16px}
+.lub li:last-child{border-bottom:0}
+.lub li b.n{width:28px;height:28px;border-radius:50%;background:var(--chip-bg,#E1E8F5);display:grid;place-items:center;font-size:13px}
+.lub li b.n.d{background:var(--green,#177A4B);color:#fff}
+.lub .tgs{display:flex;gap:4px}
+.lt{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--chip-bg,#E1E8F5);color:var(--ink)}
+.lt.t2{background:var(--amber-bg);color:var(--amber)}
+.lt.t3{background:var(--green-bg);color:var(--green)}
+.lt.tm{background:var(--navy);color:var(--on-navy)}
+.luf{padding:8px 16px 14px;display:flex;flex-direction:column;gap:8px;flex:none}
+.lus{font-size:13px;color:var(--muted);text-align:center}
+.lugo{height:58px;border-radius:14px;border:0;background:#D00F31;color:#fff;font:inherit;font-size:19px;font-weight:800;cursor:pointer}
+.lux{height:40px;border:0;background:none;color:var(--muted);font:inherit;font-size:14px;cursor:pointer}
 .cardB{position:sticky;top:0;z-index:5;box-shadow:0 8px 16px -8px rgba(4,30,66,.35);margin:0 0 14px;border-radius:16px;border:2px solid var(--navy);background:var(--panel);padding:14px 16px;display:flex;flex-direction:column;align-items:center;gap:6px}
 .cardB .nm{font-size:16px;color:var(--muted)}
 .tmbig{font-size:52px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
@@ -690,7 +711,7 @@ function tmEnd(){if(S.timer){tmCommit();S.timer=null;tmSave()}}
 function tmStop(){tmEnd()}
 function tmStOf(k){var st=Object.assign({},(S.meta[k]||{}).st||{}),t=S.timer;if(t&&t.k===k&&t.mode==='study')st[t.n]=(st[t.n]||0)+Math.min(7200,tmRun());return st}
 function tmDayTotal(k){var t=0,st=(S.meta[k]||{}).st||{};Object.keys(st).forEach(function(n){t+=st[n]||0});return t+(S.timer&&S.timer.k===k&&S.timer.mode==='study'?Math.min(7200,tmRun()):0)}
-function tmSub(){var t=S.timer;if(!t)return '';var st=tmStOf(t.k);return '이 문제집 오늘 '+tmMin(st[t.n]||0)+' · 오늘 전체 '+tmMin(tmDayTotal(t.k))}
+function tmSub(){var t=S.timer;if(!t)return '';return '오늘 전체 '+tmMin(tmDayTotal(t.k))}
 function tmView(){
   var t=S.timer;if(!t)return null;var f=S.tmFocus*60,b=S.tmBreak*60,m=t.mode;
   if(m==='study')return {st:'⚾ 경기 중',cl:'run',big:tmFmt(tmStreak()),sub:tmSub()};
@@ -1269,6 +1290,19 @@ function tmPanel(){
   else bs=B('tmpause',I.p,'정지','',1)+B('tmresume',I.g,m==='bdone'?'다시 시작':'바로 시작','p')+B('tmend',I.o,'완료','f');
   return '<div class="cardB"><span class="status '+v.cl+'">'+v.st+'</span><div class="nm">'+esc(t.n)+'</div><div class="tmbig" id="tmbig">'+v.big+'</div><div class="tsub" id="tmsub">'+v.sub+'</div><div class="bs">'+bs+'</div></div>';
 }
+/* ===== 경기 시작 팝업(A안 선발 라인업): 하루 첫 ⏱ 시작 때 오늘 할 일을 한 번 보여 준다 ===== */
+var LU_ABBR={r0:'준',r1:'1',r2:'2',r3:'3',c4:'클',d4:'4',d5:'5',d6:'6',d7:'7',d8:'8',d9:'9',f:'끝'};
+function luSeen(k){try{return localStorage.getItem('seolho-lu')===k}catch(e){return false}}
+function luMark(k){try{localStorage.setItem('seolho-lu',k)}catch(e){}}
+function luHtml(c,its,ds){
+  if(!S.lu)return '';
+  var tn=its.filter(function(q){return q.m&4}).length;
+  var li=its.map(function(q){
+    var tg=(q.m&4?'<span class="lt tm">⏱</span>':'')+(q.m&2?'<span class="lt t3">3루타</span>':(q.m&1?'<span class="lt t2">2루타</span>':''));
+    return '<li><b class="n'+(ds.has(q.n)?' d':'')+'">'+(LU_ABBR[q.id]||'')+'</b><span class="nm">'+esc(q.n)+'</span><span class="tgs">'+tg+'</span></li>'}).join('');
+  return '<div class="luo" role="dialog" aria-modal="true" aria-label="오늘의 선발 라인업"><div class="lub"><div class="lut"><small>오늘의 선발 라인업</small><h3>'+DOW[c.ti]+'요일 경기 일정</h3></div><ol>'+li+'</ol>'+
+    '<div class="luf"><div class="lus">'+its.length+'타석'+(tn?' · 타이머 항목 '+tn+'개':'')+'</div><button type="button" class="lugo" data-act="luok">⚾ 경기 시작!</button><button type="button" class="lux" data-act="lux">닫기</button></div></div></div>';
+}
 function renderToday(c){
   var real=c,ro=!!S.vo;if(ro)c=viewCtx(real);
   var its=itemsOf(c.ti),ds=doneSet(c.tk),n=0;
@@ -1325,10 +1359,11 @@ function renderToday(c){
        (ks.length?ks.map(function(n){return '<div class="xb"><span>'+esc(n)+'</span><span>'+tmMin(st[n])+'</span></div>'}).join(''):'<div class="lbl">⏱ 버튼으로 시간을 재면 여기에 모여요.</div>')+'</div>'})()+
    tixCard(real)+rew+
    '</div></div>'+
-   (S.cele?'<div class="cele '+S.cele.k+'" role="status"><div>'+esc(S.cele.t)+'</div></div>':'');
+   (S.cele?'<div class="cele '+S.cele.k+'" role="status"><div>'+esc(S.cele.t)+'</div></div>':'')+luHtml(c,its,ds);
 }
 function todayClick(e){
   if(S.tab!=='today')return;
+  if(S.lu&&e.target.classList&&e.target.classList.contains('luo')){S.lu=null;render();return}
   var b=e.target.closest('button[data-act]');if(!b)return;
   var a=b.dataset.act,c=ctx();
   if(a==='tix'){var tt=b.dataset.t;if(S.tixArm!==tt){S.tixArm=tt;render();return}S.tixArm=null;var ck5=key(c.dates[tt==='b'?6:5]);setMeta(ck5,tt==='a'?{ua:1}:tt==='c'?{uc:1}:{ub:1});fx('ck');render();return}
@@ -1338,7 +1373,10 @@ function todayClick(e){
   if(a==='rainok'){doRain();return}
   if(a==='mkopen'){S.mkOpen=!S.mkOpen;render();return}
   if(a==='mk'){var md=+b.dataset.d,mid=b.dataset.id,mk0=key(c.dates[md]),nm0=(itemsOf(md).filter(function(q){return q.id===mid})[0]||{}).n;if(nm0){var cur=((S.meta[mk0]||{}).mk||[]).slice();if(cur.indexOf(nm0)<0)cur.push(nm0);setMeta(mk0,{mk:cur});fx('ck')}render();return}
+  if(a==='luok'){var li0=S.lu;S.lu=null;if(li0){luMark(li0.k);var it0=itemsOf(c.ti)[li0.i];if(it0)tmStart(c.tk,it0.n)}fx('hr');render();return}
+  if(a==='lux'){S.lu=null;render();return}
   if(a==='tm'){var itx=itemsOf(c.ti)[+b.dataset.ti];if(!itx||S.vo)return;var tt=S.timer;
+    if(!tt&&!luSeen(c.tk)&&!tmDayTotal(c.tk)){S.lu={k:c.tk,i:+b.dataset.ti};fx('ck');render();return}
     if(tt&&tt.k===c.tk&&tt.n===itx.n){if(tt.mode==='study')tmPause();else tmResume()}else tmStart(c.tk,itx.n);fx('ck');render();return}
   if(a==='tmpause'){tmPause();fx('un');render();return}
   if(a==='tmresume'){tmResume();fx('ck');render();return}
@@ -1943,9 +1981,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:178};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:179};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+  ['v1.79','하루 첫 ⏱ 시작 때 오늘의 선발 라인업 팝업 · 타이머 아래 "이 문제집 오늘" 문구 삭제'],
   ['v1.78','업데이트 받기가 "이미 최신"이라고만 나오던 문제 수정'],
   ['v1.77','타이머 카드 화면 위에 고정 · "경기 중" 표기 · 휴식까지 남은 시간 대신 오늘 누적 표시 · 오늘 컨디션을 제목 옆으로 이동'],
   ['v1.76','타이머 카드를 왼쪽 목록 폭에 맞춰 줄임'],
