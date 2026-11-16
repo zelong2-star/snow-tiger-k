@@ -27,6 +27,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -432,6 +433,36 @@ input[type=range]{height:34px;padding:0;accent-color:#DD032F}
 :root[data-skin="giants"] .thm[aria-pressed="true"]{border-color:#D00F31;background:var(--done-bg)}
 :root[data-skin="giants"] .pphoto{border:4px solid #041E42;box-shadow:6px 6px 0 #D00F31}
 @media (orientation:portrait),(max-width:700px){:root[data-skin="giants"] .nav{border-right:0;border-top:4px solid #D00F31}}
+
+.plg{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.plc{appearance:none;text-align:left;font:inherit;display:flex;flex-direction:column;gap:6px;padding:18px;border-radius:16px;border:2px solid var(--navy);background:var(--panel);color:var(--ink);cursor:pointer;min-height:132px}
+.plc b{font-size:23px}.plc span{color:var(--muted);font-size:17px}.plc em{font-style:normal;font-weight:700;margin-top:auto;color:var(--navy)}
+.plc[disabled]{opacity:.55;cursor:default}
+.plq{max-width:640px}.plp{font-weight:700;color:var(--muted);display:flex;justify-content:space-between;gap:8px;margin-bottom:10px}
+.plcat{background:var(--chip-bg);color:var(--chip-ink);border-radius:12px;padding:2px 12px;font-size:15px}
+.plqt{font-size:26px;font-weight:700;line-height:1.4;margin:6px 0 18px}.plqt.big{font-size:46px;text-align:center;margin:18px 0 22px}
+.plo{display:grid;gap:10px;margin-bottom:14px}.plo.three{grid-template-columns:repeat(3,1fr)}
+.plob{appearance:none;font:inherit;font-weight:700;font-size:23px;min-height:64px;border-radius:14px;border:2px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;padding:6px 14px}
+.plob.ok{background:var(--green-bg);border-color:var(--green);color:var(--green)}.plob.no{background:var(--done-bg);border-color:var(--done);color:var(--done)}
+.plob[disabled]{cursor:default}
+.plfb{font-weight:700;font-size:20px;margin:0 0 12px;padding:12px 14px;border-radius:12px;text-align:center}
+.plfb.g{background:var(--green-bg);color:var(--green)}.plfb.r{background:var(--done-bg);color:var(--done)}
+.plbar{height:12px;border-radius:6px;background:var(--chip-bg);overflow:hidden}.plbar i{display:block;height:100%;width:100%;background:var(--done);animation:plb 6s linear forwards}
+@keyframes plb{from{width:100%}to{width:0}}
+.plres{text-align:center;max-width:560px}.plbig{font-size:34px;font-weight:700;margin:6px 0}.pl2{font-size:21px;margin-bottom:10px}
+.pcg{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:12px}
+.pcb{appearance:none;border:0;background:transparent;padding:0;position:relative;cursor:pointer;font:inherit;color:inherit}.pcb[disabled]{cursor:default}
+.pcx{position:absolute;right:6px;top:6px;background:var(--navy);color:var(--on-navy);border-radius:10px;padding:1px 8px;font-size:14px;font-weight:700}
+.pc{--rc:#7A8AA8;aspect-ratio:2/3;border-radius:14px;border:3px solid var(--rc);background:linear-gradient(160deg,var(--panel),color-mix(in srgb,var(--rc) 22%,var(--panel)));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px;position:relative;text-align:center}
+.pc .pcr{position:absolute;left:8px;top:6px;font-size:13px;font-weight:700;color:var(--rc)}
+.pc .pce{font-size:50px;line-height:1.1}.pc .pcn{font-weight:700;font-size:19px}.pc .pcp{font-size:14px;color:var(--muted)}
+.pc.lock{border-style:dashed;border-color:var(--line);background:var(--chip-bg);opacity:.7}.pc.lock .pce{font-size:38px}
+.pc.rS{box-shadow:0 0 14px color-mix(in srgb,var(--rc) 60%,transparent)}.pc.rL{box-shadow:0 0 22px #E8A800,0 0 0 2px #fff inset;background:linear-gradient(160deg,#FFF6D6,#FFD76A)}
+.pc.big{width:280px;max-width:100%;aspect-ratio:auto;min-height:400px;margin:0 auto 14px;padding:16px;gap:6px;animation:pcin .6s ease-out}
+.pc.big .pce{font-size:104px}.pc.big .pcn{font-size:30px}.pc.big .pcp{font-size:18px}.pc.big .pcr{font-size:16px}
+.pcs{display:flex;flex-direction:column;gap:2px;font-weight:700;font-size:17px;color:#C98A00;margin-top:8px}.pcs i{font-style:normal;color:var(--line)}
+.pcl{font-size:16px;color:var(--ink);margin-top:8px}.pcshow{text-align:center;max-width:460px}
+@keyframes pcin{from{transform:rotateY(90deg) scale(.7);opacity:0}to{transform:none;opacity:1}}
 </style>
 
 <div class="app">
@@ -440,6 +471,7 @@ input[type=range]{height:34px;padding:0;accent-color:#DD032F}
     <button data-t="home" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11L12 4l8.5 7"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg>홈</button>
     <button data-t="today"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M3.5 6l1.5 1.5L7 5M3.5 12l1.5 1.5L7 11M3.5 18l1.5 1.5L7 17"/></svg>오늘</button>
     <button data-t="week"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>일정</button>
+    <button data-t="play"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M5.5 7.5c3 1.5 3 7.5 0 9M18.5 7.5c-3 1.5-3 7.5 0 9"/></svg>놀이</button>
     <button data-t="log"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V11M12 20V5M19 20v-6"/></svg>기록</button>
     <button data-t="set"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</button>
     <div class="sync" id="sync"></div>
@@ -538,11 +570,11 @@ function applySched(x){
 }
 function loadLocal(){
   try{var j=JSON.parse(localStorage.getItem(LS)||'null');
-    if(j){S.checks=j.checks||{};if(j.settings)Object.keys(j.settings).forEach(function(k){S.settings[k]=j.settings[k]});if(j.sched)applySched(j.sched);if(j.profile)applyProfile(j.profile);if(j.meta&&typeof j.meta==='object')S.meta=j.meta}}catch(e){}
+    if(j){S.checks=j.checks||{};if(j.settings)Object.keys(j.settings).forEach(function(k){S.settings[k]=j.settings[k]});if(j.sched)applySched(j.sched);if(j.profile)applyProfile(j.profile);if(j.meta&&typeof j.meta==='object')S.meta=j.meta;if(j.play&&typeof j.play==='object')S.play=j.play}}catch(e){}
 }
 var SHIP_SV=62,SHIP_SCHED={"days":[{"e":"아빠","n":"월","s":{"c4":"한자","d4":"쎈연산","d5":"수학리더","d6":"문장제","d7":"백점국어","d8":"한장사회","d9":"READ IT(본문)","f":"SH PROJECT","r0":"스트레칭","r1":"신문","r2":"리딩게이트","r3":"빠른연산"},"x":{"c4":2,"d4":2,"d5":2,"d6":2,"d7":2,"d8":2,"d9":2,"r0":1,"r1":1,"r2":1,"r3":1}},{"e":"엄마","n":"화","s":{"c4":"","d4":"쎈연산","d5":"수학리더","d6":"문장제","d7":"백점국어","d8":"빠작비문학","d9":"READ IT(워크북)","f":"SH PROJECT","r0":"스트레칭","r1":"신문","r2":"리딩게이트","r3":"빠른연산"},"x":{"d4":2,"d5":2,"d6":2,"d7":2,"d8":2,"d9":2,"r0":1,"r1":1,"r2":1,"r3":1}},{"e":"엄마/아빠","n":"수","s":{"c4":"","d4":"쎈연산","d5":"READ IT(복습)","d6":"독서DAY","d7":"독서기록장","d8":"","d9":"","f":"SH PROJECT","r0":"스트레칭","r1":"신문","r2":"리딩게이트","r3":"빠른연산"},"x":{"d4":2,"d5":2,"d6":2,"d7":2,"r0":1,"r1":1,"r2":1,"r3":1}},{"e":"엄마","n":"목","s":{"c4":"","d4":"쎈연산","d5":"수학리더","d6":"최상위","d7":"추론독해","d8":"씽킹과학","d9":"S. STAGE(본문)","f":"SH PROJECT","r0":"스트레칭","r1":"신문","r2":"리딩게이트","r3":"빠른연산"},"x":{"d4":2,"d5":2,"d6":2,"d7":2,"d8":2,"d9":2,"r0":1,"r1":1,"r2":1,"r3":1}},{"e":"아빠","n":"금","s":{"c4":"한자","d4":"쎈연산","d5":"수학리더","d6":"최상위","d7":"한문장정리의힘","d8":"무작정따라하기","d9":"S. STAGE(워크북)","f":"SH PROJECT","r0":"스트레칭","r1":"신문","r2":"리딩게이트","r3":"빠른연산"},"x":{"c4":2,"d4":2,"d5":2,"d6":1,"d7":2,"d8":2,"d9":2,"r0":1,"r1":1,"r2":1,"r3":1}},{"e":"엄마/아빠","n":"토","s":{"c4":"독서/운동","d4":"쎈연산","d5":"팩토수학/오답리뷰","d6":"빠작문학","d7":"빠작어휘","d8":"요약독해의힘","d9":"기적의영어문장쓰기","f":"SH PROJECT","r0":"스트레칭","r1":"신문","r2":"리딩게이트","r3":"빠른연산"},"x":{"c4":2,"d4":2,"d5":2,"d6":2,"d7":2,"d8":2,"d9":2,"r0":1,"r1":1,"r2":1,"r3":1}},{"e":"엄마/아빠","n":"일","s":{"c4":"독서/운동","d4":"뿌리깊은어휘","d5":"용선생 HISTORY","d6":"백점국어","d7":"빠작어휘","d8":"한문장요약의힘","d9":"생각대로 써지는 초등글쓰기","f":"SH PROJECT","r0":"스트레칭","r1":"매거진","r2":"리딩게이트","r3":"빠른연산"},"x":{"c4":2,"d4":2,"d5":2,"d6":2,"d7":2,"d8":2,"d9":2,"r0":1,"r1":1,"r2":1,"r3":1}}],"g":["거실구장","좌동구장","책상구장","마무리 운동"],"so":["국어","수학","영어","사회","과학","독서","체육","교양"],"subj":[{"d":1,"n":"백점국어","s":"국어"},{"d":1,"n":"추론독해","s":"국어"},{"d":1,"n":"한문장정리의힘","s":"국어"},{"d":1,"n":"빠작문학","s":"국어"},{"d":1,"n":"빠작어휘","s":"국어"},{"d":1,"n":"생각대로 써지는 초등글쓰기","s":"국어"},{"d":2,"n":"독서기록장","s":"국어"},{"d":1,"n":"빠작비문학","s":"국어"},{"d":1,"n":"무작정따라하기","s":"국어"},{"d":1,"n":"요약독해의힘","s":"국어"},{"d":1,"n":"한문장요약의힘","s":"국어"},{"d":1,"n":"한자","s":"국어"},{"d":1,"n":"빠른연산","s":"수학"},{"d":1,"n":"쎈연산","s":"수학"},{"d":2,"n":"수학리더","s":"수학"},{"d":3,"n":"문장제","s":"수학"},{"d":3,"n":"팩토수학/오답리뷰","s":"수학"},{"d":2,"n":"팩토수학","s":"수학"},{"d":3,"n":"최상위","s":"수학"},{"d":1,"n":"리딩게이트","s":"영어"},{"d":1,"n":"READ IT(복습)","s":"영어"},{"d":1,"n":"READ IT(본문)","s":"영어"},{"d":1,"n":"READ IT(워크북)","s":"영어"},{"d":2,"n":"S. STAGE(본문)","s":"영어"},{"d":2,"n":"S. STAGE(워크북)","s":"영어"},{"d":1,"n":"기적의영어문장쓰기","s":"영어"},{"d":1,"n":"용선생 HISTORY","s":"사회"},{"d":1,"n":"한장사회","s":"사회"},{"d":1,"n":"씽킹과학","s":"과학"},{"d":2,"n":"독서DAY","s":"독서"},{"d":1,"n":"스트레칭","s":"체육"},{"d":1,"n":"매거진","s":"교양"},{"d":1,"n":"독서/운동","s":"교양"},{"d":1,"n":"독서/스케치","s":"교양"},{"d":1,"n":"신문","s":"교양"},{"d":1,"n":"SH PROJECT","s":"교양"},{"d":1,"n":"하루한장","s":"기타"},{"d":1,"n":"뿌리깊은어휘","s":"국어"}],"t":{"c4":"클리닝 타임","d4":"4이닝","d5":"5이닝","d6":"6이닝","d7":"7이닝","d8":"8이닝","d9":"9이닝","f":"운동","r0":"준비","r1":"1이닝","r2":"2이닝","r3":"3이닝"},"v":2};
 function adoptShipped(){try{if(localStorage.getItem('seolho-sv')==String(SHIP_SV))return;applySched(SHIP_SCHED);localStorage.setItem('seolho-sv',String(SHIP_SV));saveLocal()}catch(e){}}
-function saveLocal(){try{localStorage.setItem(LS,JSON.stringify({checks:S.checks,settings:S.settings,sched:schedDoc(),profile:S.profile,meta:S.meta}))}catch(e){}}
+function saveLocal(){try{localStorage.setItem(LS,JSON.stringify({checks:S.checks,settings:S.settings,sched:schedDoc(),profile:S.profile,meta:S.meta,play:S.play}))}catch(e){}}
 
 var pending={},running={};
 function queueWrite(k,arr){
@@ -616,7 +648,7 @@ function toggle(i,keepSubs){
   if(postY.b2&&!preY.b2){msgs.push('🥈 2루타!');cele={t:'2루타!',k:'x2'};snd='bt'}
   if(postY.b3&&!preY.b3){msgs.push('🥉 3루타!');cele={t:'3루타!',k:'x3'};snd='bt'}
   if(postY.hr&&!preY.hr){msgs.push('💥 홈런!');cele={t:'홈런!',k:'hr'};snd='hr'}
-  if(inf.fin&&!preF&&!inf.rain){msgs.push('⚾ 경기 종료! 오늘 타율 '+avg(inf.y.h,inf.y.ab));if(snd!=='hr'&&snd!=='bt')snd='end'}
+  if(inf.fin&&!preF&&!inf.rain){msgs.push('⚾ 경기 종료! 오늘 타율 '+avg(inf.y.h,inf.y.ab));if(plGrant('f:'+c.tk))msgs.push('🎴 뽑기권 1장!');if(snd!=='hr'&&snd!=='bt')snd='end'}
   var nowS=seasonStats(c),recMsg=[];
   if(nowS.hsBest>preS.hsBest&&nowS.hsBest>=3)recMsg.push('연속 안타 '+nowS.hsBest+'경기');
   if(nowS.apBest>preS.apBest&&nowS.apBest>=3)recMsg.push('연속 출전 '+nowS.apBest+'경기');
@@ -1314,7 +1346,7 @@ function tmPanel(){
   if(m==='study')bs=B('tmpause',I.p,'정지','p')+B('tmresume',I.g,'다시 시작','',1)+B('tmend',I.o,'완료','f');
   else if(m==='pause')bs=B('tmpause',I.p,'정지','',1)+B('tmresume',I.g,'다시 시작','p')+B('tmend',I.o,'완료','f');
   else if(m==='due')bs=B('tmbreak',I.c,S.tmBreak+'분 휴식','p')+B('tmresume',I.g,'계속 공부','')+B('tmend',I.o,'완료','f');
-  else bs=B('tmpause',I.p,'정지','',1)+B('tmresume',I.g,m==='bdone'?'다시 시작':'바로 시작','p')+B('tmend',I.o,'완료','f');
+  else bs=B('tmpause',I.p,'정지','',1)+B('tmresume',I.g,m==='bdone'?'다시 시작':'바로 시작','p')+B('tmend',I.o,'완료','f')+(m==='break'?B('plgame','<span style="font-size:22px;line-height:1">🏏</span>','미니게임',''):'');
   return '<div class="cardB"><span class="status '+v.cl+'">'+v.st+'</span><div class="nm">'+esc(t.n)+'</div><div class="tmbig" id="tmbig">'+v.big+'</div><div class="tsub" id="tmsub">'+v.sub+'</div><div class="bs">'+bs+'</div></div>';
 }
 /* ===== 경기 시작 팝업(A안 선발 라인업): 하루 첫 ⏱ 시작 때 오늘 할 일을 한 번 보여 준다 ===== */
@@ -2015,9 +2047,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:184};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:185};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+  ['v1.85','놀이 탭 추가: 퀴즈 타석 · 홈런 더비(쉬는 시간 미니게임) · 오답 복습 · 선수 카드 뽑기'],
   ['v1.84','타이머 알약을 길게 누르면 그 항목의 오늘 기록 리셋'],
   ['v1.83','체크 표시 모양을 화면 테마(글꼴)별로 다르게'],
   ['v1.82','SH PROJECT를 터치하면 소항목 선택창이 열리고, 하나만 골라도 완료 처리'],
@@ -2166,9 +2199,10 @@ function renderSync(){
 function render(){
   var a=document.activeElement;
   if(a&&a.tagName==='INPUT'&&main.contains(a))return;
+  if(S.tab==='play'&&S.pv==='game'&&S.g&&S.g.live)return;
   var c=ctx();
   document.querySelectorAll('#nav button').forEach(function(b){b.classList.toggle('on',b.dataset.t===S.tab)});
-  if(S.tab==='home')renderHome(c);else if(S.tab==='today')renderToday(c);else if(S.tab==='week')renderWeek(c);else if(S.tab==='set')renderSet(c);else renderLog(c);
+  if(S.tab==='home')renderHome(c);else if(S.tab==='today')renderToday(c);else if(S.tab==='week')renderWeek(c);else if(S.tab==='set')renderSet(c);else if(S.tab==='play')renderPlay(c);else renderLog(c);
   renderSync();
 }
 
@@ -2180,11 +2214,240 @@ $('nav').addEventListener('click',function(e){
   render();main.scrollTop=0;
 });
 main.addEventListener('click',function(e){
-  weekClick(e);homeClick(e);todayClick(e);logClick(e);setClick(e);
+  weekClick(e);homeClick(e);todayClick(e);logClick(e);setClick(e);playClick(e);
   var sb=e.target.closest('.sub[data-sub]');if(sb){var sp=sb.dataset.sub.split(':');subToggle(+sp[0],+sp[1]);return}
   var r=e.target.closest('.row[data-i]');if(r){var ri=+r.dataset.i,rc=ctx(),rit=itemsOf(rc.ti)[ri];if(rit&&partsOf(rit.n)){if(S.tab==='today'&&S.vo)return;var rk=rc.tk+':'+ri;S.so=(S.so===rk?null:rk);fx('ck');render();return}toggle(ri);}
 });
 document.addEventListener('visibilitychange',function(){if(!document.hidden)render()});
+
+/* ===== 놀이터: 퀴즈 타석 · 오답 복습 · 홈런 더비(휴식 미니게임) · 선수 카드 뽑기 ===== */
+var QB=[
+['야구','야구에서 한 팀이 그라운드에서 함께 수비하는 선수는 몇 명일까?',['9명','7명','11명','5명']],
+['야구','주자가 1, 2, 3루에 모두 있을 때 친 홈런(만루홈런)은 몇 점일까?',['4점','3점','2점','1점']],
+['야구','스트라이크가 몇 개면 삼진 아웃일까?',['3개','2개','4개','5개']],
+['야구','볼이 몇 개면 타자가 1루로 걸어 나가는 볼넷일까?',['4개','3개','5개','2개']],
+['야구','프로야구는 보통 몇 회까지 할까?',['9회','5회','7회','12회']],
+['야구','아웃이 몇 개 되면 공격과 수비가 바뀔까?',['3개','2개','4개','5개']],
+['야구','투수가 던진 공을 뒤에서 받는 선수는?',['포수','1루수','외야수','심판']],
+['야구','타자가 공을 쳐서 2루까지 가는 안타의 이름은?',['2루타','홈런','볼넷','번트']],
+['야구','롯데 자이언츠의 홈 구장 사직야구장이 있는 도시는?',['부산','서울','대구','광주']],
+['야구','롯데 자이언츠 응원가 "○○ 갈매기"에서 ○○에 들어갈 말은?',['부산','서울','제주','인천']],
+['야구','수비 선수가 공을 놓쳐서 주자가 살아 나가는 실수를 뭐라고 할까?',['실책(에러)','안타','도루','볼넷']],
+['야구','야구장 담장을 넘어가는 시원한 안타는?',['홈런','번트','땅볼','파울']],
+['수학','7 × 8 = ?',['56','54','48','63']],
+['수학','9 × 6 = ?',['54','56','63','45']],
+['수학','36 ÷ 6 = ?',['6','7','5','9']],
+['수학','25 + 38 = ?',['63','53','73','62']],
+['수학','82 − 47 = ?',['35','45','25','39']],
+['수학','3 × 9 = ?',['27','24','36','21']],
+['수학','6 × 6 = ?',['36','42','30','32']],
+['수학','짧은 바늘이 3, 긴 바늘이 12를 가리키면 몇 시일까?',['3시','12시','6시','9시']],
+['수학','1m는 몇 cm일까?',['100cm','10cm','1000cm','50cm']],
+['수학','100은 50이 몇 개 모인 수일까?',['2개','5개','10개','20개']],
+['영어','Apple은 우리말로?',['사과','바나나','포도','딸기']],
+['영어','Dog는 우리말로?',['개','고양이','새','물고기']],
+['영어','Book은 우리말로?',['책','연필','가방','책상']],
+['영어','Baseball은 우리말로?',['야구','축구','농구','배구']],
+['영어','"물"을 영어로 하면?',['water','milk','juice','tea']],
+['영어','"학교"를 영어로 하면?',['school','house','park','hospital']],
+['영어','Seven은 숫자로 몇일까?',['7','6','8','9']],
+['영어','Red는 무슨 색일까?',['빨강','파랑','노랑','초록']],
+['한자','日 (날 일)의 뜻은?',['해, 날','달','불','물']],
+['한자','月 (달 월)의 뜻은?',['달','해','산','나무']],
+['한자','山 (메 산)의 뜻은?',['산','물','불','사람']],
+['한자','水 (물 수)의 뜻은?',['물','불','나무','산']],
+['한자','火 (불 화)의 뜻은?',['불','물','해','달']],
+['한자','木 (나무 목)의 뜻은?',['나무','불','산','사람']],
+['한자','人 (사람 인)의 뜻은?',['사람','큰','산','해']],
+['한자','三 (석 삼)은 숫자로 몇일까?',['3','2','4','5']],
+['상식','우리나라의 수도는 어디일까?',['서울','부산','대구','제주']],
+['상식','무지개는 몇 가지 색일까?',['7가지','5가지','3가지','9가지']],
+['상식','일 년은 몇 달일까?',['12달','10달','11달','13달']],
+['상식','물이 꽁꽁 얼면 무엇이 될까?',['얼음','수증기','구름','비']],
+['상식','지구에서 가장 큰 바다는?',['태평양','대서양','인도양','동해']],
+['상식','식물이 내뿜어서 우리가 숨 쉴 수 있는 기체는?',['산소','이산화탄소','수소','질소']],
+['상식','해는 어느 쪽에서 뜰까?',['동쪽','서쪽','남쪽','북쪽']],
+['상식','곤충의 다리는 모두 몇 개일까?',['6개','4개','8개','10개']],
+['상식','제주도에 있는 우리나라에서 가장 높은 산은?',['한라산','설악산','지리산','북한산']],
+['상식','세종대왕이 만드신 우리 글자는?',['한글','한자','영어','가나']],
+['상식','이순신 장군이 만든 유명한 배의 이름은?',['거북선','돛단배','유람선','잠수함']],
+['상식','고래는 어떤 동물일까?',['포유류','어류','곤충','새']],
+['상식','달이 밝게 보이는 이유는?',['햇빛을 반사해서','스스로 빛나서','불이 켜져서','별이라서']],
+['상식','부산에 있는 유명한 해수욕장은?',['해운대','경포대','협재','대천']],
+['상식','부산에 있는 큰 다리 이름은?',['광안대교','한강대교','영종대교','거제대교']],
+['상식','우리 태양계의 중심에 있는 별은?',['태양','달','지구','화성']]
+];
+var CARDS=[
+['c1','🐿️','다람이','1루수','N','도토리 대신 홈런이다!'],['c2','🐻','곰돌','포수','N','내 미트는 철벽이야!'],
+['c3','🐰','깡총이','2루수','N','깡총깡총 병살타!'],['c4','🐯','호돌','3루수','N','핫코너는 내 차지야'],
+['c5','🦅','매솔','중견수','N','하늘 끝까지 잡는다!'],['c6','🐢','느림보','유격수','N','천천히, 하지만 정확히'],
+['c7','🐶','멍멍','좌익수','N','공은 내가 물어 온다!'],['c8','🐱','나비','우익수','N','살금살금 다이빙 캐치'],
+['c9','🐧','뒤뚱','선발 투수','N','뒤뚱뒤뚱 직구 쾅!'],['c10','🦆','꽥꽥','대타','N','꽥! 대타 나갑니다'],
+['c11','🐸','개굴','구원 투수','N','개굴개굴 삼진!'],['c12','🐼','판다','지명타자','N','든든하게 한 방'],
+['c13','🦒','키다리','1루수','N','높이 뻗어 잡는다'],['c14','🐷','꿀꿀','코치','N','꿀꿀! 힘내자!'],
+['r1','🦁','사자왕','4번 타자','R','담장 너머로 날려 줄게!'],['r2','🐺','번개늑대','도루왕','R','번쩍! 벌써 2루!'],
+['r3','🦈','상어','마무리 투수','R','9회는 내가 끝낸다'],['r4','🦉','올빼미','심판','R','내 눈은 못 속여!'],
+['r5','🐬','돌고래','유격수','R','물 흐르듯 병살 플레이'],['r6','🦌','사슴','중견수','R','쭉쭉 달려 잡는다'],
+['s1','🐉','불꽃용','에이스 투수','S','불꽃 강속구 간다!'],['s2','🦄','유니콘','홈런왕','S','전설의 홈런을 쏜다'],
+['s3','🔥','불사조','클린업 타자','S','쓰러져도 다시 타석에!'],
+['l1','🏆','황금 거인','전설의 4번 타자','L','모두의 응원이 내 힘!']
+];
+var RAR={N:{n:'일반',w:65,c:'#7A8AA8'},R:{n:'레어',w:24,c:'#2F7FD6'},S:{n:'슈퍼',w:9,c:'#8E44D0'},L:{n:'전설',w:2,c:'#E8A800'}};
+function plGet(){
+  if(!S.play||typeof S.play!=='object')S.play={};var p=S.play;
+  p.cards=p.cards||{};p.tg=p.tg||{};p.qd=p.qd||{};p.wr=p.wr||{};p.seen=p.seen||[];p.gd=p.gd||{};
+  if(!p.tg.w){p.tg.w=1}
+  return p;
+}
+function plSave(){plGet();saveLocal();if(DB)DB.doc('settings/play').set(S.play).catch(function(){S.store='error';renderSync()})}
+function plTix(){var p=plGet(),u=0;Object.keys(p.cards).forEach(function(k){u+=p.cards[k]||0});return Math.max(0,Object.keys(p.tg).length-u)}
+function plGrant(id){var p=plGet();if(p.tg[id])return false;p.tg[id]=1;plSave();return true}
+function plRnd(n){return Math.floor(Math.random()*n)}
+function plShuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=plRnd(i+1),t=a[i];a[i]=a[j];a[j]=t}return a}
+function plToast(m){S.toast=m;clearTimeout(toastT);toastT=setTimeout(function(){S.toast='';render()},5000)}
+function plQ(id){var q=QB[id];return {id:id,c:q[0],q:q[1],o:plShuf(q[2].map(function(t,i){return {t:t,ok:i===0}}))}}
+/* 퀴즈 3문제 고르기: 틀린 문제 복습(하루 이상 지난 것) 최대 1개 + 안 본 문제 */
+function plPickDaily(){
+  var p=plGet(),today=key(new Date()),pick=[];
+  var due=Object.keys(p.wr).filter(function(i){return p.wr[i]!==today&&QB[+i]});
+  if(due.length)pick.push(+due[plRnd(due.length)]);
+  var pool=QB.map(function(_,i){return i}).filter(function(i){return p.seen.indexOf(i)<0&&pick.indexOf(i)<0});
+  if(pool.length<3-pick.length){p.seen=[];pool=QB.map(function(_,i){return i}).filter(function(i){return pick.indexOf(i)<0})}
+  pool=plShuf(pool);while(pick.length<3)pick.push(pool.shift());
+  return plShuf(pick);
+}
+function plStartQuiz(){var p=plGet(),today=key(new Date());if(p.qd[today])return;
+  S.q={mode:'quiz',list:plPickDaily().map(plQ),i:0,pick:-1,right:0};S.pv='quiz'}
+function plStartRev(){var p=plGet(),ids=Object.keys(p.wr).filter(function(i){return QB[+i]});if(!ids.length)return;
+  S.q={mode:'rev',list:plShuf(ids).slice(0,5).map(function(i){return plQ(+i)}),i:0,pick:-1,right:0,fixed:0};S.pv='quiz'}
+function plAnswer(j){var q=S.q;if(!q||q.pick>=0)return;var cur=q.list[q.i],p=plGet(),ok=cur.o[j].ok;q.pick=j;
+  if(ok){q.right++;if(q.mode==='rev'){delete p.wr[cur.id];q.fixed++}}else{p.wr[cur.id]=key(new Date())}
+  if(q.mode==='quiz'&&p.seen.indexOf(cur.id)<0)p.seen.push(cur.id);
+  plSave();fx(ok?'bt':'un')}
+function plNext(){var q=S.q;if(!q)return;q.i++;q.pick=-1;
+  if(q.i>=q.list.length){q.end=true;var p=plGet(),today=key(new Date());
+    if(q.mode==='quiz'){p.qd[today]={c:q.right,t:q.list.length};if(q.right>=2&&plGrant('q:'+today))q.tix=1;plSave()}
+    fx(q.right>=q.list.length?'hr':'end')}
+  else fx('ck')}
+/* 홈런 더비 */
+function plMakePitch(){
+  var t=plRnd(10),a,b,txt,ans;
+  if(t<6){a=2+plRnd(8);b=2+plRnd(8);txt=a+' × '+b;ans=a*b}
+  else if(t<8){a=11+plRnd(60);b=3+plRnd(30);txt=a+' + '+b;ans=a+b}
+  else{a=30+plRnd(60);b=3+plRnd(a-10<25?a-10:25);txt=a+' − '+b;ans=a-b}
+  var set={};set[ans]=1;var tries=0;while(Object.keys(set).length<3&&tries++<30){var d=ans+(plRnd(2)?1:-1)*(1+plRnd(Math.max(3,Math.min(10,ans>20?10:5))));if(d>0&&d!==ans)set[d]=1}
+  return {txt:txt,ans:ans,o:plShuf(Object.keys(set).map(Number))}
+}
+function plStartGame(){plStopGame();S.g={i:0,score:0,streak:0,hits:0,hr:0,live:true,pitch:plMakePitch(),res:null};S.pv='game';plArm()}
+function plArm(){var g=S.g;clearTimeout(g.to);g.to=setTimeout(function(){plSwing(-1)},6000)}
+function plStopGame(){if(S.g){clearTimeout(S.g.to);clearTimeout(S.g.nx);S.g.live=false}}
+function plSwing(j){var g=S.g;if(!g||!g.live||g.res)return;clearTimeout(g.to);
+  var ok=j>=0&&g.pitch.o[j]===g.pitch.ans;
+  if(ok){g.streak++;g.hits++;var big=g.streak>=3;g.score+=big?30:10;if(big)g.hr++;g.res=big?'hr':'hit';fx(big?'hr':'bt')}
+  else{g.streak=0;g.res=j<0?'late':'miss';fx('un')}
+  g.show=g.pitch.ans;plDraw();
+  g.nx=setTimeout(function(){g.i++;
+    if(g.i>=10){g.live=false;g.end=true;var p=plGet(),today=key(new Date());
+      if(!p.gd[today]||g.score>p.gd[today])p.gd[today]=g.score;
+      p.best=Math.max(p.best||0,g.score);g.rec=g.score>=p.best&&g.score>0;
+      if(g.score>=80&&plGrant('g:'+today))g.tix=1;plSave();fx(g.score>=80?'hr':'end')}
+    else{g.pitch=plMakePitch();g.res=null;g.show=null;plArm()}
+    plDraw()},g.res==='miss'||g.res==='late'?1100:800);
+}
+/* 카드 뽑기 */
+function plDrawCard(){var p=plGet();if(plTix()<1)return;
+  var tot=0;Object.keys(RAR).forEach(function(k){tot+=RAR[k].w});var r=plRnd(tot),rk='N';
+  for(var k in RAR){if(r<RAR[k].w){rk=k;break}r-=RAR[k].w}
+  var pool=CARDS.filter(function(c){return c[4]===rk}),c=pool[plRnd(pool.length)];
+  var isNew=!p.cards[c[0]];p.cards[c[0]]=(p.cards[c[0]]||0)+1;plSave();
+  S.dc={id:c[0],isNew:isNew};S.pv='draw';fx(rk==='N'?'ck':rk==='R'?'bt':'hr')}
+function plCardHtml(c,own,big){
+  var rr=RAR[c[4]],h=0;for(var i=0;i<c[0].length;i++)h+=c[0].charCodeAt(i);
+  var st=[['파워',1+(h*3)%5],['스피드',1+(h*7)%5],['수비',1+(h*11)%5]];
+  if(c[4]==='L')st=[['파워',5],['스피드',5],['수비',5]];
+  if(!own)return '<div class="pc lock"><div class="pce">❔</div><div class="pcn">???</div></div>';
+  return '<div class="pc r'+c[4]+(big?' big':'')+'" style="--rc:'+rr.c+'"><div class="pcr">'+rr.n+'</div><div class="pce">'+c[1]+'</div><div class="pcn">'+esc(c[2])+'</div><div class="pcp">'+esc(c[3])+'</div>'+
+    (big?'<div class="pcs">'+st.map(function(x){return '<span>'+x[0]+' '+'★'.repeat(x[1])+'<i>'+'★'.repeat(5-x[1])+'</i></span>'}).join('')+'</div><div class="pcl">“'+esc(c[5])+'”</div>':'')+'</div>';
+}
+/* 화면 */
+function plBack(){return '<button type="button" class="btn2" data-act="plhub" style="margin:0 0 12px">← 놀이터로</button>'}
+function renderPlay(c){
+  var p=plGet(),today=key(new Date()),tix=plTix(),v=S.pv||'hub',h='';
+  var own=Object.keys(p.cards).length;
+  var head='<div class="head"><div><h1>놀이터</h1><div class="date">공부 쉬는 시간에 가볍게 한 판!</div></div><span class="chip">🎴 뽑기권 '+tix+'장</span></div>'+
+    (S.toast?'<div class="win" role="status" style="margin:0 0 12px">'+esc(S.toast)+'</div>':'');
+  if(v==='hub'){
+    var qd=p.qd[today],wn=Object.keys(p.wr).filter(function(i){return QB[+i]}).length,bt=p.gd[today];
+    var t=S.timer,brk=t&&(t.mode==='break'||t.mode==='bdone');
+    h=(brk?'<div class="win" style="margin:0 0 12px;background:var(--green-bg);color:var(--green)">☕ 쉬는 시간이에요! 홈런 더비 한 판 어때요?</div>':'')+
+    '<div class="plg">'+
+    '<button type="button" class="plc" data-act="plquiz"><b>⚾ 퀴즈 타석</b><span>하루 3문제 · 2개 이상 맞히면 뽑기권!</span><em>'+(qd?'오늘 완료 · '+qd.c+'/'+qd.t+' 맞힘':'오늘의 타석 시작')+'</em></button>'+
+    '<button type="button" class="plc" data-act="plgame"><b>🏏 홈런 더비</b><span>10구 · 80점 이상이면 뽑기권!</span><em>오늘 최고 '+(bt||0)+'점 · 나의 최고 '+(p.best||0)+'점</em></button>'+
+    '<button type="button" class="plc" data-act="plrev"'+(wn?'':' disabled')+'><b>📝 오답 복습</b><span>틀렸던 문제를 다시 쳐서 지워요</span><em>'+(wn?'복습할 문제 '+wn+'개':'복습할 문제가 없어요 👍')+'</em></button>'+
+    '<button type="button" class="plc" data-act="plcards"><b>🎴 선수 카드</b><span>뽑기권으로 카드를 모아요</span><em>모은 카드 '+own+' / '+CARDS.length+'종 · 뽑기권 '+tix+'장</em></button>'+
+    '</div><div class="card" style="margin-top:14px"><b>뽑기권은 이렇게 얻어요</b><div class="lbl" style="margin-top:6px">⚾ 오늘 경기 종료 · 🧠 퀴즈 2개 이상 · 🏏 홈런 더비 80점 이상 (각각 하루 1장)</div></div>';
+  }else if(v==='quiz'){
+    var q=S.q;
+    if(!q){S.pv='hub';return renderPlay(c)}
+    if(q.end){
+      var tot=q.list.length;
+      h=plBack()+'<div class="card plres"><div class="plbig">'+(q.right===tot?'🎉 만점 안타!':q.right>=2?'⚾ 안타!':'💪 다음엔 더!')+'</div><div class="pl2">'+tot+'타수 '+q.right+'안타'+(q.mode==='rev'?' · 오답 '+q.fixed+'개 지웠어요':'')+'</div>'+
+        (q.tix?'<div class="win">🎴 뽑기권 1장을 받았어요!</div>':'')+
+        '<div class="brow"><button type="button" class="btn" data-act="plhub">놀이터로</button>'+(q.tix||plTix()?'<button type="button" class="btn2" data-act="plcards">카드 뽑으러 가기</button>':'')+'</div></div>';
+    }else{
+      var cur=q.list[q.i],ans=q.pick>=0;
+      h=plBack()+'<div class="plq"><div class="plp">'+(q.mode==='rev'?'📝 오답 복습':'⚾ 퀴즈 타석')+' · '+(q.i+1)+' / '+q.list.length+'타석 <span class="plcat">'+esc(cur.c)+'</span></div>'+
+        '<div class="plqt">'+esc(cur.q)+'</div><div class="plo">'+cur.o.map(function(o,j){
+          var cl='plob';if(ans){if(o.ok)cl+=' ok';else if(j===q.pick)cl+=' no'}
+          return '<button type="button" class="'+cl+'" data-act="plans" data-j="'+j+'"'+(ans?' disabled':'')+'>'+esc(o.t)+'</button>'}).join('')+'</div>'+
+        (ans?'<div class="plfb '+(cur.o[q.pick].ok?'g':'r')+'">'+(cur.o[q.pick].ok?'딱! 안타! 🎉':'아쉬워요! 정답은 “'+esc(cur.o.filter(function(o){return o.ok})[0].t)+'”'+(q.mode==='quiz'?'<br><small>틀린 문제는 오답 복습에 담아 둘게요.</small>':''))+'</div><button type="button" class="btn" data-act="plnext" style="width:100%">'+(q.i+1>=q.list.length?'결과 보기':'다음 타석 →')+'</button>':'')+'</div>';
+    }
+  }else if(v==='game'){
+    var g=S.g;if(!g){S.pv='hub';return renderPlay(c)}
+    if(g.end){
+      h=plBack()+'<div class="card plres"><div class="plbig">'+(g.score>=80?'💥 홈런왕!':g.score>=50?'⚾ 좋은 타격!':'💪 수고했어요!')+'</div><div class="pl2">'+g.score+'점 · 안타 '+g.hits+'개 · 홈런 '+g.hr+'개'+(g.rec?'<br>🏅 나의 최고 기록!':'')+'</div>'+
+        (g.tix?'<div class="win">🎴 뽑기권 1장을 받았어요!</div>':'<div class="lbl">80점 이상이면 뽑기권을 줘요.</div>')+
+        '<div class="brow"><button type="button" class="btn" data-act="plgame">한 판 더!</button><button type="button" class="btn2" data-act="plhub">놀이터로</button></div></div>';
+    }else{
+      var pt=g.pitch;
+      h='<button type="button" class="btn2" data-act="plgx" style="margin:0 0 12px">← 그만하기</button><div class="plq"><div class="plp">🏏 홈런 더비 · '+(g.i+1)+' / 10구 <span class="plcat">'+g.score+'점'+(g.streak>=2?' · 🔥'+g.streak+'연속':'')+'</span></div>'+
+        '<div class="plbar"><i'+(g.res?' style="animation:none;width:0"':'')+'></i></div>'+
+        '<div class="plqt big">'+pt.txt+' = ?</div><div class="plo three">'+pt.o.map(function(n,j){
+          var cl='plob';if(g.res){if(n===pt.ans)cl+=' ok';else if(g.res!=='hit'&&g.res!=='hr'&&false)cl+=' no'}
+          return '<button type="button" class="'+cl+'" data-act="plswing" data-j="'+j+'"'+(g.res?' disabled':'')+'>'+n+'</button>'}).join('')+'</div>'+
+        '<div class="plfb '+(g.res==='hit'||g.res==='hr'?'g':g.res?'r':'')+'" style="min-height:52px">'+(g.res==='hr'?'💥 홈런!! (3연속 보너스 +30)':g.res==='hit'?'⚾ 안타! +10':g.res==='late'?'⏰ 헛스윙… 정답은 '+g.show:g.res==='miss'?'❌ 아쉬워요! 정답은 '+g.show:'공이 날아와요! 정답을 골라 치세요')+'</div></div>';
+    }
+  }else if(v==='cards'){
+    h=plBack()+'<div class="plq"><div class="plp">🎴 선수 카드 <span class="plcat">'+own+' / '+CARDS.length+'종</span></div>'+
+      '<div class="brow" style="margin:6px 0 14px"><button type="button" class="btn" data-act="pldraw"'+(tix?'':' disabled')+' style="margin:0">🎴 카드 뽑기 (뽑기권 '+tix+'장)</button></div>'+
+      (tix?'':'<div class="lbl" style="margin:-6px 0 12px">뽑기권이 없어요. 경기를 마치거나 퀴즈·홈런 더비로 모아요.</div>')+
+      '<div class="pcg">'+CARDS.map(function(cd){var n=p.cards[cd[0]]||0;return '<button type="button" class="pcb" data-act="plview" data-id="'+cd[0]+'"'+(n?'':' disabled')+'>'+plCardHtml(cd,n,0)+(n>1?'<span class="pcx">×'+n+'</span>':'')+'</button>'}).join('')+'</div></div>';
+  }else if(v==='draw'||v==='view'){
+    var dc=S.dc,cd=CARDS.filter(function(x){return x[0]===(dc&&dc.id)})[0];
+    if(!cd){S.pv='cards';return renderPlay(c)}
+    h=plBack().replace('plhub','plcards').replace('놀이터로','카드 모음으로')+'<div class="pcshow">'+(v==='draw'?'<div class="plbig">'+(dc.isNew?'✨ 새 카드!':'같은 카드가 또 나왔어요')+'</div>':'')+plCardHtml(cd,1,1)+
+      '<div class="brow" style="justify-content:center"><button type="button" class="btn2" data-act="plcards">카드 모음 보기</button>'+(v==='draw'&&tix?'<button type="button" class="btn" data-act="pldraw">한 장 더 뽑기 ('+tix+')</button>':'')+'</div></div>';
+  }
+  main.innerHTML=head+h;
+}
+function plDraw(){if(S.tab==='play')renderPlay(ctx())}
+function playClick(e){
+  var b=e.target.closest('button[data-act]');if(!b)return;var a=b.dataset.act;if(a.indexOf('pl')!==0)return;
+  if(a==='plgame'&&S.tab!=='play'){S.tab='play';document.querySelectorAll('#nav button').forEach(function(x){x.classList.toggle('on',x.dataset.t==='play')})}
+  if(a==='plhub'){plStopGame();S.pv='hub';S.q=null;S.g=null;fx('ck')}
+  else if(a==='plquiz'){plStartQuiz();if(!S.q||S.q.end)S.pv='hub';fx('ck')}
+  else if(a==='plrev'){plStartRev();fx('ck')}
+  else if(a==='plgame'){plStartGame();fx('ck')}
+  else if(a==='plgx'){plStopGame();S.g=null;S.pv='hub'}
+  else if(a==='plans'){plAnswer(+b.dataset.j)}
+  else if(a==='plnext'){plNext()}
+  else if(a==='plswing'){plSwing(+b.dataset.j);return}
+  else if(a==='plcards'){S.pv='cards';fx('ck')}
+  else if(a==='pldraw'){plDrawCard()}
+  else if(a==='plview'){S.dc={id:b.dataset.id};S.pv='view';fx('ck')}
+  else return;
+  renderPlay(ctx());renderSync();main.scrollTop=0;
+}
 
 prefsLoad();applySkin();
 loadLocal();adoptShipped();
@@ -2215,6 +2478,9 @@ render();
   },function(){});
   DB.doc('settings/main').onSnapshot(function(s){
     if(s.exists){var x=s.data()||{};['goal','reward','pin','tiers'].forEach(function(k){if(x[k]!==undefined)S.settings[k]=x[k]});saveLocal();render()}
+  },function(){});
+  DB.doc('settings/play').onSnapshot(function(s){
+    if(s.exists){var x=s.data();if(x&&typeof x==='object'){S.play=x;saveLocal();if(S.tab==='play'&&!(S.pv==='game'&&S.g&&S.g.live)&&!(S.pv==='quiz'&&S.q&&!S.q.end))render();else if(S.tab!=='play')render()}}
   },function(){});
   DB.doc('settings/daymeta').onSnapshot(function(s){
     if(s.exists){var x=s.data()||{};S.meta=(x.m&&typeof x.m==='object')?x.m:{};saveLocal();render()}
