@@ -51,6 +51,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -2156,9 +2157,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:208};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:209};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+['v2.09','🈶 한자 타석 추가: 한국어문회 6·7·8급 한자 300자, 하루 5문제 · 기존 한자 8문제는 새 한자 타석으로 대체'],
   ['v2.08','📝 오답 탭 추가: 가족 링크에서 오답 사진을 올리고 복습 · 메뉴 이름 놀이 → 휴식'],
   ['v2.07','카드 뽑기는 일러스트가 완성된 선수 중에서만 나오도록 변경'],
   ['v2.06','일러스트 5장 추가(최준용·최충연·한현희·현도훈·홍민기)'],
@@ -2468,28 +2470,75 @@ function plGrant(id){var p=plGet();if(p.tg[id])return false;p.tg[id]=1;plSave();
 function plRnd(n){return Math.floor(Math.random()*n)}
 function plShuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=plRnd(i+1),t=a[i];a[i]=a[j];a[j]=t}return a}
 function plToast(m){S.toast=m;clearTimeout(toastT);toastT=setTimeout(function(){S.toast='';render()},5000)}
+function plOk(i){return QB[i]&&QB[i][0]!=='한자'}
 function plQ(id){var q=QB[id];return {id:id,c:q[0],q:q[1],o:plShuf(q[2].map(function(t,i){return {t:t,ok:i===0}}))}}
+var HJ=[['校','학교 교',1],['敎','가르칠 교',1],['九','아홉 구',1],['國','나라 국',1],['軍','군사 군',1],['金','쇠 금',1],['南','남녘 남',1],['女','여자 녀',1],['年','해 년',1],['大','큰 대',1],['東','동녘 동',1],['六','여섯 륙',1],['萬','일만 만',1],['母','어미 모',1],['木','나무 목',1],['門','문 문',1],['民','백성 민',1],['白','흰 백',1],['父','아비 부',1],['北','북녘 북',1],['四','넉 사',1],['山','메 산',1],['三','석 삼',1],['生','날 생',1],['西','서녘 서',1],['先','먼저 선',1],['小','작을 소',1],['水','물 수',1],['室','집 실',1],['十','열 십',1],['五','다섯 오',1],['王','임금 왕',1],['外','바깥 외',1],['月','달 월',1],['二','두 이',1],['人','사람 인',1],['一','한 일',1],['日','날 일',1],['長','긴 장',1],['弟','아우 제',1],['中','가운데 중',1],['靑','푸를 청',1],['寸','마디 촌',1],['七','일곱 칠',1],['土','흙 토',1],['八','여덟 팔',1],['學','배울 학',1],['韓','한국 한',1],['兄','형 형',1],['火','불 화',1],['家','집 가',2],['間','사이 간',2],['江','강 강',2],['車','수레 거·차',2],['工','장인 공',2],['空','빌 공',2],['氣','기운 기',2],['記','기록할 기',2],['男','사내 남',2],['內','안 내',2],['農','농사 농',2],['答','대답 답',2],['道','길 도',2],['動','움직일 동',2],['力','힘 력',2],['立','설 립',2],['每','매양 매',2],['名','이름 명',2],['物','물건 물',2],['方','모 방',2],['不','아닐 부',2],['事','일 사',2],['上','위 상',2],['姓','성 성',2],['世','인간 세',2],['手','손 수',2],['時','때 시',2],['市','저자 시',2],['食','먹을 식',2],['安','편안 안',2],['午','낮 오',2],['右','오른쪽 우',2],['子','아들 자',2],['自','스스로 자',2],['場','마당 장',2],['電','번개 전',2],['前','앞 전',2],['全','온전 전',2],['正','바를 정',2],['足','발 족',2],['左','왼 좌',2],['直','곧을 직',2],['平','평평할 평',2],['下','아래 하',2],['漢','한수 한',2],['海','바다 해',2],['話','말씀 화',2],['活','살 활',2],['孝','효도 효',2],['後','뒤 후',2],['歌','노래 가',2],['口','입 구',2],['旗','기 기',2],['同','한가지 동',2],['洞','골 동·밝을 통',2],['冬','겨울 동',2],['登','오를 등',2],['來','올 래',2],['老','늙을 로',2],['里','마을 리',2],['林','수풀 림',2],['面','낯 면',2],['命','목숨 명',2],['文','글월 문',2],['問','물을 문',2],['百','일백 백',2],['夫','지아비 부',2],['算','셈 산',2],['色','빛 색',2],['夕','저녁 석',2],['少','적을 소',2],['所','바 소',2],['數','셈 수',2],['植','심을 식',2],['心','마음 심',2],['語','말씀 어',2],['然','그럴 연',2],['有','있을 유',2],['育','기를 육',2],['邑','고을 읍',2],['入','들 입',2],['字','글자 자',2],['祖','할아비 조',2],['住','살 주',2],['主','주인 주',2],['重','무거울 중',2],['紙','종이 지',2],['地','땅 지',2],['千','일천 천',2],['天','하늘 천',2],['川','내 천',2],['草','풀 초',2],['村','마을 촌',2],['秋','가을 추',2],['春','봄 춘',2],['出','날 출',2],['便','편할 편',2],['夏','여름 하',2],['花','꽃 화',2],['休','쉴 휴',2],['各','각각 각',3],['角','뿔 각',3],['界','지경 계',3],['計','셀 계',3],['高','높을 고',3],['公','공평할 공',3],['共','한가지 공',3],['功','공 공',3],['果','실과 과',3],['科','과목 과',3],['光','빛 광',3],['球','공 구',3],['今','이제 금',3],['急','급할 급',3],['短','짧을 단',3],['堂','집 당',3],['代','대신할 대',3],['對','대할 대',3],['圖','그림 도',3],['讀','읽을 독',3],['童','아이 동',3],['等','무리 등',3],['樂','즐길 락',3],['利','이할 리',3],['理','다스릴 리',3],['明','밝을 명',3],['聞','들을 문',3],['半','반 반',3],['反','돌이킬 반',3],['班','나눌 반',3],['發','필 발',3],['放','놓을 방',3],['部','떼 부',3],['分','나눌 분',3],['社','모일 사',3],['書','글 서',3],['線','줄 선',3],['雪','눈 설',3],['成','이룰 성',3],['省','살필 성',3],['消','사라질 소',3],['術','재주 술',3],['始','비로소 시',3],['身','몸 신',3],['神','귀신 신',3],['信','믿을 신',3],['新','새 신',3],['弱','약할 약',3],['藥','약 약',3],['業','업 업',3],['勇','날랠 용',3],['用','쓸 용',3],['運','옮길 운',3],['音','소리 음',3],['飮','마실 음',3],['意','뜻 의',3],['作','지을 작',3],['昨','어제 작',3],['才','재주 재',3],['戰','싸움 전',3],['庭','뜰 정',3],['第','차례 제',3],['題','제목 제',3],['注','부을 주',3],['集','모을 집',3],['窓','창 창',3],['淸','맑을 청',3],['體','몸 체',3],['表','겉 표',3],['風','바람 풍',3],['幸','다행 행',3],['現','나타날 현',3],['形','모양 형',3],['和','화할 화',3],['會','모일 회',3],['感','느낄 감',3],['強','강할 강',3],['開','열 개',3],['京','서울 경',3],['古','예 고',3],['苦','쓸 고',3],['交','사귈 교',3],['區','구분할 구',3],['郡','고을 군',3],['根','뿌리 근',3],['近','가까울 근',3],['級','등급 급',3],['多','많을 다',3],['待','기다릴 대',3],['度','법도 도',3],['頭','머리 두',3],['例','법식 례',3],['禮','예도 례',3],['路','길 로',3],['綠','푸를 록',3],['李','오얏 리',3],['目','눈 목',3],['美','아름다울 미',3],['米','쌀 미',3],['朴','성 박',3],['番','차례 번',3],['別','다를 별',3],['病','병 병',3],['服','옷 복',3],['本','근본 본',3],['使','하여금 사',3],['死','죽을 사',3],['席','자리 석',3],['石','돌 석',3],['速','빠를 속',3],['孫','손자 손',3],['樹','나무 수',3],['習','익힐 습',3],['勝','이길 승',3],['式','법 식',3],['失','잃을 실',3],['愛','사랑 애',3],['夜','밤 야',3],['野','들 야',3],['陽','볕 양',3],['洋','큰바다 양',3],['言','말씀 언',3],['英','꽃부리 영',3],['永','길 영',3],['溫','따뜻할 온',3],['園','동산 원',3],['遠','멀 원',3],['由','말미암을 유',3],['油','기름 유',3],['銀','은 은',3],['醫','의원 의',3],['衣','옷 의',3],['者','놈 자',3],['章','글 장',3],['在','있을 재',3],['定','정할 정',3],['朝','아침 조',3],['族','겨레 족',3],['晝','낮 주',3],['親','친할 친',3],['太','클 태',3],['通','통할 통',3],['特','특별할 특',3],['合','합할 합',3],['行','다닐 행',3],['向','향할 향',3],['號','이름 호',3],['畫','그림 화',3],['黃','누를 황',3],['訓','가르칠 훈',3]];
+var HJG=["晝書畫", "弟第", "靑淸", "日白目", "木本", "大太", "人入八", "住主注", "昨作", "天夫", "小少", "親新", "子字", "老孝", "村林", "休林", "苦古", "同冬洞", "話語活", "後前", "內肉", "校交", "動重", "球求", "間問聞", "算數", "夕多", "正定", "氣汽", "午牛", "每母", "直植", "右左", "上下", "名各", "事使", "出山", "江工", "先生", "門問", "車軍"];
+
+/* ===== 한자 타석: 한국어문회 6·7·8급 배정한자 300자 (8급 쉬움 · 7급 보통 · 6급 도전), 하루 5문제 ===== */
+var HJL={'1':'쉬움','2':'보통','3':'도전'},HJM={};
+HJG.forEach(function(g){g.split('').forEach(function(c){HJM[c]=(HJM[c]||'')+g.replace(c,'')})});
+function hjIdx(c){for(var i=0;i<HJ.length;i++)if(HJ[i][0]===c)return i;return -1}
+function hjUm(k){return k.slice(-1)}
+function hjQ(id){
+  var i=id>>1,t=id&1,x=HJ[i],lv=x[2],ok=function(y,j){return j!==i&&y[1]!==x[1]&&y[1].indexOf('·')<0&&y[0]!=='車'&&y[0]!=='洞'};
+  var near=[];(HJM[x[0]]||'').split('').forEach(function(c){var j=hjIdx(c);if(j>=0&&ok(HJ[j],j))near.push(j)});
+  if(!t)HJ.forEach(function(y,j){if(ok(y,j)&&hjUm(y[1])===hjUm(x[1])&&near.indexOf(j)<0&&lv>1)near.push(j)});
+  near=plShuf(near);
+  var rest=[];HJ.forEach(function(y,j){if(ok(y,j)&&near.indexOf(j)<0&&(lv===3||y[2]<=lv))rest.push(j)});rest=plShuf(rest);
+  var want=lv===1?0:lv===2?1:2,ds=near.slice(0,want);
+  rest.forEach(function(j){if(ds.length<3)ds.push(j)});
+  if(ds.length<3)near.forEach(function(j){if(ds.length<3&&ds.indexOf(j)<0)ds.push(j)});
+  var ex=x[0]+' = '+x[1];
+  if(!t)return {id:id,hj:1,lv:lv,c:'한자 · '+HJL[lv],big:x[0],q:'이 한자의 훈음(뜻과 소리)은?',ex:ex,o:plShuf([{t:x[1],ok:true}].concat(ds.map(function(j){return {t:HJ[j][1],ok:false}})))};
+  return {id:id,hj:1,lv:lv,c:'한자 · '+HJL[lv],q:'“'+x[1]+'”에 해당하는 한자는?',ex:ex,ch:1,o:plShuf([{t:x[0],ok:true}].concat(ds.map(function(j){return {t:HJ[j][0],ok:false}})))};
+}
+function hjPickDaily(){
+  var p=plGet(),today=key(new Date()),hs=p.hs=p.hs||{},hw=p.hw=p.hw||{},seen=p.hseen=p.hseen||[],pick=[],used={},need={1:2,2:2,3:1};
+  function take(id){pick.push(id);used[id>>1]=1;need[HJ[id>>1][2]]--}
+  var due=Object.keys(hw).filter(function(i){return hw[i]!==today}).map(Number);
+  if(due.length)take(due[plRnd(due.length)]);
+  [1,2,3].forEach(function(lv){
+    var all=[];HJ.forEach(function(x,i){if(x[2]!==lv||used[i])return;var s=hs[i*2],s2=hs[i*2+1];
+      [0,1].forEach(function(t){var id=i*2+t,h=hs[id];if(h&&h.u&&h.u>today)return;all.push(id)})});
+    var fresh=all.filter(function(id){return seen.indexOf(id)<0});
+    if(fresh.length<Math.max(0,need[lv])){p.hseen=seen=seen.filter(function(id){return HJ[id>>1][2]!==lv});fresh=all}
+    fresh=plShuf(fresh);
+    while(need[lv]>0&&fresh.length){var id=fresh.shift();if(used[id>>1])continue;take(id)}
+  });
+  var guard=0;while(pick.length<5&&guard++<400){var id=plRnd(600);if(!used[id>>1])take(id)}
+  return plShuf(pick);
+}
+function hjStart(){var p=plGet(),today=key(new Date());p.hd=p.hd||{};if(p.hd[today])return;
+  S.q={mode:'hj',list:hjPickDaily().map(hjQ),i:0,pick:-1,right:0};S.pv='quiz'}
+function hjAnswer(cur,ok){var p=plGet(),today=key(new Date());p.hs=p.hs||{};p.hw=p.hw||{};p.hseen=p.hseen||[];
+  var h=p.hs[cur.id]||{s:0,u:''};
+  if(ok){h.s++;delete p.hw[cur.id];if(h.s>=2)h.u=key(new Date(Date.now()+30*864e5))}
+  else{h.s=0;h.u='';p.hw[cur.id]=today}
+  p.hs[cur.id]=h;if(p.hseen.indexOf(cur.id)<0)p.hseen.push(cur.id);plSave()}
 /* 퀴즈 3문제 고르기: 틀린 문제 복습(하루 이상 지난 것) 최대 1개 + 안 본 문제 */
 function plPickDaily(){
   var p=plGet(),today=key(new Date()),pick=[];
-  var due=Object.keys(p.wr).filter(function(i){return p.wr[i]!==today&&QB[+i]});
+  var due=Object.keys(p.wr).filter(function(i){return p.wr[i]!==today&&plOk(+i)});
   if(due.length)pick.push(+due[plRnd(due.length)]);
-  var pool=QB.map(function(_,i){return i}).filter(function(i){return p.seen.indexOf(i)<0&&pick.indexOf(i)<0});
-  if(pool.length<3-pick.length){p.seen=[];pool=QB.map(function(_,i){return i}).filter(function(i){return pick.indexOf(i)<0})}
+  var pool=QB.map(function(_,i){return i}).filter(function(i){return plOk(i)&&p.seen.indexOf(i)<0&&pick.indexOf(i)<0});
+  if(pool.length<3-pick.length){p.seen=[];pool=QB.map(function(_,i){return i}).filter(function(i){return plOk(i)&&pick.indexOf(i)<0})}
   pool=plShuf(pool);while(pick.length<3)pick.push(pool.shift());
   return plShuf(pick);
 }
 function plStartQuiz(){var p=plGet(),today=key(new Date());if(p.qd[today])return;
   S.q={mode:'quiz',list:plPickDaily().map(plQ),i:0,pick:-1,right:0};S.pv='quiz'}
-function plStartRev(){var p=plGet(),ids=Object.keys(p.wr).filter(function(i){return QB[+i]});if(!ids.length)return;
+function plStartRev(){var p=plGet(),ids=Object.keys(p.wr).filter(function(i){return plOk(+i)});if(!ids.length)return;
   S.q={mode:'rev',list:plShuf(ids).slice(0,5).map(function(i){return plQ(+i)}),i:0,pick:-1,right:0,fixed:0};S.pv='quiz'}
 function plAnswer(j){var q=S.q;if(!q||q.pick>=0)return;var cur=q.list[q.i],p=plGet(),ok=cur.o[j].ok;q.pick=j;
+  if(q.mode==='hj'){if(ok)q.right++;hjAnswer(cur,ok);fx(ok?'bt':'un');return}
   if(ok){q.right++;if(q.mode==='rev'){delete p.wr[cur.id];q.fixed++}}else{p.wr[cur.id]=key(new Date())}
   if(q.mode==='quiz'&&p.seen.indexOf(cur.id)<0)p.seen.push(cur.id);
   plSave();fx(ok?'bt':'un')}
 function plNext(){var q=S.q;if(!q)return;q.i++;q.pick=-1;
   if(q.i>=q.list.length){q.end=true;var p=plGet(),today=key(new Date());
     if(q.mode==='quiz'){p.qd[today]={c:q.right,t:q.list.length};if(q.right>=2&&plGrant('q:'+today))q.tix=1;plSave()}
+    if(q.mode==='hj'){p.hd=p.hd||{};p.hd[today]={c:q.right,t:q.list.length};if(q.right>=4&&plGrant('h:'+today))q.tix=1;plSave()}
     fx(q.right>=q.list.length?'hr':'end')}
   else fx('ck')}
 /* 홈런 더비 */
@@ -2633,15 +2682,16 @@ function renderPlay(c){
   var head='<div class="head"><div><h1>놀이터</h1><div class="date">공부 쉬는 시간에 가볍게 한 판!</div></div><span class="chip">🎴 뽑기권 '+plTix()+'장</span></div>'+
     (S.toast?'<div class="win" role="status" style="margin:0 0 12px">'+esc(S.toast)+'</div>':'');
   if(v==='hub'){
-    var qd=p.qd[today],wn=Object.keys(p.wr).filter(function(i){return QB[+i]}).length,bt=p.gd[today];
+    var qd=p.qd[today],hd=(p.hd||{})[today],wn=Object.keys(p.wr).filter(function(i){return plOk(+i)}).length,bt=p.gd[today];
     var t=S.timer,brk=t&&(t.mode==='break'||t.mode==='bdone');
     h=(brk?'<div class="win" style="margin:0 0 12px;background:var(--green-bg);color:var(--green)">☕ 쉬는 시간이에요! 홈런 더비 한 판 어때요?</div>':'')+
     '<div class="plg">'+
     '<button type="button" class="plc" data-act="plquiz"><b>⚾ 퀴즈 타석</b><span>하루 3문제 · 2개 이상 맞히면 뽑기권!</span><em>'+(qd?'오늘 완료 · '+qd.c+'/'+qd.t+' 맞힘':'오늘의 타석 시작')+'</em></button>'+
+    '<button type="button" class="plc" data-act="plhj"><b>🈶 한자 타석</b><span>하루 5문제 · 4개 이상 맞히면 뽑기권!</span><em>'+(hd?'오늘 완료 · '+hd.c+'/'+hd.t+' 맞힘':'오늘의 한자 시작')+'</em></button>'+
     '<button type="button" class="plc" data-act="plgame"><b>🏏 홈런 더비</b><span>10구 · 80점 이상이면 뽑기권!</span><em>오늘 최고 '+(bt||0)+'점 · 나의 최고 '+(p.best||0)+'점</em></button>'+
     '<button type="button" class="plc" data-act="plrev"'+(wn?'':' disabled')+'><b>📝 오답 복습</b><span>틀렸던 문제를 다시 쳐서 지워요</span><em>'+(wn?'복습할 문제 '+wn+'개':'복습할 문제가 없어요 👍')+'</em></button>'+
     '<button type="button" class="plc" data-act="plkbo"><b>📚 KBO 2026 선수 도감</b><span>10개 구단 621명 + 레전드 41명 · 구단/포지션/이름 검색</span><em>수집 '+Object.keys(kbPl().c).length+' / '+(KB.length+CARDS.length)+'명 · 뽑기권 '+plTix()+'장</em></button>'+
-    '</div><div class="card" style="margin-top:14px"><b>뽑기권은 이렇게 얻어요</b><div class="lbl" style="margin-top:6px">⚾ 오늘 경기 종료 · 🧠 퀴즈 2개 이상 · 🏏 홈런 더비 80점 이상 (각각 하루 1장)</div></div>';
+    '</div><div class="card" style="margin-top:14px"><b>뽑기권은 이렇게 얻어요</b><div class="lbl" style="margin-top:6px">⚾ 오늘 경기 종료 · 🧠 퀴즈 2개 이상 · 🈶 한자 4개 이상 · 🏏 홈런 더비 80점 이상 (각각 하루 1장)</div></div>';
   }else if(v==='quiz'){
     var q=S.q;
     if(!q){S.pv='hub';return renderPlay(c)}
@@ -2652,11 +2702,11 @@ function renderPlay(c){
         '<div class="brow"><button type="button" class="btn" data-act="plhub">놀이터로</button>'+(q.tix||plTix()?'<button type="button" class="btn2" data-act="plkbo">카드 뽑으러 가기</button>':'')+'</div></div>';
     }else{
       var cur=q.list[q.i],ans=q.pick>=0;
-      h=plBack()+'<div class="plq"><div class="plp">'+(q.mode==='rev'?'📝 오답 복습':'⚾ 퀴즈 타석')+' · '+(q.i+1)+' / '+q.list.length+'타석 <span class="plcat">'+esc(cur.c)+'</span></div>'+
-        '<div class="plqt">'+esc(cur.q)+'</div><div class="plo">'+cur.o.map(function(o,j){
+      h=plBack()+'<div class="plq"><div class="plp">'+(q.mode==='rev'?'📝 오답 복습':q.mode==='hj'?'🈶 한자 타석':'⚾ 퀴즈 타석')+' · '+(q.i+1)+' / '+q.list.length+'타석 <span class="plcat">'+esc(cur.c)+'</span></div>'+
+        (cur.big?'<div class="plqt" style="font-size:72px;text-align:center;line-height:1.1;margin:6px 0 2px">'+esc(cur.big)+'</div>':'')+'<div class="plqt">'+esc(cur.q)+'</div><div class="plo">'+cur.o.map(function(o,j){
           var cl='plob';if(ans){if(o.ok)cl+=' ok';else if(j===q.pick)cl+=' no'}
-          return '<button type="button" class="'+cl+'" data-act="plans" data-j="'+j+'"'+(ans?' disabled':'')+'>'+esc(o.t)+'</button>'}).join('')+'</div>'+
-        (ans?'<div class="plfb '+(cur.o[q.pick].ok?'g':'r')+'">'+(cur.o[q.pick].ok?'딱! 안타! 🎉':'아쉬워요! 정답은 “'+esc(cur.o.filter(function(o){return o.ok})[0].t)+'”'+(q.mode==='quiz'?'<br><small>틀린 문제는 오답 복습에 담아 둘게요.</small>':''))+'</div><button type="button" class="btn" data-act="plnext" style="width:100%">'+(q.i+1>=q.list.length?'결과 보기':'다음 타석 →')+'</button>':'')+'</div>';
+          return '<button type="button" class="'+cl+'" data-act="plans" data-j="'+j+'"'+(cur.ch?' style="font-size:34px"':'')+(ans?' disabled':'')+'>'+esc(o.t)+'</button>'}).join('')+'</div>'+
+        (ans?'<div class="plfb '+(cur.o[q.pick].ok?'g':'r')+'">'+(cur.o[q.pick].ok?'딱! 안타! 🎉':'아쉬워요! 정답은 “'+esc(cur.o.filter(function(o){return o.ok})[0].t)+'”'+(q.mode==='quiz'?'<br><small>틀린 문제는 오답 복습에 담아 둘게요.</small>':''))+(cur.ex?'<br><small>'+esc(cur.ex)+(cur.o[q.pick].ok?'':' · 틀린 한자는 다음에 또 나와요')+'</small>':'')+'</div><button type="button" class="btn" data-act="plnext" style="width:100%">'+(q.i+1>=q.list.length?'결과 보기':'다음 타석 →')+'</button>':'')+'</div>';
     }
   }else if(v==='game'){
     var g=S.g;if(!g){S.pv='hub';return renderPlay(c)}
@@ -2687,6 +2737,7 @@ function playClick(e){
   else if(a==='plhub'){plStopGame();S.pv='hub';S.q=null;S.g=null;fx('ck')}
   else if(a==='plquiz'){plStartQuiz();if(!S.q||S.q.end)S.pv='hub';fx('ck')}
   else if(a==='plrev'){plStartRev();fx('ck')}
+  else if(a==='plhj'){hjStart();if(!S.q||S.q.end)S.pv='hub';fx('ck')}
   else if(a==='plgame'){plStartGame();fx('ck')}
   else if(a==='plgx'){plStopGame();S.g=null;S.pv='hub'}
   else if(a==='plans'){plAnswer(+b.dataset.j)}
