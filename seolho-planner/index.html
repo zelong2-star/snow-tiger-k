@@ -19,6 +19,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -99,7 +100,7 @@ h2{font-size:15px;font-weight:700;margin:0 0 10px}
 .tmb.pz{border-color:var(--amber);color:var(--amber);background:var(--amber-bg)}
 .tmb.on{background:var(--navy);border-color:var(--navy);color:var(--on-navy)}
 .tmb.on b{font-variant-numeric:tabular-nums}
-.cardB{margin:0 0 14px;border-radius:16px;border:2px solid var(--navy);background:var(--panel);padding:14px 16px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.cardB{position:sticky;top:0;z-index:5;box-shadow:0 8px 16px -8px rgba(4,30,66,.35);margin:0 0 14px;border-radius:16px;border:2px solid var(--navy);background:var(--panel);padding:14px 16px;display:flex;flex-direction:column;align-items:center;gap:6px}
 .cardB .nm{font-size:16px;color:var(--muted)}
 .tmbig{font-size:52px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
 .tsub{font-size:13px;color:var(--muted)}
@@ -295,6 +296,9 @@ input[type=checkbox]{width:28px;height:28px;min-width:28px;padding:0;margin:0;ac
 .cele{position:fixed;left:0;right:0;top:0;bottom:0;display:grid;place-items:center;pointer-events:none;z-index:50}
 .cele div{background:var(--navy);color:#fff;border:4px solid #DD032F;border-radius:24px;padding:20px 44px;font:700 52px var(--f-d);animation:pop .45s ease-out both;box-shadow:0 10px 40px rgba(0,0,0,.35)}
 .cele.hr div{font-size:76px;background:#DD032F;border-color:#fff}
+.moodh{display:flex;align-items:center;gap:8px;margin-left:auto}
+.moodh button{width:52px;height:46px;font-size:25px;border-radius:12px;border:2px solid var(--line);background:var(--bg);cursor:pointer}
+.moodh button[aria-pressed="true"]{border-color:#DD032F;background:var(--done-bg)}
 .mood{display:flex;gap:8px;margin-top:8px}
 .mood button{flex:1;min-height:56px;font-size:28px;border-radius:12px;border:2px solid var(--line);background:var(--bg);cursor:pointer}
 .mood button[aria-pressed="true"]{border-color:#DD032F;background:var(--done-bg)}
@@ -685,9 +689,10 @@ function tmEnd(){if(S.timer){tmCommit();S.timer=null;tmSave()}}
 function tmStop(){tmEnd()}
 function tmStOf(k){var st=Object.assign({},(S.meta[k]||{}).st||{}),t=S.timer;if(t&&t.k===k&&t.mode==='study')st[t.n]=(st[t.n]||0)+Math.min(7200,tmRun());return st}
 function tmDayTotal(k){var t=0,st=(S.meta[k]||{}).st||{};Object.keys(st).forEach(function(n){t+=st[n]||0});return t+(S.timer&&S.timer.k===k&&S.timer.mode==='study'?Math.min(7200,tmRun()):0)}
+function tmSub(){var t=S.timer;if(!t)return '';var st=tmStOf(t.k);return '이 문제집 오늘 '+tmMin(st[t.n]||0)+' · 오늘 전체 '+tmMin(tmDayTotal(t.k))}
 function tmView(){
   var t=S.timer;if(!t)return null;var f=S.tmFocus*60,b=S.tmBreak*60,m=t.mode;
-  if(m==='study')return {st:'● 측정 중',cl:'run',big:tmFmt(tmStreak()),sub:'휴식까지 '+tmFmt(Math.max(0,f-tmStreak()))};
+  if(m==='study')return {st:'⚾ 경기 중',cl:'run',big:tmFmt(tmStreak()),sub:tmSub()};
   if(m==='pause')return {st:'❚❚ 일시정지',cl:'pz',big:tmFmt(t.ss||0),sub:'다시 시작을 누르면 이어서 재요'};
   if(m==='due')return {st:'🍎 쉬는 시간이에요',cl:'br',big:tmFmt(t.ss||0),sub:S.tmFocus+'분 공부했어요. '+S.tmBreak+'분 쉬어요'};
   if(m==='break')return {st:'☕ 휴식 중',cl:'br',big:tmFmt(Math.max(0,b-(Date.now()-t.bs)/1000)),sub:'휴식 시간은 순공에 안 들어가요'};
@@ -1296,6 +1301,7 @@ function renderToday(c){
     (!inf.fin&&!inf.rain&&n>0?'<button type="button" class="btn2" data-act="endday" style="margin-top:10px;width:100%">오늘 경기 종료</button>':'')+'</div>';
   var mood='<div class="card"><div class="lbl">오늘 컨디션</div><div class="mood" role="group" aria-label="오늘 컨디션">'+
     [[1,'😀','좋아요'],[2,'😐','보통'],[3,'😟','힘들어요']].map(function(x){return '<button type="button" data-act="mood" data-v="'+x[0]+'" aria-pressed="'+(m.d===x[0])+'" aria-label="'+x[2]+'">'+x[1]+'</button>'}).join('')+'</div></div>';
+  var moodH=ro?'':'<div class="moodh" role="group" aria-label="오늘 컨디션"><span class="lbl">오늘 컨디션</span>'+[[1,'😀','좋아요'],[2,'😐','보통'],[3,'😟','힘들어요']].map(function(x){return '<button type="button" data-act="mood" data-v="'+x[0]+'" aria-pressed="'+(m.d===x[0])+'" aria-label="'+x[2]+'">'+x[1]+'</button>'}).join('')+'</div>';
   var note=m.n?'<div class="card"><div class="lbl">감독의 한마디</div><div style="font-size:17px;font-weight:700">“'+esc(m.n)+'”</div></div>':'';
   var topN=tiers[2].n,nextT=null;tiers.forEach(function(t){if(!nextT&&stars<t.n)nextT=t});
   var ladder=tiers.map(function(t){var got=stars>=t.n;return '<div class="xb'+(got?' d':'')+'"><span>'+(got?'🎁 ':'')+'★ '+t.n+'</span><span>'+esc(t.t)+(got?' 달성!':'')+'</span></div>'}).join('');
@@ -1303,13 +1309,14 @@ function renderToday(c){
     (nextT?'<div class="lbl" style="margin-top:8px">다음 보상까지 '+(nextT.n-stars)+'개 남았어요</div>':'<div class="win">모든 보상 달성!</div>')+'</div>';
   main.innerHTML=
    '<div class="head"><div><div class="tt"><button type="button" class="navb" data-act="dnav" data-d="-1" aria-label="어제">◀</button><h1>'+DOW[c.ti]+'요일 경기 일정</h1><button type="button" class="navb" data-act="dnav" data-d="1" aria-label="내일">▶</button>'+(ro?'<button type="button" class="btn2" data-act="dnav" data-d="0" style="margin:0">오늘로</button>':'')+'</div><div class="date">'+(c.now.getMonth()+1)+'월 '+c.now.getDate()+'일'+(ro?' · '+(S.vo===-1?'어제':S.vo===1?'내일':S.vo<0?(-S.vo)+'일 전':S.vo+'일 후')+' (보기만 가능)':'')+'</div></div>'+
+   moodH+
    '<div class="brow" style="margin:0;align-items:center"><button type="button" class="sndb'+(S.sound?'':' off')+'" data-act="snd" aria-pressed="'+S.sound+'" aria-label="'+(S.sound?'소리 켜짐 (누르면 끔)':'소리 꺼짐 (누르면 켬)')+'"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z" fill="currentColor"/>'+(S.sound?'<path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/>':'<path d="M16 9.5l5 5M21 9.5l-5 5"/>')+'</svg></button><span class="chip">'+(ro?'배터리 ':'오늘 배터리 ')+esc(DAYS[c.ti].e)+'</span>'+(ro?'':'<button type="button" class="btn2" data-act="rainask" style="margin:0">'+(inf.rain?'☔ 우천 취소 해제':'☔ 우천 취소')+'</button>')+'</div></div>'+
    (S.rainAsk?'<div class="card" style="margin:0 0 12px"><div class="lbl">'+(inf.rain?'우천 취소를 해제할까요?':'급한 일로 오늘 일정을 못 하게 됐나요? 우천 취소로 처리하면 오늘은 타율·달성률·이용권 조건에서 빠져요.')+' 부모 비밀번호를 입력하세요.</div><div class="brow"><input id="rpin" type="password" inputmode="numeric" maxlength="8" placeholder="비밀번호" aria-label="부모 비밀번호" style="flex:1;min-width:120px"><button type="button" class="btn" data-act="rainok" style="margin:0">확인</button><button type="button" class="btn2" data-act="rainask" style="margin:0">닫기</button></div>'+(S.rainErr?'<div class="warn" style="margin:8px 0 0">비밀번호가 맞지 않아요.</div>':'')+'</div>':'')+
    (inf.rain?'<div class="warn" style="margin:0 0 12px">☔ 오늘은 우천 취소예요. 오늘 항목은 타율·달성률·이용권 조건에서 빠져요.</div>':'')+
    (S.toast?'<div class="win" role="status" style="margin:0 0 12px">'+esc(S.toast)+'</div>':'')+
    '<div class="today"><div>'+(S.timer?tmPanel():'')+list+'</div><div class="side">'+
    '<div class="card"><div class="lbl">'+(ro?'이날의':'오늘의')+' 훈련</div><div class="big">'+n+' / '+total+'</div>'+scoreboard(its,ds)+diamondSvg(stage)+'<div class="stg">'+stageTxt+'</div><div class="lbl" style="margin-top:6px;text-align:center">'+msg+'</div></div>'+
-   bat+(ro?'':mood)+((ro&&S.vo<0)?'<div class="card"><div class="lbl">체크를 빠뜨렸나요? 부모님 확인 번호로 이날 체크를 고칠 수 있어요.</div><div class="brow"><button type="button" class="btn2" data-act="pfix">🔒 이날 체크 고치기</button></div></div>':'')+note+
+   bat+((ro&&S.vo<0)?'<div class="card"><div class="lbl">체크를 빠뜨렸나요? 부모님 확인 번호로 이날 체크를 고칠 수 있어요.</div><div class="brow"><button type="button" class="btn2" data-act="pfix">🔒 이날 체크 고치기</button></div></div>':'')+note+
    '<div class="card"><div class="lbl">다음 할 일</div><div style="font-size:20px;font-weight:700">'+(nextI<0?'모두 완료':esc(its[nextI].n))+'</div></div>'+
    (function(){var st=tmStOf(c.tk),ks=Object.keys(st).filter(function(n){return st[n]>0}).sort(function(a,b){return st[b]-st[a]});
      if(!ks.length&&!its.some(function(q){return q.m&4}))return '';
@@ -1935,9 +1942,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:176};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:177};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+  ['v1.77','타이머 카드 화면 위에 고정 · "경기 중" 표기 · 휴식까지 남은 시간 대신 오늘 누적 표시 · 오늘 컨디션을 제목 옆으로 이동'],
   ['v1.76','타이머 카드를 왼쪽 목록 폭에 맞춰 줄임'],
   ['v1.75','순공 타이머: 큰 카드(정지·다시 시작·완료), 40분 공부→10분 휴식 알림, 오늘 순공 합계, 문제집별 통계·집계 방식 설명'],
   ['v1.74','타이머는 문제집 단위: 한 칸에서 ⏱를 켜면 같은 이름의 모든 칸에 적용'],
