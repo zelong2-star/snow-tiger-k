@@ -49,6 +49,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -2134,9 +2135,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:206};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:207};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+  ['v2.07','카드 뽑기는 일러스트가 완성된 선수 중에서만 나오도록 변경'],
   ['v2.06','일러스트 5장 추가(최준용·최충연·한현희·현도훈·홍민기)'],
   ['v2.05','비슬리·김강현 일러스트 No. 수정판 교체'],
   ['v2.04','일러스트 7장 추가(이민석·이영재·이진하·정성종·정철원·정현수·최이준)'],
@@ -2547,8 +2549,8 @@ function kbGrid(){var s=kbSt();if(s.t===10){var q=s.q.trim(),k=kbPl(),LL=CARDS.f
   return {cnt:L.length+'명',html:(sh.map(function(r){return '<button type="button" class="kcb2" data-act="plkv" data-id="'+kbId(r)+'">'+kbCard(r)+'</button>'}).join('')+(L.length>sh.length?'<button type="button" class="btn2 kmore" data-act="plkmore">더 보기 ('+(L.length-sh.length)+'명)</button>':''))||'<div class="lbl">조건에 맞는 선수가 없어요.</div>'}}
 function kbHtml(){var s=kbSt(),k=kbPl(),tot=Object.keys(k.c).length,fv=Object.keys(k.f).length,g=kbGrid(),tc={};KB.forEach(function(r){tc[r[1]]=(tc[r[1]]||0)+1});
   return '<button type="button" class="btn2" data-act="plhub" style="margin:0 0 12px">← 놀이터로</button><div class="plq" style="max-width:none"><div class="plp">📚 KBO 2026 선수 도감 <span class="plcat">수집 '+tot+' / '+(KB.length+CARDS.length)+'명 · ♥ '+fv+'</span></div>'+
-  '<div class="lbl" style="margin:4px 0 10px">2026 KBO 가이드북 선수단 현황 621명 + 레전드 '+CARDS.length+'명 · 실시간 등록 상태와 다를 수 있어요. 카드는 뽑기권으로 한 장씩 뽑아야 열려요. 열린 카드를 누르면 자세히 볼 수 있고 ♥를 표시할 수 있어요.</div>'+
-  '<div class="brow" style="margin:0 0 12px;align-items:center"><button type="button" class="btn" data-act="plkdraw"'+(plTix()&&tot<KB.length+CARDS.length?'':' disabled')+' style="margin:0">🎴 카드 뽑기 (뽑기권 '+plTix()+'장)</button>'+(plTix()?'':'<span class="lbl" style="margin:0 0 0 10px">뽑기권은 경기 종료·퀴즈·홈런 더비로 얻어요.</span>')+(tot>=KB.length+CARDS.length?'<span class="lbl" style="margin:0 0 0 10px">모든 카드를 모았어요! 🎉</span>':'')+'</div>'+
+  '<div class="lbl" style="margin:4px 0 10px">2026 KBO 가이드북 선수단 현황 621명 + 레전드 '+CARDS.length+'명 · 실시간 등록 상태와 다를 수 있어요. 카드는 뽑기권으로 한 장씩 뽑아야 열려요. 뽑기는 일러스트가 완성된 선수 중에서 나와요. 열린 카드를 누르면 자세히 볼 수 있고 ♥를 표시할 수 있어요.</div>'+
+  '<div class="brow" style="margin:0 0 12px;align-items:center"><button type="button" class="btn" data-act="plkdraw"'+(plTix()&&kbPool().length?'':' disabled')+' style="margin:0">🎴 카드 뽑기 (뽑기권 '+plTix()+'장)</button>'+(plTix()?'':'<span class="lbl" style="margin:0 0 0 10px">뽑기권은 경기 종료·퀴즈·홈런 더비로 얻어요.</span>')+(!kbPool().length?'<span class="lbl" style="margin:0 0 0 10px">'+(plTix()?'지금 나온 일러스트 카드를 모두 모았어요! 새 카드가 생기면 뽑을 수 있어요 🎉':'지금 나온 일러스트 카드를 모두 모았어요! 🎉')+'</span>':'')+'</div>'+
   '<div class="brow ktab" style="margin:0 0 8px">'+KBT.map(function(t,i){return '<button type="button" class="btn2'+(s.t===i?' on':'')+'" data-act="plkt" data-v="'+i+'" style="margin:0">'+t[0].split(' ')[0]+' '+tc[i]+'</button>'}).join('')+'<button type="button" class="btn2'+(s.t===10?' on':'')+'" data-act="plkt" data-v="10" style="margin:0">🏆 레전드 '+CARDS.length+'</button></div>'+
   '<div class="brow" style="margin:0 0 10px">'+(s.t===10?'':[['-1','전체'],['0','투수'],['1','포수'],['2','내야수'],['3','외야수']].map(function(x){return '<button type="button" class="btn2'+(s.p===+x[0]?' on':'')+'" data-act="plkp" data-v="'+x[0]+'" style="margin:0">'+x[1]+'</button>'}).join(''))+
   '<button type="button" class="btn2'+(s.f?' on':'')+'" data-act="plkff" style="margin:0">♥ 즐겨찾기만</button></div>'+
@@ -2578,7 +2580,8 @@ function kbView(){var id=(S.kd||{}).id,lg=kbLg(id),r=lg?null:KB.filter(function(
   return '<button type="button" class="btn2" data-act="plkbo" style="margin:0 0 12px">← 도감으로</button><div class="kdet"><div class="kdl pcshow">'+kbCard(r,1)+
   '<div class="brow" style="justify-content:center;margin-top:14px"><button type="button" class="btn2'+(f?' on':'')+'" data-act="plkfav" data-id="'+id+'" style="margin:0">'+(f?'♥ 즐겨찾기 해제':'♡ 즐겨찾기')+'</button></div></div>'+
   '<div class="kdr">'+kbProf(r,id)+'</div></div>';}
-function kbDraw(){var k=kbPl();if(plTix()<1)return;var pool=[];KB.forEach(function(r){var i=kbId(r);if(!k.c[i])pool.push(i)});CARDS.forEach(function(c){if(!k.c[c[0]])pool.push(c[0])});if(!pool.length)return;
+function kbPool(){var k=kbPl(),pool=[];KB.forEach(function(r){var i=kbId(r);if(KBFULL[i]&&!k.c[i])pool.push(i)});return pool}
+function kbDraw(){var k=kbPl();if(plTix()<1)return;var pool=kbPool();if(!pool.length)return;
   var id=pool[plRnd(pool.length)];k.c[id]=1;k.d=(k.d||0)+1;plSave();S.kdr={id:id};S.pv='kdraw';fx('hr')}
 function kbDrawView(){var id=(S.kdr||{}).id,lg=kbLg(id),r=lg?null:KB.filter(function(x){return kbId(x)===id})[0];if(!r&&!lg){S.pv='kbo';return kbHtml()}
   var tix=plTix();
