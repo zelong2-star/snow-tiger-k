@@ -31,6 +31,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -461,8 +462,14 @@ input[type=range]{height:34px;padding:0;accent-color:#DD032F}
 .pc .pct{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;font-weight:700;letter-spacing:.06em;color:var(--c1)}
 .pc .pct b{background:var(--rc);color:#fff;border-radius:6px;padding:0 6px;font-size:10px;letter-spacing:0}
 .pc .pca{flex:1;min-height:0;border-radius:6px;background:radial-gradient(circle at 50% 38%,color-mix(in srgb,var(--c2) 70%,#fff),var(--c1));display:grid;place-items:center;position:relative;overflow:hidden}
-.pc .pcw{position:absolute;left:-4%;right:-4%;top:6%;font:900 italic 34px/1 var(--f-d);color:rgba(255,255,255,.16);text-align:center;font-style:italic;white-space:nowrap;overflow:hidden}
-.pc .pce{font-size:44px;filter:drop-shadow(0 3px 3px rgba(0,0,0,.35))}
+.pc .pcw{display:none;position:absolute;left:-4%;right:-4%;top:6%;font:900 italic 34px/1 var(--f-d);color:rgba(255,255,255,.16);text-align:center;font-style:italic;white-space:nowrap;overflow:hidden}
+.pc .pcst{position:absolute;inset:0;width:100%;height:100%}
+.pc .pcnum{position:absolute;left:7px;top:4px;z-index:2;display:flex;flex-direction:column;align-items:flex-start;line-height:.95;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.4)}
+.pc .pcnum b{font:900 italic 34px/1 var(--f-d)}.pc .pcnum small{font-size:12px;font-weight:800;letter-spacing:.1em;opacity:.9}
+.pc .pcem{position:absolute;left:50%;top:52%;width:62%;aspect-ratio:1;transform:translate(-50%,-50%);display:grid;place-items:center}
+.pc .pcem svg{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 3px 4px rgba(0,0,0,.35))}
+.pc .pcem span{position:relative;font:900 italic 21px/1 var(--f-d);color:#fff;text-shadow:0 2px 3px rgba(0,0,0,.45);letter-spacing:-.02em}
+.pc.big .pcnum b{font-size:64px}.pc.big .pcnum small{font-size:18px}.pc.big .pcem span{font-size:38px}
 .pc .pcrb{position:absolute;left:0;right:0;bottom:5px;text-align:center;font-style:normal;font-size:9px;font-weight:800;letter-spacing:.2em;color:#FFE08A}
 .pc .pcn{font-weight:800;font-size:17px;line-height:1.15;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pc .pcp{font-size:10.5px;color:#4A5B7A;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -2066,9 +2073,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:188};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:189};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+  ['v1.89','카드 그림 자리를 등번호/포지션 + 구단 엠블럼 문양 디자인으로 변경'],
   ['v1.88','레전드 카드에 KBO 레전드 40 공식 분류(최다 득표자·원년의 스타 등) 표시'],
   ['v1.87','선수 카드를 실제 야구 카드 느낌으로 새 디자인 · KBO 40주년 레전드 40명 + 롯데 선수 카드 56종'],
   ['v1.86','선수 카드를 실제 롯데 자이언츠 선수 이름으로 변경(응원 친구 8종 포함, 총 25종)'],
@@ -2428,12 +2436,13 @@ function plDrawCard(){var p=plGet();if(plTix()<1)return;
   var pool=CARDS.filter(function(c){return c[4]===rk}),c=pool[plRnd(pool.length)];
   var isNew=!p.cards[c[0]];p.cards[c[0]]=(p.cards[c[0]]||0)+1;plSave();
   S.dc={id:c[0],isNew:isNew};S.pv='draw';fx(rk==='N'?'ck':rk==='R'?'bt':'hr')}
+var NUMS={'최동원':11,'이대호':10};
 function plCardHtml(c,own,big){
   if(!own)return '<div class="pc lock"><div class="pck">?</div><div class="pcn">???</div></div>';
-  var rr=RAR[c[4]],tc=TCOL[c[3]]||['#334','#99a'],no=CARDS.indexOf(c)+1,pos=c[2],em=/투수/.test(pos)?'⚾':/포수/.test(pos)?'🧤':/외야/.test(pos)?'🏃':/유격|내야|2루|3루|1루/.test(pos)?'🧢':'🏏';
+  var rr=RAR[c[4]],tc=TCOL[c[3]]||['#334','#99a'],no=CARDS.indexOf(c)+1,pos=c[2],pcode=/투수/.test(pos)?'P':/포수/.test(pos)?'C':/외야/.test(pos)?'OF':/유격|내야|2루|3루|1루/.test(pos)?'IF':'DH',em=/투수/.test(pos)?'⚾':/포수/.test(pos)?'🧤':/외야/.test(pos)?'🏃':/유격|내야|2루|3루|1루/.test(pos)?'🧢':'🏏';
   return '<div class="pc r'+c[4]+(big?' big':'')+'" style="--c1:'+tc[0]+';--c2:'+tc[1]+';--rc:'+rr.c+'">'+
     '<div class="pci"><div class="pct"><span>'+(c[5]==='K'?'KBO LEGEND':'LOTTE GIANTS')+'</span><b>'+rr.n+'</b></div>'+
-    '<div class="pca"><i class="pcw">'+esc(c[3])+'</i><span class="pce">'+em+'</span>'+(c[5]==='K'?'<em class="pcrb">'+esc(c[7]||'LEGEND')+'</em>':'')+'</div>'+
+    '<div class="pca"><svg class="pcst" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M-10 70L60 -10M10 110L110 0M40 110L110 30" stroke="#fff" stroke-opacity=".13" stroke-width="9" fill="none"/></svg><div class="pcnum"><b>'+(NUMS[c[1]]!=null?NUMS[c[1]]:pcode)+'</b>'+(NUMS[c[1]]!=null?'<small>'+pcode+'</small>':'')+'</div><div class="pcem"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="rgba(255,255,255,.14)" stroke="rgba(255,255,255,.75)" stroke-width="3"/><path d="M22 18C34 34 34 66 22 82M78 18C66 34 66 66 78 82" stroke="rgba(255,255,255,.55)" stroke-width="2.5" fill="none" stroke-dasharray="3 4"/></svg><span>'+esc(c[3])+'</span></div>'+(c[5]==='K'?'<em class="pcrb">'+esc(c[7]||'LEGEND')+'</em>':'')+'</div>'+
     '<div class="pcn">'+esc(c[1])+'</div><div class="pcp">'+esc(c[2])+' · '+esc(c[3])+'</div>'+
     (big?'<div class="pcl">📣 '+esc(c[5]==='K'||1?c[6]:'')+'</div>':'')+
     '<div class="pcf"><span>No.'+String(no).padStart(3,'0')+' / '+CARDS.length+'</span><span>'+(c[5]==='K'?'2021 40주년':'2026 시즌')+'</span></div></div>'+
