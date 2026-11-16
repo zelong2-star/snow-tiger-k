@@ -32,6 +32,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -454,37 +455,48 @@ input[type=range]{height:34px;padding:0;accent-color:#DD032F}
 .plbar{height:12px;border-radius:6px;background:var(--chip-bg);overflow:hidden}.plbar i{display:block;height:100%;width:100%;background:var(--done);animation:plb 6s linear forwards}
 @keyframes plb{from{width:100%}to{width:0}}
 .plres{text-align:center;max-width:560px}.plbig{font-size:34px;font-weight:700;margin:6px 0}.pl2{font-size:21px;margin-bottom:10px}
-.pcg{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:12px}
+.bnd{background:linear-gradient(160deg,#16264A,#0B1630);border-radius:18px;padding:14px;box-shadow:inset 0 0 0 3px #223666,inset 0 0 0 5px #0A1228,0 8px 24px rgba(4,30,66,.35);display:flex;flex-direction:column;gap:16px}
+.bpg{position:relative;background:linear-gradient(180deg,#F3EFE4,#E6E0CF);border-radius:12px;padding:16px 14px 10px 44px;box-shadow:0 3px 8px rgba(0,0,0,.35)}
+.bpg::before{content:"";position:absolute;left:12px;top:14px;bottom:14px;width:18px;background:radial-gradient(circle at 50% 50%,#0B1630 0 5px,#c9c3b0 5.5px 7px,transparent 7.5px) 0 0/18px 52px repeat-y}
+.bpn{text-align:right;font-size:13px;font-weight:700;color:#8B846F;letter-spacing:.12em;margin-top:8px}
+.pcg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media (min-width:700px){.pcg{grid-template-columns:repeat(8,1fr)}}
+.pcb{display:block;width:100%}
+.pk{border-radius:8px;padding:3px;background:linear-gradient(145deg,rgba(255,255,255,.75),rgba(200,205,215,.45));box-shadow:inset 0 0 0 1px rgba(120,125,140,.5),0 2px 4px rgba(0,0,0,.22)}
+.pk .pc{box-shadow:0 1px 3px rgba(0,0,0,.3)}.pk .pc.rL{box-shadow:0 0 8px #E8A800}.pk .pc.rS{box-shadow:0 0 6px rgba(142,68,208,.7)}
+.pk::after{content:"";position:absolute;inset:0;border-radius:8px;pointer-events:none;background:linear-gradient(120deg,rgba(255,255,255,.5) 0%,rgba(255,255,255,0) 32%,rgba(255,255,255,0) 68%,rgba(255,255,255,.22) 100%)}
+.pk.em{background:rgba(120,115,95,.1);box-shadow:inset 0 2px 5px rgba(0,0,0,.18),inset 0 0 0 1px rgba(120,115,95,.35);aspect-ratio:5/7;display:grid;place-items:center;color:#A39B82;font-weight:800;font-size:clamp(11px,1.4vw,16px);letter-spacing:.04em}
+.pk.em::after{display:none}
+.plock{max-width:460px;margin:30px auto;text-align:center}.plock .lk{font-size:56px}.plock h2{margin:6px 0}.plock input{width:100%;max-width:240px;height:48px;border:1px solid var(--line);border-radius:10px;text-align:center;font:inherit;font-size:22px;letter-spacing:.3em;margin-top:12px}
 .pcb{appearance:none;border:0;background:transparent;padding:0;position:relative;cursor:pointer;font:inherit;color:inherit}.pcb[disabled]{cursor:default}
-.pcx{position:absolute;right:6px;top:6px;background:var(--navy);color:var(--on-navy);border-radius:10px;padding:1px 8px;font-size:14px;font-weight:700}
-.pc{--c1:#334;--c2:#99a;--rc:#7A8AA8;position:relative;aspect-ratio:5/7;border-radius:12px;padding:6px;background:linear-gradient(145deg,var(--c1),var(--c2));box-shadow:0 3px 8px rgba(4,30,66,.25);overflow:hidden;color:#fff;text-align:left}
+.pc{--c1:#334;--c2:#99a;--rc:#7A8AA8;position:relative;aspect-ratio:5/7;border-radius:12px;padding:6px;background:linear-gradient(145deg,var(--c1),var(--c2));box-shadow:0 3px 8px rgba(4,30,66,.25);overflow:hidden;color:#fff;text-align:left;container-type:inline-size}
 .pc .pci{height:100%;border-radius:8px;background:#fff;color:#0B1B33;display:flex;flex-direction:column;padding:4px 5px;gap:3px;position:relative;z-index:1}
-.pc .pct{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;font-weight:700;letter-spacing:.06em;color:var(--c1)}
-.pc .pct b{background:var(--rc);color:#fff;border-radius:6px;padding:0 6px;font-size:10px;letter-spacing:0}
+.pc .pct{display:flex;justify-content:space-between;align-items:center;font-size:6.4cqw;font-weight:700;letter-spacing:.06em;color:var(--c1)}
+.pc .pct b{background:var(--rc);color:#fff;border-radius:6px;padding:0 6px;font-size:6.6cqw;letter-spacing:0}
 .pc .pca{flex:1;min-height:0;border-radius:6px;background:radial-gradient(circle at 50% 38%,color-mix(in srgb,var(--c2) 70%,#fff),var(--c1));display:grid;place-items:center;position:relative;overflow:hidden}
 .pc .pcw{display:none;position:absolute;left:-4%;right:-4%;top:6%;font:900 italic 34px/1 var(--f-d);color:rgba(255,255,255,.16);text-align:center;font-style:italic;white-space:nowrap;overflow:hidden}
 .pc .pcst{position:absolute;inset:0;width:100%;height:100%}
 .pc .pcnum{position:absolute;left:7px;top:4px;z-index:2;display:flex;flex-direction:column;align-items:flex-start;line-height:.95;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.4)}
-.pc .pcnum b{font:900 italic 34px/1 var(--f-d)}.pc .pcnum small{font-size:12px;font-weight:800;letter-spacing:.1em;opacity:.9}
+.pc .pcnum b{font:900 italic 23cqw/1 var(--f-d)}.pc .pcnum small{font-size:8cqw;font-weight:800;letter-spacing:.1em;opacity:.9}
 .pc .pcem{position:absolute;left:50%;top:52%;width:62%;aspect-ratio:1;transform:translate(-50%,-50%);display:grid;place-items:center}
 .pc .pcem svg{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 3px 4px rgba(0,0,0,.35))}
-.pc .pcem span{position:relative;font:900 italic 21px/1 var(--f-d);color:#fff;text-shadow:0 2px 3px rgba(0,0,0,.45);letter-spacing:-.02em}
-.pc.big .pcnum b{font-size:64px}.pc.big .pcnum small{font-size:18px}.pc.big .pcem span{font-size:38px}
-.pc .pcrb{position:absolute;left:0;right:0;bottom:5px;text-align:center;font-style:normal;font-size:9px;font-weight:800;letter-spacing:.2em;color:#FFE08A}
-.pc .pcn{font-weight:800;font-size:17px;line-height:1.15;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pc .pcp{font-size:10.5px;color:#4A5B7A;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pc .pcf{display:flex;justify-content:space-between;font-size:8.5px;color:#7A8AA8;border-top:1px dashed #C9D3E6;padding-top:2px}
-.pc .pcl{font-size:13px;text-align:center;color:#223}
+.pc .pcem span{position:relative;font:900 italic 14cqw/1 var(--f-d);color:#fff;text-shadow:0 2px 3px rgba(0,0,0,.45);letter-spacing:-.02em}
+
+.pc .pcrb{position:absolute;left:0;right:0;bottom:5px;text-align:center;font-style:normal;font-size:6cqw;font-weight:800;letter-spacing:.2em;color:#FFE08A}
+.pc .pcn{font-weight:800;font-size:11.4cqw;line-height:1.15;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc .pcp{font-size:7cqw;color:#4A5B7A;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc .pcf{display:flex;justify-content:space-between;font-size:5.7cqw;color:#7A8AA8;border-top:1px dashed #C9D3E6;padding-top:2px}
+.pc .pcl{font-size:8.5cqw;text-align:center;color:#223}
 .pc .pcs2{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.55) 48%,rgba(120,200,255,.35) 52%,transparent 70%);background-size:250% 100%;animation:pcsh 3.2s linear infinite;mix-blend-mode:overlay}
 .pc.rL{box-shadow:0 0 16px #E8A800;background:linear-gradient(145deg,#B8860B,#FFE27A,#B8860B)}
 .pc.rS{box-shadow:0 0 12px color-mix(in srgb,#8E44D0 70%,transparent)}
 .pc.lock{aspect-ratio:5/7;background:var(--chip-bg);border:2px dashed var(--line);box-shadow:none;display:grid;place-items:center;color:var(--muted);opacity:.7;text-align:center}
 .pc.lock .pck{font-size:40px;font-weight:700}.pc.lock .pcn{font-size:13px}
 .pcb{appearance:none;border:0;background:transparent;padding:0;position:relative;cursor:pointer;font:inherit;color:inherit}.pcb[disabled]{cursor:default}
-.pcx{position:absolute;right:8px;top:8px;z-index:3;background:var(--navy);color:var(--on-navy);border-radius:10px;padding:1px 8px;font-size:14px;font-weight:700}
+.pcx{position:absolute;right:5px;bottom:5px;z-index:3;background:var(--navy);color:var(--on-navy);border-radius:9px;padding:0 6px;font-size:12px;line-height:18px;font-weight:700;box-shadow:0 0 0 2px #fff}
 .pc.big{width:300px;max-width:100%;margin:0 auto 14px;padding:9px;border-radius:18px;animation:pcin .6s ease-out}
-.pc.big .pci{padding:8px 9px;gap:6px;border-radius:12px}.pc.big .pct{font-size:13px}.pc.big .pct b{font-size:13px}
-.pc.big .pce{font-size:96px}.pc.big .pcw{font-size:62px}.pc.big .pcn{font-size:30px}.pc.big .pcp{font-size:16px}.pc.big .pcf{font-size:12px}.pc.big .pcrb{font-size:12px}
+.pc.big .pci{padding:8px 9px;gap:6px;border-radius:12px}
+
 .pcshow{text-align:center;max-width:460px}.pcshow .brow{justify-content:center}
 .btn2.on{background:var(--navy);color:var(--on-navy)}
 @keyframes pcsh{from{background-position:130% 0}to{background-position:-130% 0}}
@@ -2073,9 +2085,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:189};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:190};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+  ['v1.90','놀이터는 쉬는 시간에만 열림(그 외엔 부모 번호로 30분 열기) · 카드 모음을 수집북처럼 한 줄 8장'],
   ['v1.89','카드 그림 자리를 등번호/포지션 + 구단 엠블럼 문양 디자인으로 변경'],
   ['v1.88','레전드 카드에 KBO 레전드 40 공식 분류(최다 득표자·원년의 스타 등) 표시'],
   ['v1.87','선수 카드를 실제 야구 카드 느낌으로 새 디자인 · KBO 40주년 레전드 40명 + 롯데 선수 카드 56종'],
@@ -2248,6 +2261,7 @@ main.addEventListener('click',function(e){
   var sb=e.target.closest('.sub[data-sub]');if(sb){var sp=sb.dataset.sub.split(':');subToggle(+sp[0],+sp[1]);return}
   var r=e.target.closest('.row[data-i]');if(r){var ri=+r.dataset.i,rc=ctx(),rit=itemsOf(rc.ti)[ri];if(rit&&partsOf(rit.n)){if(S.tab==='today'&&S.vo)return;var rk=rc.tk+':'+ri;S.so=(S.so===rk?null:rk);fx('ck');render();return}toggle(ri);}
 });
+document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target&&e.target.id==='plpin'){var b=main.querySelector('[data-act=plunlock]');if(b)b.click()}});
 document.addEventListener('visibilitychange',function(){if(!document.hidden)render()});
 
 /* ===== 놀이터: 퀴즈 타석 · 오답 복습 · 홈런 더비(휴식 미니게임) · 선수 카드 뽑기 ===== */
@@ -2450,7 +2464,16 @@ function plCardHtml(c,own,big){
 }
 /* 화면 */
 function plBack(){return '<button type="button" class="btn2" data-act="plhub" style="margin:0 0 12px">← 놀이터로</button>'}
+function plOpen(){var t=S.timer;return !!((t&&t.mode==='break')||(S.plUntil&&Date.now()<S.plUntil))}
+function plLockHtml(){
+  return '<div class="head"><div><h1>놀이터</h1><div class="date">쉬는 시간에만 열려요</div></div></div><div class="card plock"><div class="lk">🔒</div><h2>지금은 공부 시간이에요</h2>'+
+    '<div class="lbl">⏱ 타이머로 공부한 뒤 <b>쉬는 시간</b>이 시작되면 놀이터가 자동으로 열려요.<br>그 밖의 시간에는 부모님 허락이 필요해요.</div>'+
+    '<input id="plpin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="••••" aria-label="부모님 확인 번호">'+
+    '<div class="brow" style="justify-content:center"><button type="button" class="btn" data-act="plunlock">부모님 허락으로 열기 (30분)</button></div>'+
+    (S.plErr?'<p class="err" role="alert">번호가 맞지 않아요.</p>':'')+'</div>';
+}
 function renderPlay(c){
+  if(!plOpen()){main.innerHTML=plLockHtml();return}
   var p=plGet(),today=key(new Date()),tix=plTix(),v=S.pv||'hub',h='';
   var own=Object.keys(p.cards).length;
   var head='<div class="head"><div><h1>놀이터</h1><div class="date">공부 쉬는 시간에 가볍게 한 판!</div></div><span class="chip">🎴 뽑기권 '+tix+'장</span></div>'+
@@ -2497,10 +2520,12 @@ function renderPlay(c){
         '<div class="plfb '+(g.res==='hit'||g.res==='hr'?'g':g.res?'r':'')+'" style="min-height:52px">'+(g.res==='hr'?'💥 홈런!! (3연속 보너스 +30)':g.res==='hit'?'⚾ 안타! +10':g.res==='late'?'⏰ 헛스윙… 정답은 '+g.show:g.res==='miss'?'❌ 아쉬워요! 정답은 '+g.show:'공이 날아와요! 정답을 골라 치세요')+'</div></div>';
     }
   }else if(v==='cards'){
-    h=plBack()+'<div class="plq"><div class="plp">🎴 선수 카드 <span class="plcat">'+own+' / '+CARDS.length+'종</span></div>'+
+    h=plBack()+'<div class="plq" style="max-width:none"><div class="plp">🎴 선수 카드 <span class="plcat">'+own+' / '+CARDS.length+'종</span></div>'+
       '<div class="brow" style="margin:6px 0 14px"><button type="button" class="btn" data-act="pldraw"'+(tix?'':' disabled')+' style="margin:0">🎴 카드 뽑기 (뽑기권 '+tix+'장)</button></div>'+
       (tix?'':'<div class="lbl" style="margin:-6px 0 12px">뽑기권이 없어요. 경기를 마치거나 퀴즈·홈런 더비로 모아요.</div>')+
-      '<div class="brow" style="margin:0 0 12px">'+[['','전체'],['K','KBO 레전드'],['L','롯데']].map(function(f){return '<button type="button" class="btn2'+((S.cf||'')===f[0]?' on':'')+'" data-act="plcf" data-f="'+f[0]+'" style="margin:0">'+f[1]+'</button>'}).join('')+'</div><div class="pcg">'+CARDS.filter(function(cd){return !S.cf||cd[5]===S.cf}).map(function(cd){var n=p.cards[cd[0]]||0;return '<button type="button" class="pcb" data-act="plview" data-id="'+cd[0]+'"'+(n?'':' disabled')+'>'+plCardHtml(cd,n,0)+(n>1?'<span class="pcx">×'+n+'</span>':'')+'</button>'}).join('')+'</div></div>';
+      '<div class="brow" style="margin:0 0 12px">'+[['','전체'],['K','KBO 레전드'],['L','롯데']].map(function(f){return '<button type="button" class="btn2'+((S.cf||'')===f[0]?' on':'')+'" data-act="plcf" data-f="'+f[0]+'" style="margin:0">'+f[1]+'</button>'}).join('')+'</div>'+(function(){var L=CARDS.filter(function(cd){return !S.cf||cd[5]===S.cf}),pg=[];for(var i=0;i<L.length;i+=16)pg.push(L.slice(i,i+16));
+      return '<div class="bnd">'+pg.map(function(ch,pi){return '<section class="bpg"><div class="pcg">'+ch.map(function(cd){var n=p.cards[cd[0]]||0,no=CARDS.indexOf(cd)+1;
+        return n?'<button type="button" class="pcb pk" data-act="plview" data-id="'+cd[0]+'" aria-label="'+esc(cd[1])+'">'+plCardHtml(cd,n,0)+(n>1?'<span class="pcx">×'+n+'</span>':'')+'</button>':'<div class="pk em" aria-label="아직 못 모은 카드">'+String(no).padStart(3,'0')+'</div>'}).join('')+'</div><div class="bpn">PAGE '+(pi+1)+' / '+pg.length+'</div></section>'}).join('')+'</div>'})()+'</div>';
   }else if(v==='draw'||v==='view'){
     var dc=S.dc,cd=CARDS.filter(function(x){return x[0]===(dc&&dc.id)})[0];
     if(!cd){S.pv='cards';return renderPlay(c)}
@@ -2513,7 +2538,8 @@ function plDraw(){if(S.tab==='play')renderPlay(ctx())}
 function playClick(e){
   var b=e.target.closest('button[data-act]');if(!b)return;var a=b.dataset.act;if(a.indexOf('pl')!==0)return;
   if(a==='plgame'&&S.tab!=='play'){S.tab='play';document.querySelectorAll('#nav button').forEach(function(x){x.classList.toggle('on',x.dataset.t==='play')})}
-  if(a==='plhub'){plStopGame();S.pv='hub';S.q=null;S.g=null;fx('ck')}
+  if(a==='plunlock'){var pi=document.getElementById('plpin');if(pi&&pi.value===String(S.settings.pin)){S.plUntil=Date.now()+30*60000;S.plErr=false;fx('hr')}else{S.plErr=true;fx('un')}}
+  else if(a==='plhub'){plStopGame();S.pv='hub';S.q=null;S.g=null;fx('ck')}
   else if(a==='plquiz'){plStartQuiz();if(!S.q||S.q.end)S.pv='hub';fx('ck')}
   else if(a==='plrev'){plStartRev();fx('ck')}
   else if(a==='plgame'){plStartGame();fx('ck')}
