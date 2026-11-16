@@ -29,6 +29,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -454,15 +455,31 @@ input[type=range]{height:34px;padding:0;accent-color:#DD032F}
 .pcg{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:12px}
 .pcb{appearance:none;border:0;background:transparent;padding:0;position:relative;cursor:pointer;font:inherit;color:inherit}.pcb[disabled]{cursor:default}
 .pcx{position:absolute;right:6px;top:6px;background:var(--navy);color:var(--on-navy);border-radius:10px;padding:1px 8px;font-size:14px;font-weight:700}
-.pc{--rc:#7A8AA8;aspect-ratio:2/3;border-radius:14px;border:3px solid var(--rc);background:linear-gradient(160deg,var(--panel),color-mix(in srgb,var(--rc) 22%,var(--panel)));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px;position:relative;text-align:center}
-.pc .pcr{position:absolute;left:8px;top:6px;font-size:13px;font-weight:700;color:var(--rc)}
-.pc .pce{font-size:50px;line-height:1.1}.pc .pcn{font-weight:700;font-size:19px}.pc .pcp{font-size:14px;color:var(--muted)}
-.pc.lock{border-style:dashed;border-color:var(--line);background:var(--chip-bg);opacity:.7}.pc.lock .pce{font-size:38px}
-.pc.rS{box-shadow:0 0 14px color-mix(in srgb,var(--rc) 60%,transparent)}.pc.rL{box-shadow:0 0 22px #E8A800,0 0 0 2px #fff inset;background:linear-gradient(160deg,#FFF6D6,#FFD76A)}
-.pc.big{width:280px;max-width:100%;aspect-ratio:auto;min-height:400px;margin:0 auto 14px;padding:16px;gap:6px;animation:pcin .6s ease-out}
-.pc.big .pce{font-size:104px}.pc.big .pcn{font-size:30px}.pc.big .pcp{font-size:18px}.pc.big .pcr{font-size:16px}
-.pcs{display:flex;flex-direction:column;gap:2px;font-weight:700;font-size:17px;color:#C98A00;margin-top:8px}.pcs i{font-style:normal;color:var(--line)}
-.pcl{font-size:16px;color:var(--ink);margin-top:8px}.pcshow{text-align:center;max-width:460px}
+.pc{--c1:#334;--c2:#99a;--rc:#7A8AA8;position:relative;aspect-ratio:5/7;border-radius:12px;padding:6px;background:linear-gradient(145deg,var(--c1),var(--c2));box-shadow:0 3px 8px rgba(4,30,66,.25);overflow:hidden;color:#fff;text-align:left}
+.pc .pci{height:100%;border-radius:8px;background:#fff;color:#0B1B33;display:flex;flex-direction:column;padding:4px 5px;gap:3px;position:relative;z-index:1}
+.pc .pct{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;font-weight:700;letter-spacing:.06em;color:var(--c1)}
+.pc .pct b{background:var(--rc);color:#fff;border-radius:6px;padding:0 6px;font-size:10px;letter-spacing:0}
+.pc .pca{flex:1;min-height:0;border-radius:6px;background:radial-gradient(circle at 50% 38%,color-mix(in srgb,var(--c2) 70%,#fff),var(--c1));display:grid;place-items:center;position:relative;overflow:hidden}
+.pc .pcw{position:absolute;left:-4%;right:-4%;top:6%;font:900 italic 34px/1 var(--f-d);color:rgba(255,255,255,.16);text-align:center;font-style:italic;white-space:nowrap;overflow:hidden}
+.pc .pce{font-size:44px;filter:drop-shadow(0 3px 3px rgba(0,0,0,.35))}
+.pc .pcrb{position:absolute;left:0;right:0;bottom:5px;text-align:center;font-style:normal;font-size:9px;font-weight:800;letter-spacing:.2em;color:#FFE08A}
+.pc .pcn{font-weight:800;font-size:17px;line-height:1.15;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc .pcp{font-size:10.5px;color:#4A5B7A;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc .pcf{display:flex;justify-content:space-between;font-size:8.5px;color:#7A8AA8;border-top:1px dashed #C9D3E6;padding-top:2px}
+.pc .pcl{font-size:13px;text-align:center;color:#223}
+.pc .pcs2{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.55) 48%,rgba(120,200,255,.35) 52%,transparent 70%);background-size:250% 100%;animation:pcsh 3.2s linear infinite;mix-blend-mode:overlay}
+.pc.rL{box-shadow:0 0 16px #E8A800;background:linear-gradient(145deg,#B8860B,#FFE27A,#B8860B)}
+.pc.rS{box-shadow:0 0 12px color-mix(in srgb,#8E44D0 70%,transparent)}
+.pc.lock{aspect-ratio:5/7;background:var(--chip-bg);border:2px dashed var(--line);box-shadow:none;display:grid;place-items:center;color:var(--muted);opacity:.7;text-align:center}
+.pc.lock .pck{font-size:40px;font-weight:700}.pc.lock .pcn{font-size:13px}
+.pcb{appearance:none;border:0;background:transparent;padding:0;position:relative;cursor:pointer;font:inherit;color:inherit}.pcb[disabled]{cursor:default}
+.pcx{position:absolute;right:8px;top:8px;z-index:3;background:var(--navy);color:var(--on-navy);border-radius:10px;padding:1px 8px;font-size:14px;font-weight:700}
+.pc.big{width:300px;max-width:100%;margin:0 auto 14px;padding:9px;border-radius:18px;animation:pcin .6s ease-out}
+.pc.big .pci{padding:8px 9px;gap:6px;border-radius:12px}.pc.big .pct{font-size:13px}.pc.big .pct b{font-size:13px}
+.pc.big .pce{font-size:96px}.pc.big .pcw{font-size:62px}.pc.big .pcn{font-size:30px}.pc.big .pcp{font-size:16px}.pc.big .pcf{font-size:12px}.pc.big .pcrb{font-size:12px}
+.pcshow{text-align:center;max-width:460px}.pcshow .brow{justify-content:center}
+.btn2.on{background:var(--navy);color:var(--on-navy)}
+@keyframes pcsh{from{background-position:130% 0}to{background-position:-130% 0}}
 @keyframes pcin{from{transform:rotateY(90deg) scale(.7);opacity:0}to{transform:none;opacity:1}}
 </style>
 
@@ -2048,9 +2065,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:186};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:187};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+  ['v1.87','선수 카드를 실제 야구 카드 느낌으로 새 디자인 · KBO 40주년 레전드 40명 + 롯데 선수 카드 56종'],
   ['v1.86','선수 카드를 실제 롯데 자이언츠 선수 이름으로 변경(응원 친구 8종 포함, 총 25종)'],
   ['v1.85','놀이 탭 추가: 퀴즈 타석 · 홈런 더비(쉬는 시간 미니게임) · 오답 복습 · 선수 카드 뽑기'],
   ['v1.84','타이머 알약을 길게 누르면 그 항목의 오늘 기록 리셋'],
@@ -2280,17 +2298,65 @@ var QB=[
 ['상식','우리 태양계의 중심에 있는 별은?',['태양','달','지구','화성']]
 ];
 var CARDS=[
-['p1','👑','최동원','투수 · 영원한 11번','L','부산의 무쇠팔, 영원한 에이스!'],['p2','👑','이대호','내야수 · 영원한 10번','L','부산의 4번 타자, 영원한 거인!'],
-['p3','⚾','박세웅','투수','S','마운드를 지켜 줘!'],['p4','⚾','김원중','투수 · 마무리','S','9회는 믿고 맡길게!'],['p5','🏏','한동희','내야수','S','시원한 한 방 부탁해!'],
-['p6','🏃','윤동희','외야수','R','외야를 시원하게 달려라!'],['p7','🏏','나승엽','내야수','R','멀리멀리 날려 버려!'],['p8','🏏','고승민','내야수','R','연속 안타 가자!'],
-['p9','🏃','황성빈','외야수','R','번개처럼 도루!'],['p10','🏏','손호영','야수','R','사직을 뜨겁게!'],['p11','🏃','전준우','외야수','R','베테랑의 한 방!'],
-['p12','🧤','유강남','포수','N','안방을 든든하게!'],['p13','🏏','박승욱','내야수','N','깔끔한 수비 부탁해!'],['p14','⚾','정철원','투수','N','씩씩하게 던져라!'],
-['p15','⚾','이민석','투수','N','강속구로 삼진!'],['p16','🏏','한태양','내야수','N','내야를 책임져!'],['p17','🏏','노진혁','내야수','N','한 방 기대할게!'],
-['c1','🐿️','다람이','1루수 · 응원 친구','N','도토리 대신 홈런이다!'],['c2','🐻','곰돌','포수 · 응원 친구','N','내 미트는 철벽이야!'],
-['c3','🐰','깡총이','2루수 · 응원 친구','N','깡총깡총 병살타!'],['c4','🐯','호돌','3루수 · 응원 친구','N','핫코너는 내 차지야'],
-['c5','🦅','매솔','중견수 · 응원 친구','N','하늘 끝까지 잡는다!'],['c6','🐢','느림보','유격수 · 응원 친구','N','천천히, 하지만 정확히'],
-['c7','🐶','멍멍','좌익수 · 응원 친구','N','공은 내가 물어 온다!'],['c8','🐱','나비','우익수 · 응원 친구','N','살금살금 다이빙 캐치']
+['k1','선동열','투수','해태','L','K','무등산 폭격기, 전설의 에이스!'],
+['k2','최동원','투수 · 영구결번 11','롯데','L','K','부산의 무쇠팔, 영원한 에이스!'],
+['k3','이종범','유격수','해태','L','K','야구 천재의 질주!'],
+['k4','이승엽','타자','삼성','L','K','국민 홈런 타자!'],
+['k5','송진우','투수','한화','S','K','21시즌 마운드를 지킨 철인!'],
+['k6','구대성','투수','한화','S','K','선발도 마무리도 OK!'],
+['k7','박철순','투수','OB','S','K','불사조 에이스!'],
+['k8','이만수','포수','삼성','S','K','헐크의 호쾌한 한 방!'],
+['k9','김용수','투수','LG','S','K','LG의 영원한 마운드!'],
+['k10','양준혁','타자','삼성','S','K','최고의 좌타자!'],
+['k11','임창용','투수','해태','R','K','사이드암 강속구!'],
+['k12','백인천','타자','MBC','R','K','원년의 4할 타자!'],
+['k13','김성한','타자','해태','R','K','투타를 모두 잡은 이도류!'],
+['k14','이상훈','투수','LG','R','K','LG의 불꽃 좌완!'],
+['k15','장효조','타자','삼성','R','K','타격의 달인!'],
+['k16','박용택','타자','LG','R','K','LG 유니폼만 입은 안타 장인!'],
+['k17','장종훈','타자','빙그레','R','K','홈런 타자의 원조!'],
+['k18','이강철','투수','해태','R','K','컨트롤의 마법사!'],
+['k19','정민철','투수','한화','R','K','독수리 군단의 에이스!'],
+['k20','김재박','유격수','MBC','R','K','날쌘 수비의 대가!'],
+['k21','이병규','외야수','LG','R','K','리그 최고의 외야수!'],
+['k22','박정태','2루수 · 롯데 원클럽','롯데','R','K','악바리 2루수!'],
+['k23','김시진','투수','삼성','N','K','정교한 제구의 에이스!'],
+['k24','한대화','3루수','해태','N','K','핫코너의 거포!'],
+['k25','김기태','타자','쌍방울','N','K','좌타 거포의 주장!'],
+['k26','김동주','타자','두산','N','K','두산의 우직한 거포!'],
+['k27','심정수','타자','현대','N','K','담장 넘기는 우타 거포!'],
+['k28','타이론 우즈','타자 · 외국인','두산','N','K','두산의 홈런 용병!'],
+['k29','정민태','투수','현대','N','K','현대 왕조의 에이스!'],
+['k30','조계현','투수','해태','N','K','해태 마운드의 기둥!'],
+['k31','김태균','타자','한화','N','K','한화의 영원한 4번!'],
+['k32','박재홍','외야수','현대','N','K','호타준족의 상징!'],
+['k33','박경완','포수','SK','N','K','안방마님의 정석!'],
+['k34','홍성흔','포수 · 지명타자','두산','N','K','응원을 부르는 타격!'],
+['k35','전준호','외야수','롯데','N','K','도루의 달인!'],
+['k36','이순철','외야수','해태','N','K','빠른 발의 외야수!'],
+['k37','정근우','내야수','SK','N','K','투지의 2루수!'],
+['k38','박진만','유격수','삼성','N','K','철벽 유격수!'],
+['k39','더스틴 니퍼트','투수 · 외국인','두산','N','K','두산의 듬직한 에이스!'],
+['k40','배영수','투수','삼성','N','K','삼성 마운드의 투혼!'],
+['l1','이대호','내야수 · 영구결번 10','롯데','S','L','부산의 4번 타자, 영원한 거인!'],
+['l2','박세웅','투수','롯데','R','L','마운드를 지켜 줘!'],
+['l3','김원중','투수 · 마무리','롯데','R','L','9회는 믿고 맡길게!'],
+['l4','한동희','내야수','롯데','R','L','시원한 한 방 부탁해!'],
+['l5','윤동희','외야수','롯데','R','L','외야를 시원하게 달려라!'],
+['l6','나승엽','내야수','롯데','N','L','멀리멀리 날려 버려!'],
+['l7','고승민','내야수','롯데','N','L','연속 안타 가자!'],
+['l8','황성빈','외야수','롯데','N','L','번개처럼 도루!'],
+['l9','손호영','야수','롯데','N','L','사직을 뜨겁게!'],
+['l10','전준우','외야수','롯데','N','L','베테랑의 한 방!'],
+['l11','유강남','포수','롯데','N','L','안방을 든든하게!'],
+['l12','박승욱','내야수','롯데','N','L','깔끔한 수비 부탁해!'],
+['l13','정철원','투수','롯데','N','L','씩씩하게 던져라!'],
+['l14','이민석','투수','롯데','N','L','강속구로 삼진!'],
+['l15','한태양','내야수','롯데','N','L','내야를 책임져!'],
+['l16','노진혁','내야수','롯데','N','L','한 방 기대할게!']
 ];
+var CSETS={K:'KBO 레전드 40',L:'롯데 자이언츠'};
+var TCOL={'롯데':['#041E42','#D00F31'],'삼성':['#074CA1','#7EA3D6'],'해태':['#B3001B','#F5B5BE'],'LG':['#C30452','#222'],'두산':['#131230','#7C7CB8'],'OB':['#131230','#7C7CB8'],'한화':['#E85D04','#FFC891'],'빙그레':['#E85D04','#FFC891'],'MBC':['#C30452','#222'],'SK':['#CE0E2D','#F5C242'],'현대':['#0A3E8C','#6FA4E8'],'쌍방울':['#1F3A5F','#9FB6D3']};
 var RAR={N:{n:'일반',w:65,c:'#7A8AA8'},R:{n:'레어',w:24,c:'#2F7FD6'},S:{n:'슈퍼',w:9,c:'#8E44D0'},L:{n:'전설',w:2,c:'#E8A800'}};
 function plGet(){
   if(!S.play||typeof S.play!=='object')S.play={};var p=S.play;
@@ -2361,12 +2427,15 @@ function plDrawCard(){var p=plGet();if(plTix()<1)return;
   var isNew=!p.cards[c[0]];p.cards[c[0]]=(p.cards[c[0]]||0)+1;plSave();
   S.dc={id:c[0],isNew:isNew};S.pv='draw';fx(rk==='N'?'ck':rk==='R'?'bt':'hr')}
 function plCardHtml(c,own,big){
-  var rr=RAR[c[4]],h=0;for(var i=0;i<c[0].length;i++)h+=c[0].charCodeAt(i);
-  var st=[['파워',1+(h*3)%5],['스피드',1+(h*7)%5],['수비',1+(h*11)%5]];
-  
-  if(!own)return '<div class="pc lock"><div class="pce">❔</div><div class="pcn">???</div></div>';
-  return '<div class="pc r'+c[4]+(big?' big':'')+'" style="--rc:'+rr.c+'"><div class="pcr">'+rr.n+'</div><div class="pce">'+c[1]+'</div><div class="pcn">'+esc(c[2])+'</div><div class="pcp">'+esc(c[3])+'</div>'+
-    (big?(c[0].charAt(0)==='c'?'<div class="pcs">'+st.map(function(x){return '<span>'+x[0]+' '+'★'.repeat(x[1])+'<i>'+'★'.repeat(5-x[1])+'</i></span>'}).join('')+'</div>':'')+'<div class="pcl">📣 '+esc(c[5])+'</div>':'')+'</div>';
+  if(!own)return '<div class="pc lock"><div class="pck">?</div><div class="pcn">???</div></div>';
+  var rr=RAR[c[4]],tc=TCOL[c[3]]||['#334','#99a'],no=CARDS.indexOf(c)+1,pos=c[2],em=/투수/.test(pos)?'⚾':/포수/.test(pos)?'🧤':/외야/.test(pos)?'🏃':/유격|내야|2루|3루|1루/.test(pos)?'🧢':'🏏';
+  return '<div class="pc r'+c[4]+(big?' big':'')+'" style="--c1:'+tc[0]+';--c2:'+tc[1]+';--rc:'+rr.c+'">'+
+    '<div class="pci"><div class="pct"><span>'+(c[5]==='K'?'KBO LEGEND':'LOTTE GIANTS')+'</span><b>'+rr.n+'</b></div>'+
+    '<div class="pca"><i class="pcw">'+esc(c[3])+'</i><span class="pce">'+em+'</span>'+(c[5]==='K'?'<em class="pcrb">LEGEND</em>':'')+'</div>'+
+    '<div class="pcn">'+esc(c[1])+'</div><div class="pcp">'+esc(c[2])+' · '+esc(c[3])+'</div>'+
+    (big?'<div class="pcl">📣 '+esc(c[5]==='K'||1?c[6]:'')+'</div>':'')+
+    '<div class="pcf"><span>No.'+String(no).padStart(3,'0')+' / '+CARDS.length+'</span><span>'+(c[5]==='K'?'2021 40주년':'2026 시즌')+'</span></div></div>'+
+    (c[4]==='S'||c[4]==='L'?'<div class="pcs2"></div>':'')+'</div>';
 }
 /* 화면 */
 function plBack(){return '<button type="button" class="btn2" data-act="plhub" style="margin:0 0 12px">← 놀이터로</button>'}
@@ -2420,7 +2489,7 @@ function renderPlay(c){
     h=plBack()+'<div class="plq"><div class="plp">🎴 선수 카드 <span class="plcat">'+own+' / '+CARDS.length+'종</span></div>'+
       '<div class="brow" style="margin:6px 0 14px"><button type="button" class="btn" data-act="pldraw"'+(tix?'':' disabled')+' style="margin:0">🎴 카드 뽑기 (뽑기권 '+tix+'장)</button></div>'+
       (tix?'':'<div class="lbl" style="margin:-6px 0 12px">뽑기권이 없어요. 경기를 마치거나 퀴즈·홈런 더비로 모아요.</div>')+
-      '<div class="pcg">'+CARDS.map(function(cd){var n=p.cards[cd[0]]||0;return '<button type="button" class="pcb" data-act="plview" data-id="'+cd[0]+'"'+(n?'':' disabled')+'>'+plCardHtml(cd,n,0)+(n>1?'<span class="pcx">×'+n+'</span>':'')+'</button>'}).join('')+'</div></div>';
+      '<div class="brow" style="margin:0 0 12px">'+[['','전체'],['K','KBO 레전드'],['L','롯데']].map(function(f){return '<button type="button" class="btn2'+((S.cf||'')===f[0]?' on':'')+'" data-act="plcf" data-f="'+f[0]+'" style="margin:0">'+f[1]+'</button>'}).join('')+'</div><div class="pcg">'+CARDS.filter(function(cd){return !S.cf||cd[5]===S.cf}).map(function(cd){var n=p.cards[cd[0]]||0;return '<button type="button" class="pcb" data-act="plview" data-id="'+cd[0]+'"'+(n?'':' disabled')+'>'+plCardHtml(cd,n,0)+(n>1?'<span class="pcx">×'+n+'</span>':'')+'</button>'}).join('')+'</div></div>';
   }else if(v==='draw'||v==='view'){
     var dc=S.dc,cd=CARDS.filter(function(x){return x[0]===(dc&&dc.id)})[0];
     if(!cd){S.pv='cards';return renderPlay(c)}
@@ -2442,6 +2511,7 @@ function playClick(e){
   else if(a==='plnext'){plNext()}
   else if(a==='plswing'){plSwing(+b.dataset.j);return}
   else if(a==='plcards'){S.pv='cards';fx('ck')}
+  else if(a==='plcf'){S.cf=b.dataset.f;fx('ck')}
   else if(a==='pldraw'){plDrawCard()}
   else if(a==='plview'){S.dc={id:b.dataset.id};S.pv='view';fx('ck')}
   else return;
