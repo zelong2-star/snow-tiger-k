@@ -58,6 +58,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -868,7 +869,7 @@ function tmMin(s){var m=Math.round(s/60);if(m<=0)return s>0?'1분 미만':'0분'
 /* 타이머 상태: mode = study(재는 중) | pause(일시정지) | due(공부 시간이 다 돼서 휴식 대기) | break(휴식 중) | bdone(휴식 끝)
    s = 이번 구간 시작 시각, ss = 휴식 없이 이어서 공부한 시간(초), bs = 휴식 시작 시각 */
 function tmSave(){try{if(S.timer)localStorage.setItem('seolho-timer',JSON.stringify(S.timer));else localStorage.removeItem('seolho-timer')}catch(x){}}
-function tmRun(){var t=S.timer;return t&&t.mode==='study'?Math.max(0,(Date.now()-t.s)/1000):0}
+function tmRun(){var t=S.timer;return t&&t.mode==='study'&&!t.h?Math.max(0,(Date.now()-t.s)/1000):0}
 function tmStreak(){var t=S.timer;return t?(t.ss||0)+Math.min(7200,tmRun()):0}
 function tmSecs(k,n){return (((S.meta[k]||{}).st)||{})[n]||0}
 function tmCommit(cap){var t=S.timer;if(!t||t.mode!=='study')return;var e=Math.round(Math.min(tmRun(),cap==null?7200:cap));t.ss=(t.ss||0)+e;t.s=Date.now();
@@ -880,6 +881,17 @@ function tmStart(k,n){var p=S.timer,carry=0;
 function tmPause(){if(!S.timer||S.timer.mode!=='study')return;tmCommit();S.timer.mode='pause';tmSave()}
 function tmResume(){var t=S.timer;if(!t)return;if(t.mode!=='pause')t.ss=0;t.mode='study';t.s=Date.now();tmSave()}
 function tmBreak(){var t=S.timer;if(!t)return;tmCommit();t.mode='break';t.bs=Date.now();t.ss=0;tmSave()}
+/* 다른 앱을 쓰는 동안(앱이 화면에서 사라진 동안): 시간은 순공에 전부 더하고(최대 2시간), 휴식 알람용 연속 시간에는 넣지 않는다 */
+function tmHide(){var t=S.timer;if(!t||t.mode!=='study'||t.h)return;tmCommit();t.h=Date.now();tmSave()}
+function tmReturn(){var t=S.timer;if(!t||!t.h)return;
+  var H=Math.max(0,Math.min(7200,Math.round((Date.now()-t.h)/1000)));t.h=0;t.s=Date.now();
+  if(H>0){
+    var st=Object.assign({},(S.meta[t.k]||{}).st||{});st[t.n]=(st[t.n]||0)+H;setMeta(t.k,{st:st});
+    if(H<60)t.ss=(t.ss||0)+H;
+  }
+  tmSave();
+  if(H>=60){S.toast='📚 다른 앱에서 공부한 '+tmMin(H)+'을 순공에 더했어요';clearTimeout(toastT);toastT=setTimeout(function(){S.toast='';render()},6000)}
+}
 function tmEnd(){if(S.timer){tmCommit();S.timer=null;tmSave()}}
 function tmStop(){tmEnd()}
 function tmStOf(k){var st=Object.assign({},(S.meta[k]||{}).st||{}),t=S.timer;if(t&&t.k===k&&t.mode==='study')st[t.n]=(st[t.n]||0)+Math.min(7200,tmRun());return st}
@@ -894,7 +906,7 @@ function tmView(){
   return {st:'💪 휴식 끝',cl:'run',big:'00:00',sub:'다시 시작을 눌러요'};
 }
 function tmTick(){
-  var t=S.timer;if(!t)return;var f=S.tmFocus*60,b=S.tmBreak*60,ch=false;
+  var t=S.timer;if(!t||t.h)return;var f=S.tmFocus*60,b=S.tmBreak*60,ch=false;
   if(t.mode==='study'&&tmStreak()>=f){tmCommit(Math.max(0,f-(t.ss||0)));t.mode='due';tmSave();fx('bell');S.toast='🔔 '+S.tmFocus+'분 공부 끝! '+S.tmBreak+'분 쉬어요';clearTimeout(toastT);toastT=setTimeout(function(){S.toast='';render()},8000);ch=true}
   else if(t.mode==='break'&&(Date.now()-t.bs)/1000>=b){t.mode='bdone';tmSave();fx('bell');S.toast='💪 휴식 끝! 다시 시작해요';clearTimeout(toastT);toastT=setTimeout(function(){S.toast='';render()},8000);ch=true}
   if(ch){render();return}
@@ -2196,9 +2208,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:215};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:216};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+['v2.16','공부 타이머: 다른 앱을 쓰는 동안의 시간은 40분을 넘어도 순공에 전부 더하고(최대 2시간) 휴식 알림은 강제로 켜지 않음'],
 ['v2.15','공부 타이머: 항목을 바꿔도 쉬지 않고 이어 공부한 시간을 합산해 휴식 알람 · 휴식 알람과 휴식 끝 소리를 학교 종소리로'],
 ['v2.14','선수 카드 얻기를 카드팩 뜯기로 변경: 뽑기권 3장 → 뒤집힌 카드 5장 중 한 장 고르기'],
 ['v2.13','뽑기권 규칙 변경: 교양 5문제 중 4개 · 오답 복습 5문제 모두 맞히면 뽑기권 1장 · 뽑기권 3장으로 선수 카드 1장을 직접 고르기'],
@@ -2398,7 +2411,9 @@ main.addEventListener('click',function(e){
   var r=e.target.closest('.row[data-i]');if(r){var ri=+r.dataset.i,rc=ctx(),rit=itemsOf(rc.ti)[ri];if(rit&&partsOf(rit.n)){if(S.tab==='today'&&S.vo)return;var rk=rc.tk+':'+ri;S.so=(S.so===rk?null:rk);fx('ck');render();return}toggle(ri);}
 });
 document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target&&e.target.id==='plpin'){var b=main.querySelector('[data-act=plunlock]');if(b)b.click()}});
-document.addEventListener('visibilitychange',function(){if(!document.hidden)render()});
+document.addEventListener('visibilitychange',function(){if(document.hidden)tmHide();else{tmReturn();render()}});
+window.addEventListener('pagehide',tmHide);
+if(!document.hidden)tmReturn();
 
 /* ===== 놀이터: 퀴즈 타석 · 오답 복습 · 홈런 더비(휴식 미니게임) · 선수 카드 뽑기 ===== */
 var QB=[
