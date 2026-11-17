@@ -57,6 +57,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -872,7 +873,10 @@ function tmStreak(){var t=S.timer;return t?(t.ss||0)+Math.min(7200,tmRun()):0}
 function tmSecs(k,n){return (((S.meta[k]||{}).st)||{})[n]||0}
 function tmCommit(cap){var t=S.timer;if(!t||t.mode!=='study')return;var e=Math.round(Math.min(tmRun(),cap==null?7200:cap));t.ss=(t.ss||0)+e;t.s=Date.now();
   if(e>0){var st=Object.assign({},(S.meta[t.k]||{}).st||{});st[t.n]=(st[t.n]||0)+e;setMeta(t.k,{st:st})}}
-function tmStart(k,n){tmEnd();S.timer={k:k,n:n,mode:'study',s:Date.now(),ss:0};tmSave()}
+/* 항목을 바꿔도 쉬지 않고 이어 공부한 시간(ss)은 이어서 센다. 휴식·완료 후에는 0부터 */
+function tmStart(k,n){var p=S.timer,carry=0;
+  if(p&&p.k===k&&(p.mode==='study'||p.mode==='pause')){if(p.mode==='study')tmCommit();carry=p.ss||0}
+  tmEnd();S.timer={k:k,n:n,mode:'study',s:Date.now(),ss:carry};tmSave()}
 function tmPause(){if(!S.timer||S.timer.mode!=='study')return;tmCommit();S.timer.mode='pause';tmSave()}
 function tmResume(){var t=S.timer;if(!t)return;if(t.mode!=='pause')t.ss=0;t.mode='study';t.s=Date.now();tmSave()}
 function tmBreak(){var t=S.timer;if(!t)return;tmCommit();t.mode='break';t.bs=Date.now();t.ss=0;tmSave()}
@@ -891,8 +895,8 @@ function tmView(){
 }
 function tmTick(){
   var t=S.timer;if(!t)return;var f=S.tmFocus*60,b=S.tmBreak*60,ch=false;
-  if(t.mode==='study'&&tmStreak()>=f){tmCommit(Math.max(0,f-(t.ss||0)));t.mode='due';tmSave();fx('end');S.toast='🍎 '+S.tmFocus+'분 공부 끝! '+S.tmBreak+'분 쉬어요';clearTimeout(toastT);toastT=setTimeout(function(){S.toast='';render()},8000);ch=true}
-  else if(t.mode==='break'&&(Date.now()-t.bs)/1000>=b){t.mode='bdone';tmSave();fx('badge');S.toast='💪 휴식 끝! 다시 시작해요';clearTimeout(toastT);toastT=setTimeout(function(){S.toast='';render()},8000);ch=true}
+  if(t.mode==='study'&&tmStreak()>=f){tmCommit(Math.max(0,f-(t.ss||0)));t.mode='due';tmSave();fx('bell');S.toast='🔔 '+S.tmFocus+'분 공부 끝! '+S.tmBreak+'분 쉬어요';clearTimeout(toastT);toastT=setTimeout(function(){S.toast='';render()},8000);ch=true}
+  else if(t.mode==='break'&&(Date.now()-t.bs)/1000>=b){t.mode='bdone';tmSave();fx('bell');S.toast='💪 휴식 끝! 다시 시작해요';clearTimeout(toastT);toastT=setTimeout(function(){S.toast='';render()},8000);ch=true}
   if(ch){render();return}
   var v=tmView(),a=document.getElementById('tmbig'),s=document.getElementById('tmsub');if(a&&v){a.textContent=v.big;if(s)s.textContent=v.sub}
   document.querySelectorAll('.tmb.on .tv').forEach(function(x){x.textContent=tmFmt(tmStreak())});
@@ -1019,14 +1023,20 @@ var SFX={
     badge:function(){FX.bugle(0,[[659,0,.12],[784,.14,.4]])}
   }
 };
+/* 학교 쉬는 시간 종소리: 딩-동-댕-동 (미-도-레-솔 낮은) */
+function schoolBell(){
+  var N=[[659.25,0],[523.25,.62],[587.33,1.24],[392,1.86]];
+  N.forEach(function(x,i){var f=x[0],t=x[1],d=i===3?2.6:1.5;
+    tn(t,f,d,{type:'sine',v:.42,a:.01});tn(t,f*2,d*.6,{type:'sine',v:.14,a:.008});tn(t,f*2.76,d*.35,{type:'sine',v:.05,a:.005})})
+}
 function sfx(type){
   if(!S.sound)return;
-  try{if(!ac())return;var f=(SFX[S.theme]||SFX.park)[type];if(f)f()}catch(e){}
+  try{if(!ac())return;if(type==='bell'){schoolBell();return}var f=(SFX[S.theme]||SFX.park)[type];if(f)f()}catch(e){}
 }
 function vib(type){
   if(!S.haptic)return;
   try{
-    var P={un:[8],ck:[12],bt:[30,40,30],hr:[60,50,60,50,160],end:[40,40,40],badge:[25,30,25],tp:[6]}[type];
+    var P={un:[8],ck:[12],bt:[30,40,30],hr:[60,50,60,50,160],bell:[60,60,60,60,200],end:[40,40,40],badge:[25,30,25],tp:[6]}[type];
     if(P&&navigator.vibrate)navigator.vibrate(P);
   }catch(e){}
 }
@@ -2186,9 +2196,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:214};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:215};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+['v2.15','공부 타이머: 항목을 바꿔도 쉬지 않고 이어 공부한 시간을 합산해 휴식 알람 · 휴식 알람과 휴식 끝 소리를 학교 종소리로'],
 ['v2.14','선수 카드 얻기를 카드팩 뜯기로 변경: 뽑기권 3장 → 뒤집힌 카드 5장 중 한 장 고르기'],
 ['v2.13','뽑기권 규칙 변경: 교양 5문제 중 4개 · 오답 복습 5문제 모두 맞히면 뽑기권 1장 · 뽑기권 3장으로 선수 카드 1장을 직접 고르기'],
 ['v2.12','지난 날짜 체크 고치기에서 마무리 운동 등 세부 항목이 펼쳐지지 않던 문제 수정'],
