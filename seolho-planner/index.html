@@ -59,6 +59,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -908,7 +909,7 @@ function tmView(){
 function tmTick(){
   var t=S.timer;if(!t||t.h)return;var f=S.tmFocus*60,b=S.tmBreak*60,ch=false;
   if(t.mode==='study'&&tmStreak()>=f){tmCommit(Math.max(0,f-(t.ss||0)));t.mode='due';tmSave();fx('bell');S.toast='🔔 '+S.tmFocus+'분 공부 끝! '+S.tmBreak+'분 쉬어요';clearTimeout(toastT);toastT=setTimeout(function(){S.toast='';render()},8000);ch=true}
-  else if(t.mode==='break'&&(Date.now()-t.bs)/1000>=b){t.mode='bdone';tmSave();fx('bell');S.toast='💪 휴식 끝! 다시 시작해요';clearTimeout(toastT);toastT=setTimeout(function(){S.toast='';render()},8000);ch=true}
+  else if(t.mode==='break'&&(Date.now()-t.bs)/1000>=b){t.mode='bdone';tmSave();fx('bell2');S.toast='💪 휴식 끝! 다시 시작해요';clearTimeout(toastT);toastT=setTimeout(function(){S.toast='';render()},8000);ch=true}
   if(ch){render();return}
   var v=tmView(),a=document.getElementById('tmbig'),s=document.getElementById('tmsub');if(a&&v){a.textContent=v.big;if(s)s.textContent=v.sub}
   document.querySelectorAll('.tmb.on .tv').forEach(function(x){x.textContent=tmFmt(tmStreak())});
@@ -1035,20 +1036,22 @@ var SFX={
     badge:function(){FX.bugle(0,[[659,0,.12],[784,.14,.4]])}
   }
 };
-/* 학교 쉬는 시간 종소리: 딩-동-댕-동 (미-도-레-솔 낮은) */
+/* 공부 끝(휴식 시작) 종소리: 딩-동-댕-동 (미-도-레-솔 낮은) */
 function schoolBell(){
   var N=[[659.25,0],[523.25,.62],[587.33,1.24],[392,1.86]];
   N.forEach(function(x,i){var f=x[0],t=x[1],d=i===3?2.6:1.5;
     tn(t,f,d,{type:'sine',v:.42,a:.01});tn(t,f*2,d*.6,{type:'sine',v:.14,a:.008});tn(t,f*2.76,d*.35,{type:'sine',v:.05,a:.005})})
 }
+/* 휴식 끝(공부 시작) 예비종: 높은 음 네 번 딩딩딩딩 */
+function startBell(){for(var i=0;i<4;i++){var t=i*.42;tn(t,1046.5,.6,{type:'sine',v:.38,a:.01});tn(t,2093,.36,{type:'sine',v:.125,a:.008});tn(t,2888,.21,{type:'sine',v:.045,a:.005})}}
 function sfx(type){
   if(!S.sound)return;
-  try{if(!ac())return;if(type==='bell'){schoolBell();return}var f=(SFX[S.theme]||SFX.park)[type];if(f)f()}catch(e){}
+  try{if(!ac())return;if(type==='bell'){schoolBell();return}if(type==='bell2'){startBell();return}var f=(SFX[S.theme]||SFX.park)[type];if(f)f()}catch(e){}
 }
 function vib(type){
   if(!S.haptic)return;
   try{
-    var P={un:[8],ck:[12],bt:[30,40,30],hr:[60,50,60,50,160],bell:[60,60,60,60,200],end:[40,40,40],badge:[25,30,25],tp:[6]}[type];
+    var P={un:[8],ck:[12],bt:[30,40,30],hr:[60,50,60,50,160],bell:[60,60,60,60,200],bell2:[50,60,50,60,50,60,50],end:[40,40,40],badge:[25,30,25],tp:[6]}[type];
     if(P&&navigator.vibrate)navigator.vibrate(P);
   }catch(e){}
 }
@@ -2208,9 +2211,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:216};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:217};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+['v2.17','알람 소리 구분: 공부 끝은 딩동댕동 종소리, 휴식 끝은 높은 음 딩딩딩딩 예비종'],
 ['v2.16','공부 타이머: 다른 앱을 쓰는 동안의 시간은 40분을 넘어도 순공에 전부 더하고(최대 2시간) 휴식 알림은 강제로 켜지 않음'],
 ['v2.15','공부 타이머: 항목을 바꿔도 쉬지 않고 이어 공부한 시간을 합산해 휴식 알람 · 휴식 알람과 휴식 끝 소리를 학교 종소리로'],
 ['v2.14','선수 카드 얻기를 카드팩 뜯기로 변경: 뽑기권 3장 → 뒤집힌 카드 5장 중 한 장 고르기'],
