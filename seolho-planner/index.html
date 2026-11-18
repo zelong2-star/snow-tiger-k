@@ -78,6 +78,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -605,6 +606,13 @@ input[type=range]{height:34px;padding:0;accent-color:#DD032F}
 .wsteps{display:flex;gap:6px;margin:12px 0}
 .wsteps span{flex:1;text-align:center;padding:8px 2px;border-radius:10px;background:var(--chip-bg);color:var(--muted);font-weight:700;font-size:15px}
 .wsteps .on.n{background:var(--done-bg);color:var(--done)}.wsteps .on{background:var(--amber-bg);color:var(--amber)}.wsteps .on.g{background:var(--green-bg);color:var(--green)}
+.ptbal{display:flex;align-items:center;gap:16px;flex-wrap:wrap}.ptbal .pv{font:800 52px/1 var(--f-d);color:var(--navy)}.ptbal .pu{font:700 22px var(--f-b);color:var(--muted)}
+.ptsum{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.ptsum .chip{font-size:16px}
+.ptseg{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px}.ptseg button{appearance:none;height:46px;padding:0 16px;border-radius:23px;border:1px solid var(--line);background:var(--panel);color:var(--ink,inherit);font:700 16px var(--f-b);cursor:pointer}.ptseg button[aria-pressed=true]{background:var(--navy);color:var(--on-navy);border-color:var(--navy)}
+.ptf{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}.ptf label{display:block;font-size:15px;color:var(--muted);margin-bottom:4px}.ptf input{width:100%;height:46px;font:600 18px var(--f-b);padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:inherit;box-sizing:border-box}
+.ptr{display:grid;grid-template-columns:78px 1fr auto auto;gap:10px;align-items:center;padding:11px 0;border-top:1px solid var(--line);font-size:17px}.ptr:first-of-type{border-top:0}.ptr .d{color:var(--muted);font-size:15px}.ptr .n small{display:block;color:var(--muted);font-size:14px}.ptr .a{font-weight:800;text-align:right;min-width:84px}.ptr .a.e{color:#1E8E4E}.ptr .a.u{color:#DD032F}.ptr .b{color:var(--muted);text-align:right;min-width:92px;font-size:15px}.ptr .x{grid-column:1/-1;text-align:right}
+.ptx{appearance:none;border:1px solid var(--line);background:transparent;color:var(--muted);height:34px;padding:0 12px;border-radius:17px;font:600 14px var(--f-b);cursor:pointer}
+@media(max-width:560px){.ptr{grid-template-columns:62px 1fr auto}.ptr .b{display:none}}
 </style>
 
 <div class="app">
@@ -615,6 +623,7 @@ input[type=range]{height:34px;padding:0;accent-color:#DD032F}
     <button data-t="week"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>일정</button>
     <button data-t="play"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M5.5 7.5c3 1.5 3 7.5 0 9M18.5 7.5c-3 1.5-3 7.5 0 9"/></svg>휴식</button>
     <button data-t="wrong"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M9 8.5h6M9 12h6M9 15.5h3"/></svg>오답</button>
+    <button data-t="pts"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M9.5 16.5V8h3a2.4 2.4 0 0 1 0 4.8h-3"/></svg>포인트</button>
     <button data-t="log"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V11M12 20V5M19 20v-6"/></svg>기록</button>
     <button data-t="set"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>설정</button>
     <div class="sync" id="sync"></div>
@@ -713,11 +722,11 @@ function applySched(x){
 }
 function loadLocal(){
   try{var j=JSON.parse(localStorage.getItem(LS)||'null');
-    if(j){S.checks=j.checks||{};if(j.settings)Object.keys(j.settings).forEach(function(k){S.settings[k]=j.settings[k]});if(j.sched)applySched(j.sched);if(j.profile)applyProfile(j.profile);if(j.meta&&typeof j.meta==='object')S.meta=j.meta;if(j.play&&typeof j.play==='object')S.play=j.play}}catch(e){}
+    if(j){S.checks=j.checks||{};if(j.settings)Object.keys(j.settings).forEach(function(k){S.settings[k]=j.settings[k]});if(j.sched)applySched(j.sched);if(j.profile)applyProfile(j.profile);if(j.meta&&typeof j.meta==='object')S.meta=j.meta;if(j.play&&typeof j.play==='object')S.play=j.play;if(j.pts&&Array.isArray(j.pts.l))S.pts=j.pts}}catch(e){}
 }
 var SHIP_SV=62,SHIP_SCHED={"days":[{"e":"아빠","n":"월","s":{"c4":"한자","d4":"쎈연산","d5":"수학리더","d6":"문장제","d7":"백점국어","d8":"한장사회","d9":"READ IT(본문)","f":"SH PROJECT","r0":"스트레칭","r1":"신문","r2":"리딩게이트","r3":"빠른연산"},"x":{"c4":2,"d4":2,"d5":2,"d6":2,"d7":2,"d8":2,"d9":2,"r0":1,"r1":1,"r2":1,"r3":1}},{"e":"엄마","n":"화","s":{"c4":"","d4":"쎈연산","d5":"수학리더","d6":"문장제","d7":"백점국어","d8":"빠작비문학","d9":"READ IT(워크북)","f":"SH PROJECT","r0":"스트레칭","r1":"신문","r2":"리딩게이트","r3":"빠른연산"},"x":{"d4":2,"d5":2,"d6":2,"d7":2,"d8":2,"d9":2,"r0":1,"r1":1,"r2":1,"r3":1}},{"e":"엄마/아빠","n":"수","s":{"c4":"","d4":"쎈연산","d5":"READ IT(복습)","d6":"독서DAY","d7":"독서기록장","d8":"","d9":"","f":"SH PROJECT","r0":"스트레칭","r1":"신문","r2":"리딩게이트","r3":"빠른연산"},"x":{"d4":2,"d5":2,"d6":2,"d7":2,"r0":1,"r1":1,"r2":1,"r3":1}},{"e":"엄마","n":"목","s":{"c4":"","d4":"쎈연산","d5":"수학리더","d6":"최상위","d7":"추론독해","d8":"씽킹과학","d9":"S. STAGE(본문)","f":"SH PROJECT","r0":"스트레칭","r1":"신문","r2":"리딩게이트","r3":"빠른연산"},"x":{"d4":2,"d5":2,"d6":2,"d7":2,"d8":2,"d9":2,"r0":1,"r1":1,"r2":1,"r3":1}},{"e":"아빠","n":"금","s":{"c4":"한자","d4":"쎈연산","d5":"수학리더","d6":"최상위","d7":"한문장정리의힘","d8":"무작정따라하기","d9":"S. STAGE(워크북)","f":"SH PROJECT","r0":"스트레칭","r1":"신문","r2":"리딩게이트","r3":"빠른연산"},"x":{"c4":2,"d4":2,"d5":2,"d6":1,"d7":2,"d8":2,"d9":2,"r0":1,"r1":1,"r2":1,"r3":1}},{"e":"엄마/아빠","n":"토","s":{"c4":"독서/운동","d4":"쎈연산","d5":"팩토수학/오답리뷰","d6":"빠작문학","d7":"빠작어휘","d8":"요약독해의힘","d9":"기적의영어문장쓰기","f":"SH PROJECT","r0":"스트레칭","r1":"신문","r2":"리딩게이트","r3":"빠른연산"},"x":{"c4":2,"d4":2,"d5":2,"d6":2,"d7":2,"d8":2,"d9":2,"r0":1,"r1":1,"r2":1,"r3":1}},{"e":"엄마/아빠","n":"일","s":{"c4":"독서/운동","d4":"뿌리깊은어휘","d5":"용선생 HISTORY","d6":"백점국어","d7":"빠작어휘","d8":"한문장요약의힘","d9":"생각대로 써지는 초등글쓰기","f":"SH PROJECT","r0":"스트레칭","r1":"매거진","r2":"리딩게이트","r3":"빠른연산"},"x":{"c4":2,"d4":2,"d5":2,"d6":2,"d7":2,"d8":2,"d9":2,"r0":1,"r1":1,"r2":1,"r3":1}}],"g":["거실구장","좌동구장","책상구장","마무리 운동"],"so":["국어","수학","영어","사회","과학","독서","체육","교양"],"subj":[{"d":1,"n":"백점국어","s":"국어"},{"d":1,"n":"추론독해","s":"국어"},{"d":1,"n":"한문장정리의힘","s":"국어"},{"d":1,"n":"빠작문학","s":"국어"},{"d":1,"n":"빠작어휘","s":"국어"},{"d":1,"n":"생각대로 써지는 초등글쓰기","s":"국어"},{"d":2,"n":"독서기록장","s":"국어"},{"d":1,"n":"빠작비문학","s":"국어"},{"d":1,"n":"무작정따라하기","s":"국어"},{"d":1,"n":"요약독해의힘","s":"국어"},{"d":1,"n":"한문장요약의힘","s":"국어"},{"d":1,"n":"한자","s":"국어"},{"d":1,"n":"빠른연산","s":"수학"},{"d":1,"n":"쎈연산","s":"수학"},{"d":2,"n":"수학리더","s":"수학"},{"d":3,"n":"문장제","s":"수학"},{"d":3,"n":"팩토수학/오답리뷰","s":"수학"},{"d":2,"n":"팩토수학","s":"수학"},{"d":3,"n":"최상위","s":"수학"},{"d":1,"n":"리딩게이트","s":"영어"},{"d":1,"n":"READ IT(복습)","s":"영어"},{"d":1,"n":"READ IT(본문)","s":"영어"},{"d":1,"n":"READ IT(워크북)","s":"영어"},{"d":2,"n":"S. STAGE(본문)","s":"영어"},{"d":2,"n":"S. STAGE(워크북)","s":"영어"},{"d":1,"n":"기적의영어문장쓰기","s":"영어"},{"d":1,"n":"용선생 HISTORY","s":"사회"},{"d":1,"n":"한장사회","s":"사회"},{"d":1,"n":"씽킹과학","s":"과학"},{"d":2,"n":"독서DAY","s":"독서"},{"d":1,"n":"스트레칭","s":"체육"},{"d":1,"n":"매거진","s":"교양"},{"d":1,"n":"독서/운동","s":"교양"},{"d":1,"n":"독서/스케치","s":"교양"},{"d":1,"n":"신문","s":"교양"},{"d":1,"n":"SH PROJECT","s":"교양"},{"d":1,"n":"하루한장","s":"기타"},{"d":1,"n":"뿌리깊은어휘","s":"국어"}],"t":{"c4":"클리닝 타임","d4":"4이닝","d5":"5이닝","d6":"6이닝","d7":"7이닝","d8":"8이닝","d9":"9이닝","f":"운동","r0":"준비","r1":"1이닝","r2":"2이닝","r3":"3이닝"},"v":2};
 function adoptShipped(){try{if(localStorage.getItem('seolho-sv')==String(SHIP_SV))return;applySched(SHIP_SCHED);localStorage.setItem('seolho-sv',String(SHIP_SV));saveLocal()}catch(e){}}
-function saveLocal(){try{localStorage.setItem(LS,JSON.stringify({checks:S.checks,settings:S.settings,sched:schedDoc(),profile:S.profile,meta:S.meta,play:S.play}))}catch(e){}}
+function saveLocal(){try{localStorage.setItem(LS,JSON.stringify({checks:S.checks,settings:S.settings,sched:schedDoc(),profile:S.profile,meta:S.meta,play:S.play,pts:S.pts}))}catch(e){}}
 
 var pending={},running={};
 function queueWrite(k,arr){
@@ -2231,9 +2240,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:235};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:236};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+['v2.36','새 메뉴 ‘포인트’: 문제집을 다 풀면 가격의 10%가 적립되고, 사용·잔액을 장부처럼 볼 수 있어요'],
 ['v2.35','레전드 상세 화면도 현역 선수처럼 왼쪽 카드 · 오른쪽 선수 정보와 기록'],
 ['v2.34','레전드 카드를 누르면 업적과 통산·주요 기록이 함께 보여요 (41명)'],
 ['v2.33','레전드 일러스트 카드 4장 추가 (김동주·심정수·우즈·박재홍)'],
@@ -2436,25 +2446,28 @@ function render(){
   if(S.tab==='play'&&S.pv==='game'&&S.g&&S.g.live)return;
   var c=ctx();
   document.querySelectorAll('#nav button').forEach(function(b){b.classList.toggle('on',b.dataset.t===S.tab)});
-  if(S.tab==='home')renderHome(c);else if(S.tab==='today')renderToday(c);else if(S.tab==='week')renderWeek(c);else if(S.tab==='set')renderSet(c);else if(S.tab==='play')renderPlay(c);else if(S.tab==='wrong')renderWrong();else renderLog(c);
+  if(S.tab==='home')renderHome(c);else if(S.tab==='today')renderToday(c);else if(S.tab==='week')renderWeek(c);else if(S.tab==='set')renderSet(c);else if(S.tab==='play')renderPlay(c);else if(S.tab==='wrong')renderWrong();else if(S.tab==='pts')renderPts();else renderLog(c);
   renderSync();
 }
 
 $('nav').addEventListener('click',function(e){
   var b=e.target.closest('button[data-t]');if(!b)return;
-  if(b.dataset.t!==S.tab){S.unlocked=false;S.edit=false;S.ed=null;S.gate=false;S.pedit=false;S.pgate=false}
+  if(b.dataset.t!==S.tab){S.unlocked=false;S.edit=false;S.ed=null;S.gate=false;S.pedit=false;S.pgate=false;S.ptOk=false;S.ptf=null;S.ptdel=null;S.ptpin=false}
   S.tab=b.dataset.t;S.vo=0;closePop();S.optMode=false;
   if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();
   render();main.scrollTop=0;
 });
 main.addEventListener('click',function(e){
-  weekClick(e);homeClick(e);todayClick(e);logClick(e);setClick(e);playClick(e);
+  weekClick(e);homeClick(e);todayClick(e);logClick(e);setClick(e);playClick(e);ptClick(e);
   var sb=e.target.closest('.sub[data-sub]');if(sb){var sp=sb.dataset.sub.split(':');subToggle(+sp[0],+sp[1]);return}
   var r=e.target.closest('.row[data-i]');if(r){var ri=+r.dataset.i,rc=ctx(),rit=itemsOf(rc.ti)[ri];if(rit&&partsOf(rit.n)){if(S.tab==='today'&&S.vo)return;var rk=rc.tk+':'+ri;S.so=(S.so===rk?null:rk);fx('ck');render();return}toggle(ri);}
 });
 document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target&&e.target.id==='plpin'){var b=main.querySelector('[data-act=plunlock]');if(b)b.click()}
+  if(e.key==='Enter'&&e.target&&e.target.id==='ptpin'){var b3=main.querySelector('[data-act=ptpinok]');if(b3)b3.click()}
   if(e.key==='Enter'&&e.target&&e.target.id==='kpin'){var b2=main.querySelector('[data-act=plkallok]');if(b2)b2.click()}});
-document.addEventListener('input',function(e){if(e.target&&e.target.id==='kpin')S.kpv=e.target.value});
+document.addEventListener('input',function(e){if(e.target&&e.target.id==='kpin')S.kpv=e.target.value;
+  if(e.target&&e.target.id==='ptp'){var pa=$('pta');if(pa&&!pa.dataset.m){var pv=parseInt(e.target.value,10);pa.value=pv>0?Math.round(pv*0.1):''}}
+  if(e.target&&e.target.id==='pta')e.target.dataset.m='1'});
 document.addEventListener('visibilitychange',function(){if(document.hidden)tmHide();else{tmReturn();render()}});
 window.addEventListener('pagehide',tmHide);
 if(!document.hidden)tmReturn();
@@ -3116,6 +3129,70 @@ function wrDetHtml(){
   h+='<div class="brow">'+(st===2?'<button type="button" class="btn2" data-act="owre">↩ 다시 복습하기</button>':'<button type="button" class="btn" data-act="owrev" style="background:var(--green);color:#fff">✅ 다시 풀어봤어요</button><button type="button" class="btn2" data-act="owgrad">🎓 졸업!</button>')+'<button type="button" class="btn2" data-act="owedit">✏️ 메모 고치기</button><button type="button" class="btn2" data-act="owdel">🗑️ 삭제</button></div>';
   if(WR.del)h+='<div class="warn" style="margin-top:12px">삭제하면 사진도 목록에서 사라져요. 부모님 확인 번호를 입력해 주세요.<div class="brow"><input id="owpin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" style="width:140px" aria-label="확인 번호"><button type="button" class="btn" data-act="owdelok" style="margin-top:0">삭제하기</button><button type="button" class="btn2" data-act="owdelno" style="margin-top:0">취소</button></div>'+(WR.perr?'<p class="err" role="alert">번호가 달라요</p>':'')+'</div>';
   return h+'</div></div></div>'}
+
+/* ===== 포인트: 문제집 완료 적립(가격의 10%) · 사용 · 잔액 ===== */
+function ptGet(){if(!S.pts||!Array.isArray(S.pts.l))S.pts={l:[]};return S.pts.l}
+function ptSave(){saveLocal();if(DB)DB.doc('settings/points').set({l:ptGet()}).catch(function(){S.store='error';renderSync()})}
+function ptBal(){var t=0;ptGet().forEach(function(x){t+=x.a||0});return t}
+function ptFmt(n){return (n<0?'-':'')+Math.abs(Math.round(n)).toLocaleString('ko-KR')}
+function ptRows(){var l=ptGet().map(function(x,i){return {x:x,i:i}});
+  l.sort(function(a,b){return a.x.d<b.x.d?-1:a.x.d>b.x.d?1:a.i-b.i});var b=0;
+  l.forEach(function(r){b+=r.x.a||0;r.b=b});return l}
+function ptFormHtml(){var f=S.ptf,t=f.t,d=f.d||key(new Date());
+  var seg=[['earn','📘 문제집 완료 (+)'],['use','🛍️ 포인트 사용 (−)'],['adj','⚖️ 잔액 맞추기']].map(function(x){return '<button type="button" data-act="ptt" data-v="'+x[0]+'" aria-pressed="'+(t===x[0])+'">'+x[1]+'</button>'}).join('');
+  var fl='<div><label for="ptd">날짜</label><input id="ptd" type="date" value="'+esc(d)+'"></div>';
+  if(t==='earn')fl+='<div style="grid-column:span 2"><label for="ptn">문제집 이름</label><input id="ptn" type="text" maxlength="40" placeholder="예) 쎈연산 2-1" value="'+esc(f.n||'')+'"></div><div><label for="ptp">문제집 가격(원)</label><input id="ptp" type="number" inputmode="numeric" min="0" value="'+esc(f.p||'')+'"></div><div><label for="pta">적립 포인트 (가격의 10%)</label><input id="pta" type="number" inputmode="numeric" min="0" value="'+esc(f.a||'')+'"'+(f.a?' data-m="1"':'')+'></div>';
+  else if(t==='use')fl+='<div style="grid-column:span 2"><label for="ptn">사용한 곳</label><input id="ptn" type="text" maxlength="40" placeholder="예) 간식, 장난감" value="'+esc(f.n||'')+'"></div><div><label for="pta">사용 포인트</label><input id="pta" type="number" inputmode="numeric" min="0" value="'+esc(f.a||'')+'" data-m="1"></div>';
+  else fl+='<div><label for="pta">지금 남은 포인트(P)</label><input id="pta" type="number" inputmode="numeric" min="0" value="'+esc(f.a||'')+'" data-m="1"></div><div style="grid-column:span 2"><label for="ptn">메모</label><input id="ptn" type="text" maxlength="40" placeholder="예) 종이 장부 기준" value="'+esc(f.n||'')+'"></div>';
+  return '<div class="card"><h2>포인트 기록하기</h2><div class="ptseg">'+seg+'</div><div class="ptf">'+fl+'</div>'+(f.err?'<p class="err" role="alert" style="margin:10px 0 0">'+esc(f.err)+'</p>':'')+'<div style="display:flex;gap:10px;margin-top:12px"><button class="btn" type="button" data-act="ptsave" style="margin:0">저장</button><button class="btn2" type="button" data-act="ptcancel" style="margin:0;border:1px solid var(--line)">닫기</button></div></div>'}
+function renderPts(){
+  var bal=ptBal(),rows=ptRows(),te=0,tu=0,nb=0;
+  rows.forEach(function(r){var a=r.x.a||0;if(r.x.t==='earn'){te+=a;nb++}else if(r.x.t==='use')tu+=-a});
+  var h='<div class="head"><div><h1>포인트</h1><div class="date">문제집을 다 풀 때마다 가격의 10%가 쌓여요</div></div></div>'+(S.toast?'<div class="win" role="status" style="margin:0 0 12px">'+esc(S.toast)+'</div>':'');
+  var card='<div class="card"><div class="ptbal"><div><div class="lbl">지금 쓸 수 있는 포인트</div><div><span class="pv" id="ptbal">'+ptFmt(bal)+'</span> <span class="pu">P</span></div></div></div><div class="ptsum"><span class="chip">📘 푼 문제집 '+nb+'권</span><span class="chip">총 적립 +'+ptFmt(te)+'P</span><span class="chip">총 사용 −'+ptFmt(tu)+'P</span></div></div>';
+  var act;
+  if(S.ptf&&S.ptOk)act=ptFormHtml();
+  else if(S.ptpin)act='<form class="card gate" style="margin:0 0 12px" onsubmit="return false"><label for="ptpin" style="margin-top:0">기록은 부모님 확인 후 할 수 있어요 (번호 4자리)</label><input id="ptpin" type="password" inputmode="numeric" maxlength="4" autocomplete="off"><button class="btn" type="button" data-act="ptpinok">열기</button>'+(S.ptperr?'<p class="err" role="alert">번호가 달라요. 다시 입력해 주세요.</p>':'')+'</form>';
+  else act='<div style="margin:0 0 12px"><button class="btn" type="button" data-act="ptadd" style="margin:0">＋ 포인트 기록하기</button></div>';
+  var list;
+  if(!rows.length)list='<div class="lbl" style="padding:8px 0">아직 기록이 없어요. 종이 장부의 현재 잔액이 있다면 <b>잔액 맞추기</b>로 먼저 넣고, 문제집을 다 풀면 <b>문제집 완료</b>를 기록해 주세요.</div>';
+  else list=rows.slice().reverse().map(function(r){var x=r.x,a=x.a||0,cls=x.t==='use'?'u':'e',lab=x.t==='earn'?'문제집 완료':x.t==='use'?'포인트 사용':'잔액 맞춤',sub=x.t==='earn'&&x.p?'문제집 '+ptFmt(x.p)+'원 × 10%':'';
+    var nm=esc(x.n||lab);
+    var del=S.ptOk?(S.ptdel===x.id?'<div class="x"><button class="ptx" data-act="ptdelok" data-id="'+esc(x.id)+'" style="color:#DD032F">정말 삭제</button> <button class="ptx" data-act="ptdelno">취소</button></div>':'<div class="x"><button class="ptx" data-act="ptdel" data-id="'+esc(x.id)+'">삭제</button></div>'):'';
+    return '<div class="ptr"><span class="d">'+esc(x.d.slice(5).replace('-','/'))+'</span><span class="n"><b>'+nm+'</b><small>'+lab+(sub?' · '+sub:'')+'</small></span><span class="a '+cls+'">'+(a>0?'+':'')+ptFmt(a)+'</span><span class="b">잔액 '+ptFmt(r.b)+'</span>'+del+'</div>'}).join('');
+  main.innerHTML=h+card+act+'<div class="card"><h2>적립·사용 내역</h2>'+list+'</div>';
+}
+function ptClick(e){
+  if(S.tab!=='pts')return;
+  var b=e.target.closest('button[data-act]');if(!b)return;var a=b.dataset.act;
+  if(a.indexOf('pt')!==0)return;
+  if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();
+  var rd=function(){var g=function(i){var el=$(i);return el?el.value:''};return {d:g('ptd'),n:g('ptn').trim(),p:g('ptp'),a:g('pta')}};
+  if(a==='ptadd'){if(S.ptOk){S.ptf={t:'earn'}}else{S.ptpin=true;S.ptperr=false}S.toast='';render()}
+  else if(a==='ptpinok'){var pi=$('ptpin');if(pi&&pi.value===String(S.settings.pin)){S.ptOk=true;S.ptpin=false;S.ptperr=false;S.ptf={t:'earn'}}else S.ptperr=true;render()}
+  else if(a==='ptt'){var r=rd(),keep=S.ptf.t===b.dataset.v;S.ptf={t:b.dataset.v,d:r.d,n:keep?r.n:'',p:keep?r.p:'',a:keep?r.a:''};render()}
+  else if(a==='ptcancel'){S.ptf=null;render()}
+  else if(a==='ptsave'){
+    var v=rd(),t=S.ptf.t,amt=parseInt(v.a,10),pr=parseInt(v.p,10);
+    var err='';
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(v.d))err='날짜를 골라 주세요.';
+    else if(t==='earn'&&!(pr>0))err='문제집 가격을 입력해 주세요.';
+    else if(t!=='adj'&&!(amt>0))err='포인트를 입력해 주세요.';
+    else if(t==='adj'&&!(amt>=0))err='지금 남은 포인트를 입력해 주세요.';
+    else if(t==='use'&&amt>ptBal())err='남은 포인트('+ptFmt(ptBal())+'P)보다 많이 쓸 수 없어요.';
+    if(err){S.ptf={t:t,d:v.d,n:v.n,p:v.p,a:v.a,err:err};render();return}
+    var rec={id:'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),d:v.d,t:t,n:v.n};
+    if(t==='earn'){rec.p=pr;rec.a=amt;if(!rec.n)rec.n='문제집'}
+    else if(t==='use'){rec.a=-amt;if(!rec.n)rec.n='포인트 사용'}
+    else{rec.a=amt-ptBal();if(!rec.n)rec.n='잔액 맞춤'}
+    ptGet().push(rec);ptSave();S.ptf=null;
+    S.toast=t==='earn'?'📘 +'+ptFmt(amt)+'P 적립했어요!':t==='use'?'🛍️ '+ptFmt(amt)+'P 사용을 기록했어요.':'⚖️ 잔액을 '+ptFmt(amt)+'P로 맞췄어요.';
+    fx(t==='earn'?'hr':'ck');render()}
+  else if(a==='ptdel'){S.ptdel=b.dataset.id;render()}
+  else if(a==='ptdelno'){S.ptdel=null;render()}
+  else if(a==='ptdelok'){S.pts={l:ptGet().filter(function(x){return x.id!==b.dataset.id})};S.ptdel=null;ptSave();S.toast='기록을 삭제했어요.';render()}
+}
+
 function renderWrong(){
   var head='<div class="head"><div><h1>오답 노트</h1><div class="date">틀린 문제를 사진으로 찍어 두고 다시 봐요</div></div>'+(WR_WEB&&DB&&WR.list?'<span class="chip">복습할 문제 '+wrTodo()+'개</span>':'')+'</div>'+(S.toast?'<div class="win" role="status" style="margin:0 0 12px">'+esc(S.toast)+'</div>':'');
   if(!WR_WEB){main.innerHTML=head+'<div class="card" style="max-width:560px"><h2>📝 오답 노트는 가족 링크에서 열려요</h2><p style="margin:0 0 6px">사진은 폰과 태블릿이 함께 쓰는 <b>가족 공유 페이지</b>에 저장돼요. 아래 버튼으로 열고, 그곳의 <b>오답</b> 탭에서 사진을 올리고 복습해요.</p><a class="btn" href="'+WR_LINK+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none">가족 링크 열기 ↗</a></div>';return}
@@ -3209,6 +3286,9 @@ if(vwScroll>0)[0,250,700,1500].forEach(function(ms){setTimeout(vwApply,ms)});
   },function(){});
   DB.doc('settings/main').onSnapshot(function(s){
     if(s.exists){var x=s.data()||{};['goal','reward','pin','tiers'].forEach(function(k){if(x[k]!==undefined)S.settings[k]=x[k]});saveLocal();render()}
+  },function(){});
+  DB.doc('settings/points').onSnapshot(function(s){
+    if(s.exists){var x=s.data();if(x&&Array.isArray(x.l)){S.pts={l:x.l};saveLocal();if(S.tab==='pts')render()}}
   },function(){});
   DB.doc('settings/play').onSnapshot(function(s){
     if(s.exists){var x=s.data();if(x&&typeof x==='object'){S.play=x;saveLocal();if(S.tab==='play'&&!(S.pv==='game'&&S.g&&S.g.live)&&!(S.pv==='quiz'&&S.q&&!S.q.end))render();else if(S.tab!=='play')render()}}
