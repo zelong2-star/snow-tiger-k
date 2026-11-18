@@ -61,6 +61,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -2212,9 +2213,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:218};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:219};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+['v2.19','선수 도감 ‘전체 열기(부모)’: 이 기기에서 유지되도록 안정화 · 번호 입력 중 화면이 새로고침돼도 입력이 지워지지 않게 · 엔터로 열기'],
 ['v2.18','휴식 시작 때 놀이터 안내 · 놀이터 3×2 배열 · 선수 도감에 내가 뽑은 카드만 모아 보는 ‘내 카드’ 탭 · 도감 구단 탭이 사라졌던 문제 복구'],
 ['v2.17','알람 소리 구분: 공부 끝은 딩동댕동 종소리, 휴식 끝은 높은 음 딩딩딩딩 예비종'],
 ['v2.16','공부 타이머: 다른 앱을 쓰는 동안의 시간은 40분을 넘어도 순공에 전부 더하고(최대 2시간) 휴식 알림은 강제로 켜지 않음'],
@@ -2416,7 +2418,9 @@ main.addEventListener('click',function(e){
   var sb=e.target.closest('.sub[data-sub]');if(sb){var sp=sb.dataset.sub.split(':');subToggle(+sp[0],+sp[1]);return}
   var r=e.target.closest('.row[data-i]');if(r){var ri=+r.dataset.i,rc=ctx(),rit=itemsOf(rc.ti)[ri];if(rit&&partsOf(rit.n)){if(S.tab==='today'&&S.vo)return;var rk=rc.tk+':'+ri;S.so=(S.so===rk?null:rk);fx('ck');render();return}toggle(ri);}
 });
-document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target&&e.target.id==='plpin'){var b=main.querySelector('[data-act=plunlock]');if(b)b.click()}});
+document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target&&e.target.id==='plpin'){var b=main.querySelector('[data-act=plunlock]');if(b)b.click()}
+  if(e.key==='Enter'&&e.target&&e.target.id==='kpin'){var b2=main.querySelector('[data-act=plkallok]');if(b2)b2.click()}});
+document.addEventListener('input',function(e){if(e.target&&e.target.id==='kpin')S.kpv=e.target.value});
 document.addEventListener('visibilitychange',function(){if(document.hidden)tmHide();else{tmReturn();render()}});
 window.addEventListener('pagehide',tmHide);
 if(!document.hidden)tmReturn();
@@ -2849,7 +2853,10 @@ function kbId(r){return 'KBO26-'+String(r[0]).padStart(3,'0')}
 function kbSt(){if(!S.kb)S.kb={t:6,p:-1,q:'',f:0,n:40};return S.kb}
 function kbPl(){var p=plGet();p.kb=p.kb||{};p.kb.f=p.kb.f||{};p.kb.c=p.kb.c||{};
   if(!p.kb.m){p.kb.m=1;CARDS.forEach(function(cd){if(p.cards[cd[0]])p.kb.c[cd[0]]=1})}return p.kb}
-function kbOwn(id){var k=kbPl();return !!(k.c[id]||k.all)}
+/* 부모 전체 열기: 이 기기에서만 켜 두는 보기 모드(공유 저장과 섞이지 않게 기기에 저장) */
+function kbAll(){try{if(localStorage.getItem('seolho-kball')==='1')return true}catch(e){}return !!kbPl().all}
+function kbAllSet(on){try{if(on)localStorage.setItem('seolho-kball','1');else localStorage.removeItem('seolho-kball')}catch(e){}}
+function kbOwn(id){var k=kbPl();return !!(k.c[id]||kbAll())}
 function kbLg(id){return CARDS.filter(function(c){return c[0]===id})[0]}
 function kbLeg(c){var k=kbPl(),f=k.f[c[0]],ow=kbOwn(c[0]);if(!ow)return '<div class="kgl">'+plCardHtml(c,0,0)+'</div>';return '<div class="kgl">'+plCardHtml(c,1,0)+(f?'<div class="kmk kmk2"><em>♥</em></div>':'')+'</div>'}
 function kbCard(r,big){
@@ -2880,7 +2887,7 @@ function kbHtml(){var s=kbSt(),k=kbPl(),tot=Object.keys(k.c).length,fv=Object.ke
   '<button type="button" class="btn2'+(s.f?' on':'')+'" data-act="plkff" style="margin:0">♥ 즐겨찾기만</button></div>'+
   '<div class="brow" style="margin:0 0 12px;align-items:center"><input id="plkq" type="search" class="kq" placeholder="선수 이름 또는 등번호 검색" aria-label="선수 검색" value="'+esc(s.q)+'" autocomplete="off"><span id="kcnt" class="lbl" style="margin:0 0 0 10px">'+g.cnt+'</span></div>'+
   '<div class="kgrid" id="kgrid">'+g.html+'</div>'+
-  '<div class="brow" style="margin:16px 0 0;align-items:center">'+(k.all?'<button type="button" class="btn2" data-act="plkalloff" style="margin:0">🔒 다시 잠그기</button><span class="lbl" style="margin:0 0 0 10px">지금은 모든 카드가 열려 있어요 (부모 보기)</span>':'<button type="button" class="btn2" data-act="plkall" style="margin:0">🔓 전체 열기 (부모)</button>'+(S.kpin?'<input id="kpin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="••••" aria-label="부모님 확인 번호" class="kq" style="max-width:110px;margin-left:10px"><button type="button" class="btn" data-act="plkallok" style="margin:0 0 0 8px">열기</button>'+(S.kperr?'<span class="lbl" style="color:var(--red);margin:0 0 0 8px">번호가 달라요</span>':''):''))+'</div></div>';}
+  '<div class="brow" style="margin:16px 0 0;align-items:center">'+(kbAll()?'<button type="button" class="btn2" data-act="plkalloff" style="margin:0">🔒 다시 잠그기</button><span class="lbl" style="margin:0 0 0 10px">지금은 모든 카드가 열려 있어요 (부모 보기)</span>':'<button type="button" class="btn2" data-act="plkall" style="margin:0">🔓 전체 열기 (부모)</button>'+(S.kpin?'<input id="kpin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" value="'+esc(S.kpv||'')+'" placeholder="••••" aria-label="부모님 확인 번호" class="kq" style="max-width:110px;margin-left:10px"><button type="button" class="btn" data-act="plkallok" style="margin:0 0 0 8px">열기</button>'+(S.kperr?'<span class="lbl" style="color:var(--red);margin:0 0 0 8px">번호가 달라요</span>':''):''))+'</div></div>';}
 var KBHD={P:['평균자책점','경기','승','패','세','홀','이닝','볼넷','삼진','실점','자책점','WHIP'],H:['타율','경기','타수','득점','안타','홈런','타점','도루','실책','출루율','OPS']};
 function kbProf(r,id){var d=KBPF[id],t=KBT[r[1]],h='';
   var src='<div class="kv"><span>출처</span><span>2026 KBO 가이드북 p.'+t[4]+' · '+id+'</span></div>';
@@ -2925,9 +2932,10 @@ function kbAct(a,b){var s=kbSt(),k=kbPl();S.toast='';
     plToast(KBFULL[vid]?'뽑기권 3장을 모아 카드팩을 뜯으면 만날 수 있어요. 📦':'아직 카드 일러스트를 준비하고 있어요. ✏️');return true}S.kd={id:vid};S.pv='kview'}
   else if(a==='plkpack'){if(plTix()<3){plToast('뽑기권이 3장 모이면 카드팩을 뜯을 수 있어요. 📦');return true}kbPackOpen()}
   else if(a==='plkpick'){var pk=S.kpack;if(!pk||pk.pick>=0)return true;pk.pick=+b.dataset.i;fx('ck');var pid=pk.ids[pk.pick];setTimeout(function(){if(S.kpack===pk){kbPick(pid);render()}},900)}
-  else if(a==='plkall'){S.kpin=!S.kpin;S.kperr=false}
-  else if(a==='plkallok'){var pi=document.getElementById('kpin');if(pi&&pi.value===String(S.settings.pin)){k.all=1;S.kpin=false;S.kperr=false;plSave();fx('hr')}else{S.kperr=true;fx('un')}}
-  else if(a==='plkalloff'){delete k.all;plSave()}
+  else if(a==='plkall'){S.kpin=!S.kpin;S.kperr=false;S.kpv=''}
+  else if(a==='plkallok'){var pi=document.getElementById('kpin'),pv=String((pi&&pi.value)||S.kpv||'').trim();
+    if(pv&&pv===String(S.settings.pin)){kbAllSet(true);k.all=1;S.kpin=false;S.kperr=false;S.kpv='';plSave();fx('hr');plToast('🔓 모든 카드가 열렸어요 (부모 보기)')}else{S.kperr=true;fx('un')}}
+  else if(a==='plkalloff'){kbAllSet(false);delete k.all;plSave()}
   else if(a==='plkfav'){var i=b.dataset.id;if(k.f[i])delete k.f[i];else k.f[i]=1;plSave()}
   else if(a==='plkcol'){var j=b.dataset.id;if(k.c[j])delete k.c[j];else k.c[j]=1;plSave()}
   else return false;
