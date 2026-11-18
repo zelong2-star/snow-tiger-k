@@ -81,6 +81,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -440,7 +441,7 @@ input[type=range]{height:34px;padding:0;accent-color:#DD032F}
   .pphoto{width:170px}
   .app{flex-direction:column-reverse}
   .nav{width:auto;flex-direction:row;padding:8px 10px;gap:6px}
-  .nav button{flex:1;min-height:56px}
+  .nav button{flex:1 1 0;min-width:0;min-height:56px;padding:8px 0;font-size:13px;white-space:nowrap}.nav svg{width:24px;height:24px}
   .brand,.sync{display:none}
   .main{padding:16px}
   .today{grid-template-columns:1fr;gap:12px}
@@ -2243,9 +2244,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:238};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:239};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+['v2.39','폰 화면 아래 메뉴에서 ‘포인트’ 글자가 세로로 꺾이던 것 수정, 사라진 오답 문제 화면은 자동으로 목록으로 돌아가요'],
 ['v2.38','오답 사진 올리기: 갤러리·카메라 버튼을 누르면 사진 선택창이 더 확실하게 열려요'],
 ['v2.37','포인트 화면을 눈에 잘 띄게: 큰 빨간 잔액 카드, 선명한 적립·사용 색'],
 ['v2.36','새 메뉴 ‘포인트’: 문제집을 다 풀면 가격의 10%가 적립되고, 사용·잔액을 장부처럼 볼 수 있어요'],
@@ -3201,6 +3203,7 @@ function renderWrong(){
   var head='<div class="head"><div><h1>오답 노트</h1><div class="date">틀린 문제를 사진으로 찍어 두고 다시 봐요</div></div>'+(WR_WEB&&DB&&WR.list?'<span class="chip">복습할 문제 '+wrTodo()+'개</span>':'')+'</div>'+(S.toast?'<div class="win" role="status" style="margin:0 0 12px">'+esc(S.toast)+'</div>':'');
   if(!WR_WEB){main.innerHTML=head+'<div class="card" style="max-width:560px"><h2>📝 오답 노트는 가족 링크에서 열려요</h2><p style="margin:0 0 6px">사진은 폰과 태블릿이 함께 쓰는 <b>가족 공유 페이지</b>에 저장돼요. 아래 버튼으로 열고, 그곳의 <b>오답</b> 탭에서 사진을 올리고 복습해요.</p><a class="btn" href="'+WR_LINK+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none">가족 링크 열기 ↗</a></div>';return}
   if(!DB||!WR.list){main.innerHTML=head+'<div class="card" style="max-width:560px">'+(DB?'오답 목록을 불러오는 중이에요…':'가족 공유 저장소에 연결하는 중이에요…')+'</div>';return}
+  if(WR.v==='det'&&!wrGet(WR.id)){WR.v='list';WR.id=null}
   main.innerHTML=head+(WR.v==='add'?wrAddHtml():WR.v==='det'?wrDetHtml():wrListHtml())}
 function wrUp(id,patch,msg){if(!DB)return;DB.doc('wrong/'+id).update(patch).then(function(){if(msg){fx('hr');plToast(msg)}else fx('ck')}).catch(function(){fx('un');plToast('저장하지 못했어요. 잠시 뒤에 다시 해 주세요')})}
 function wrSave(){var a=WR.add;if(!a||!a.blob||WR.busy||!WR.as||!DB)return;
