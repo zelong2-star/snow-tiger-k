@@ -77,6 +77,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -2230,9 +2231,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:234};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:235};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+['v2.35','레전드 상세 화면도 현역 선수처럼 왼쪽 카드 · 오른쪽 선수 정보와 기록'],
 ['v2.34','레전드 카드를 누르면 업적과 통산·주요 기록이 함께 보여요 (41명)'],
 ['v2.33','레전드 일러스트 카드 4장 추가 (김동주·심정수·우즈·박재홍)'],
 ['v2.32','레전드 일러스트 카드 5장 추가 (이병규·박정태·김시진·한대화·김기태)'],
@@ -2939,14 +2941,16 @@ function kbProf(r,id){var d=KBPF[id],t=KBT[r[1]],h='';
   else h+='<div class="card" style="margin-top:14px;text-align:left;color:var(--muted)">아직 KBO 1군 기록이 없는 선수입니다.</div>';
   return h}
 function lgRec(id){var x=LGINFO[id];if(!x)return '';
-  return '<div class="card lgrec" style="margin-top:14px;text-align:left">'+
+  return '<div class="card lgrec kpf" style="margin-top:14px;text-align:left">'+
    (x.a&&x.a.length?'<b>🏅 업적</b><ul class="lga">'+x.a.map(function(t){return '<li>'+esc(t)+'</li>'}).join('')+'</ul>':'')+
    (x.r&&x.r.length?'<b style="display:block;margin-top:'+(x.a&&x.a.length?'12':'0')+'px">📊 통산 · 주요 기록</b>'+x.r.map(function(p){return '<div class="kv"><span>'+esc(p[0])+'</span><span>'+esc(p[1])+'</span></div>'}).join(''):'')+
    '<div class="lbl" style="margin-top:10px;font-size:12px">기록은 은퇴 때까지의 기사와 KBO 자료를 정리한 것이라 공식 기록과 조금 다를 수 있어요.</div></div>'}
 function kbView(){var id=(S.kd||{}).id,lg=kbLg(id),r=lg?null:KB.filter(function(x){return kbId(x)===id})[0];if((!r&&!lg)||!kbOwn(id)){S.pv='kbo';return kbHtml()}
-  if(lg){var k0=kbPl(),f0=k0.f[id],c0=k0.c[id];return '<button type="button" class="btn2" data-act="plkbo" style="margin:0 0 12px">← 도감으로</button><div class="pcshow">'+kbLeg(lg).replace('class="kgl"','class="kgl big"')+
-   '<div class="brow" style="justify-content:center;margin-top:14px"><button type="button" class="btn2'+(f0?' on':'')+'" data-act="plkfav" data-id="'+id+'" style="margin:0">'+(f0?'♥ 즐겨찾기 해제':'♡ 즐겨찾기')+'</button></div>'+
-   lgRec(id)+'<div class="card" style="margin-top:14px;text-align:left"><div class="kv"><span>선수</span><span>'+esc(lg[1])+'</span></div><div class="kv"><span>구단</span><span>'+esc(lg[3])+'</span></div><div class="kv"><span>포지션</span><span>'+esc(lg[2])+'</span></div>'+(lg[7]?'<div class="kv"><span>KBO 레전드 40</span><span>'+esc(lg[7])+'</span></div>':'')+'<div class="kv"><span>응원 한마디</span><span>'+esc(lg[6])+'</span></div></div></div>'}
+  if(lg){var k0=kbPl(),f0=k0.f[id],RN={L:'전설',S:'슈퍼',R:'레어',N:'일반'},tc0=TCOL[lg[3]]||['#334','#99a'],no0=CARDS.indexOf(lg)+1,row0=function(a,b){return b?'<div class="kv"><span>'+a+'</span><span>'+esc(b)+'</span></div>':''};
+   return '<button type="button" class="btn2" data-act="plkbo" style="margin:0 0 12px">← 도감으로</button><div class="kdet"><div class="kdl pcshow">'+kbLeg(lg).replace('class="kgl"','class="kgl big"')+
+   '<div class="brow" style="justify-content:center;margin-top:14px"><button type="button" class="btn2'+(f0?' on':'')+'" data-act="plkfav" data-id="'+id+'" style="margin:0">'+(f0?'♥ 즐겨찾기 해제':'♡ 즐겨찾기')+'</button></div></div>'+
+   '<div class="kdr"><div class="card kpf" style="margin-top:14px;text-align:left"><div class="kpf-h"><b class="kpf-n" style="color:'+tc0[0]+'">'+(NUMS[lg[1]]!=null?NUMS[lg[1]]:'No.'+no0)+'</b><div><div class="kpf-nm">'+esc(lg[1])+'</div><div class="kpf-sub">'+esc(lg[2])+' · '+esc(lg[3])+' · '+(RN[lg[4]]||'')+' 카드</div></div></div>'+
+   row0('선수',lg[1])+row0('구단',lg[3])+row0('포지션',lg[2])+row0('KBO 레전드 40',lg[7])+row0('응원 한마디',lg[6])+(lg[5]==='K'?row0('카드','KBO 40주년 레전드 No.'+String(no0).padStart(3,'0')+' / '+CARDS.length):'')+'</div>'+lgRec(id)+'</div></div>'}
   var t=KBT[r[1]],k=kbPl(),f=k.f[id],c=k.c[id];
   return '<button type="button" class="btn2" data-act="plkbo" style="margin:0 0 12px">← 도감으로</button><div class="kdet"><div class="kdl pcshow">'+kbCard(r,1)+
   '<div class="brow" style="justify-content:center;margin-top:14px"><button type="button" class="btn2'+(f?' on':'')+'" data-act="plkfav" data-id="'+id+'" style="margin:0">'+(f?'♥ 즐겨찾기 해제':'♡ 즐겨찾기')+'</button></div></div>'+
