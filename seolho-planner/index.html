@@ -82,6 +82,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -615,6 +616,7 @@ input[type=range]{height:34px;padding:0;accent-color:#DD032F}
 .ptf{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}.ptf label{display:block;font-size:15px;color:var(--muted);margin-bottom:4px}.ptf input{width:100%;height:46px;font:600 18px var(--f-b);padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:inherit;box-sizing:border-box}
 .ptr{display:grid;grid-template-columns:78px 1fr auto auto;gap:10px;align-items:center;padding:11px 0;border-top:1px solid var(--line);font-size:17px}.ptr:first-of-type{border-top:0}.ptr .d{color:var(--muted);font-size:15px}.ptr .n small{display:block;color:var(--muted);font-size:14px}.ptr .a{font-weight:800;text-align:right;min-width:84px}.ptr .a{font-size:20px}.ptr .a.e{color:#22B25F}.ptr .a.u{color:#FF4D63}.ptr .b{color:var(--muted);text-align:right;min-width:92px;font-size:15px}.ptr .x{grid-column:1/-1;text-align:right}
 .ptx{appearance:none;border:1px solid var(--line);background:transparent;color:var(--muted);height:34px;padding:0 12px;border-radius:17px;font:600 14px var(--f-b);cursor:pointer}
+#wz{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.92);display:flex;flex-direction:column}#wz .wzt{display:flex;gap:8px;align-items:center;justify-content:center;padding:10px;padding-top:max(10px,env(safe-area-inset-top,0px));flex-wrap:wrap}#wz .wzt button{appearance:none;border:0;height:46px;min-width:56px;padding:0 16px;border-radius:23px;background:#fff;color:#111;font:800 18px var(--f-b);cursor:pointer}#wz .wzt button.x{background:#DD032F;color:#fff}#wz .wzt span{color:#fff;font:700 16px var(--f-b);min-width:54px;text-align:center}#wz .wzs{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;text-align:center}#wz img{display:block;margin:0 auto;max-width:none;height:auto;background:#fff}
 label.wrl{position:relative;overflow:hidden;cursor:pointer;border:1px solid var(--line)}.wrf{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
 @media(max-width:560px){.ptr{grid-template-columns:62px 1fr auto}.ptr .b{display:none}}
 </style>
@@ -2244,9 +2246,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:239};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:240};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+['v2.40','오답 문제 사진을 눌러서 크게 볼 수 있어요 (＋－ 버튼, 두 손가락 확대, 두 번 탭)'],
 ['v2.39','폰 화면 아래 메뉴에서 ‘포인트’ 글자가 세로로 꺾이던 것 수정, 사라진 오답 문제 화면은 자동으로 목록으로 돌아가요'],
 ['v2.38','오답 사진 올리기: 갤러리·카메라 버튼을 누르면 사진 선택창이 더 확실하게 열려요'],
 ['v2.37','포인트 화면을 눈에 잘 띄게: 큰 빨간 잔액 카드, 선명한 적립·사용 색'],
@@ -3127,7 +3130,7 @@ function wrDetHtml(){
   var x=wrGet(WR.id);if(!x)return '<button type="button" class="btn2" data-act="owback">← 목록으로</button><div class="card" style="margin-top:12px">이 문제를 찾을 수 없어요.</div>';
   var st=x.st||0,h='<button type="button" class="btn2" data-act="owback" style="margin:0 0 12px">← 목록으로</button>';
   h+='<div class="card"><div class="go"><h2 style="margin:0">'+esc(x.s||'기타')+' · '+wrDate(x.t)+'</h2><span class="wst '+['n','m','g'][st]+'">'+wrLbl(x)+'</span></div>';
-  h+='<div class="wdet"><div class="wdl"><img class="wbig" src="'+esc(wrImg(x))+'" alt="오답 사진"></div><div class="wdr">';
+  h+='<div class="wdet"><div class="wdl"><img class="wbig" data-zoom="1" src="'+esc(wrImg(x))+'" alt="오답 사진" style="cursor:zoom-in"><button type="button" class="btn2" data-act="owzoom" style="margin:10px 0 0;border:1px solid var(--line)">🔍 크게 보기</button></div><div class="wdr">';
   if(WR.edit)h+='<label class="fl" for="owme">메모</label><input id="owme" maxlength="40" value="'+esc(x.m||'')+'"><div class="brow"><button type="button" class="btn" data-act="owmsave">저장</button><button type="button" class="btn2" data-act="owmno">취소</button></div>';
   else h+='<p style="margin:10px 0 0">'+(x.m?'📝 '+esc(x.m):'<span class="lbl">메모가 없어요</span>')+'</p>';
   h+='<div class="wsteps">'+['새 오답','복습 중','졸업'].map(function(t,i){return '<span'+(i===st?' class="on '+['n','','g'][i]+'"':'')+'>'+t+'</span>'}).join('')+'</div>';
@@ -3205,6 +3208,25 @@ function renderWrong(){
   if(!DB||!WR.list){main.innerHTML=head+'<div class="card" style="max-width:560px">'+(DB?'오답 목록을 불러오는 중이에요…':'가족 공유 저장소에 연결하는 중이에요…')+'</div>';return}
   if(WR.v==='det'&&!wrGet(WR.id)){WR.v='list';WR.id=null}
   main.innerHTML=head+(WR.v==='add'?wrAddHtml():WR.v==='det'?wrDetHtml():wrListHtml())}
+
+var WZ={lv:1};
+function wzClose(){var o=document.getElementById('wz');if(o)o.remove();document.removeEventListener('keydown',wzKey)}
+function wzKey(e){if(e.key==='Escape')wzClose()}
+function wzSet(lv){var o=document.getElementById('wz');if(!o)return;lv=Math.max(1,Math.min(5,lv));var sc=o.querySelector('.wzs'),im=o.querySelector('img');
+  var cx=(sc.scrollLeft+sc.clientWidth/2)/Math.max(1,sc.scrollWidth),cy=(sc.scrollTop+sc.clientHeight/2)/Math.max(1,sc.scrollHeight);
+  WZ.lv=lv;im.style.width=(lv*100)+'%';o.querySelector('.wzv').textContent=Math.round(lv*100)+'%';
+  sc.scrollLeft=cx*sc.scrollWidth-sc.clientWidth/2;sc.scrollTop=cy*sc.scrollHeight-sc.clientHeight/2}
+function wzOpen(src){wzClose();WZ.lv=1;var o=document.createElement('div');o.id='wz';o.setAttribute('role','dialog');o.setAttribute('aria-label','문제 크게 보기');
+  o.innerHTML='<div class="wzt"><button type="button" data-z="-" aria-label="작게">－</button><span class="wzv">100%</span><button type="button" data-z="+" aria-label="크게">＋</button><button type="button" data-z="1">원래대로</button><button type="button" class="x" data-z="x">닫기</button></div><div class="wzs"><img alt="오답 사진 크게 보기" style="width:100%"></div>';
+  o.querySelector('img').src=src;document.body.appendChild(o);document.addEventListener('keydown',wzKey);
+  var sc=o.querySelector('.wzs'),d0=0,l0=1,lt=0;
+  o.addEventListener('click',function(e){var b=e.target.closest('button[data-z]');if(!b)return;var z=b.dataset.z;if(z==='x')wzClose();else if(z==='+')wzSet(WZ.lv+0.75);else if(z==='-')wzSet(WZ.lv-0.75);else wzSet(1)});
+  var dist=function(t){var a=t[0],b=t[1];return Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY)};
+  sc.addEventListener('touchstart',function(e){if(e.touches.length===2){d0=dist(e.touches);l0=WZ.lv}else if(e.touches.length===1){var n=Date.now();if(n-lt<300){wzSet(WZ.lv>1.5?1:2.5);e.preventDefault()}lt=n}},{passive:false});
+  sc.addEventListener('touchmove',function(e){if(e.touches.length===2&&d0){e.preventDefault();wzSet(l0*dist(e.touches)/d0)}},{passive:false});
+  sc.addEventListener('touchend',function(e){if(e.touches.length<2)d0=0});
+  sc.addEventListener('dblclick',function(){wzSet(WZ.lv>1.5?1:2.5)})}
+main.addEventListener('click',function(e){if(S.tab!=='wrong')return;var z=e.target.closest('img[data-zoom],button[data-act=owzoom]');if(!z)return;var im=z.tagName==='IMG'?z:main.querySelector('img[data-zoom]');if(im)wzOpen(im.src)});
 function wrUp(id,patch,msg){if(!DB)return;DB.doc('wrong/'+id).update(patch).then(function(){if(msg){fx('hr');plToast(msg)}else fx('ck')}).catch(function(){fx('un');plToast('저장하지 못했어요. 잠시 뒤에 다시 해 주세요')})}
 function wrSave(){var a=WR.add;if(!a||!a.blob||WR.busy||!WR.as||!DB)return;
   var m=document.getElementById('owm');if(m)a.m=m.value.trim();
