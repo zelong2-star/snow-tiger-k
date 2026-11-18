@@ -69,6 +69,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -535,7 +536,7 @@ input[type=range]{height:34px;padding:0;accent-color:#DD032F}
 .pc.lock .pck{font-size:40px;font-weight:700}.pc.lock .pcn{font-size:13px}
 .pcb{appearance:none;border:0;background:transparent;padding:0;position:relative;cursor:pointer;font:inherit;color:inherit}.pcb[disabled]{cursor:default}
 .pcx{position:absolute;right:5px;bottom:5px;z-index:3;background:var(--navy);color:var(--on-navy);border-radius:9px;padding:0 6px;font-size:12px;line-height:18px;font-weight:700;box-shadow:0 0 0 2px #fff}
-.pc.lgi,.pc.lgi.big{padding:0;background:none;aspect-ratio:1088/1446;border-radius:4%;box-shadow:0 2px 8px #0004}.pc.lgi .kfi{width:100%;height:100%;object-fit:cover;display:block}
+.pc.lgi{aspect-ratio:auto}.pc.lgi .pci{height:auto;padding:0;gap:0;background:none;border-radius:8px;overflow:hidden}.pc.lgi.big .pci{padding:0;border-radius:12px}.pc.lgi .kfi{display:block;width:100%;height:auto}
 .pc.big{width:300px;max-width:100%;margin:0 auto 14px;padding:9px;border-radius:18px;animation:pcin .6s ease-out}
 .pc.big .pci{padding:8px 9px;gap:6px;border-radius:12px}
 
@@ -2221,9 +2222,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:226};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:227};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+['v2.27','레전드 일러스트 카드에 기존 테두리·빛나는 효과 유지'],
 ['v2.26','레전드 일러스트 카드 6장 추가 (선동열·최동원·이종범·이승엽·송진우·구대성), 카드 이미지 용량 줄임'],
 ['v2.25','롯데 외야수 일러스트 카드 11장 추가 (김동혁·김동현·손호영·신윤후·윤동희·장두성·전준우·조세진·황성빈·레이예스·김한홀)'],
 ['v2.24','롯데 일러스트 카드 4장 추가 (전민재·최항·한태양·이서준)'],
@@ -2839,8 +2841,8 @@ function plSwing(j){var g=S.g;if(!g||!g.live||g.res)return;clearTimeout(g.to);
 var NUMS={'최동원':11,'이대호':10};
 function plCardHtml(c,own,big){
   if(!own)return '<div class="pc lock"><div class="pck">?</div><div class="pcn">???</div></div>';
-  if(LGFULL[c[0]])return '<div class="pc lgi'+(big?' big':'')+'" role="img" aria-label="'+esc(c[1]+' '+c[2]+' '+c[3])+'"><img class="kfi" src="'+LGFULL[c[0]]+'" alt="'+esc(c[1])+'"></div>';
   var rr=RAR[c[4]],tc=TCOL[c[3]]||['#334','#99a'],no=CARDS.indexOf(c)+1,pos=c[2],pcode=/투수/.test(pos)?'P':/포수/.test(pos)?'C':/외야/.test(pos)?'OF':/유격|내야|2루|3루|1루/.test(pos)?'IF':'DH',em=/투수/.test(pos)?'⚾':/포수/.test(pos)?'🧤':/외야/.test(pos)?'🏃':/유격|내야|2루|3루|1루/.test(pos)?'🧢':'🏏';
+  if(LGFULL[c[0]])return '<div class="pc lgi r'+c[4]+(big?' big':'')+'" style="--c1:'+tc[0]+';--c2:'+tc[1]+';--rc:'+rr.c+'" role="img" aria-label="'+esc(c[1]+' '+c[2]+' '+c[3])+'"><div class="pci"><img class="kfi" src="'+LGFULL[c[0]]+'" alt="'+esc(c[1])+'"></div>'+(c[4]==='S'||c[4]==='L'?'<div class="pcs2"></div>':'')+'</div>';
   return '<div class="pc r'+c[4]+(big?' big':'')+'" style="--c1:'+tc[0]+';--c2:'+tc[1]+';--rc:'+rr.c+'">'+
     '<div class="pci"><div class="pct"><span>'+(c[5]==='K'?'KBO LEGEND':'LOTTE GIANTS')+'</span><b>'+rr.n+'</b></div>'+
     '<div class="pca"><svg class="pcst" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M-10 70L60 -10M10 110L110 0M40 110L110 30" stroke="#fff" stroke-opacity=".13" stroke-width="9" fill="none"/></svg><div class="pcnum"><b>'+(NUMS[c[1]]!=null?NUMS[c[1]]:pcode)+'</b>'+(NUMS[c[1]]!=null?'<small>'+pcode+'</small>':'')+'</div><div class="pcem"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="rgba(255,255,255,.14)" stroke="rgba(255,255,255,.75)" stroke-width="3"/><path d="M22 18C34 34 34 66 22 82M78 18C66 34 66 66 78 82" stroke="rgba(255,255,255,.55)" stroke-width="2.5" fill="none" stroke-dasharray="3 4"/></svg><span>'+esc(c[3])+'</span></div>'+(c[5]==='K'?'<em class="pcrb">'+esc(c[7]||'LEGEND')+'</em>':'')+'</div>'+
