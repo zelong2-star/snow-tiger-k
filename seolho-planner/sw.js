@@ -1,5 +1,5 @@
 /* 설호 학습 플래너 서비스 워커: 앱 파일을 저장해 두어 인터넷이 없어도 열린다. */
-var V = 'seolho-app-v223';
+var V = 'seolho-app-v224';
 var FONTS = 'seolho-fonts-v1';
 var CORE = ['./', 'index.html', 'manifest.webmanifest', 'face.jpg',
   'fonts/kk.woff2', 'fonts/bsB.woff2', 'fonts/bsM.woff2', 'fonts/Giants-Regular.ttf', 'fonts/Giants-Bold.ttf', 'fonts/Giants-Inline.ttf',
