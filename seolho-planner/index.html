@@ -80,6 +80,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -613,6 +614,7 @@ input[type=range]{height:34px;padding:0;accent-color:#DD032F}
 .ptf{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}.ptf label{display:block;font-size:15px;color:var(--muted);margin-bottom:4px}.ptf input{width:100%;height:46px;font:600 18px var(--f-b);padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:inherit;box-sizing:border-box}
 .ptr{display:grid;grid-template-columns:78px 1fr auto auto;gap:10px;align-items:center;padding:11px 0;border-top:1px solid var(--line);font-size:17px}.ptr:first-of-type{border-top:0}.ptr .d{color:var(--muted);font-size:15px}.ptr .n small{display:block;color:var(--muted);font-size:14px}.ptr .a{font-weight:800;text-align:right;min-width:84px}.ptr .a{font-size:20px}.ptr .a.e{color:#22B25F}.ptr .a.u{color:#FF4D63}.ptr .b{color:var(--muted);text-align:right;min-width:92px;font-size:15px}.ptr .x{grid-column:1/-1;text-align:right}
 .ptx{appearance:none;border:1px solid var(--line);background:transparent;color:var(--muted);height:34px;padding:0 12px;border-radius:17px;font:600 14px var(--f-b);cursor:pointer}
+label.wrl{position:relative;overflow:hidden;cursor:pointer;border:1px solid var(--line)}.wrf{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
 @media(max-width:560px){.ptr{grid-template-columns:62px 1fr auto}.ptr .b{display:none}}
 </style>
 
@@ -2241,9 +2243,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:237};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:238};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+['v2.38','오답 사진 올리기: 갤러리·카메라 버튼을 누르면 사진 선택창이 더 확실하게 열려요'],
 ['v2.37','포인트 화면을 눈에 잘 띄게: 큰 빨간 잔액 카드, 선명한 적립·사용 색'],
 ['v2.36','새 메뉴 ‘포인트’: 문제집을 다 풀면 가격의 10%가 적립되고, 사용·잔액을 장부처럼 볼 수 있어요'],
 ['v2.35','레전드 상세 화면도 현역 선수처럼 왼쪽 카드 · 오른쪽 선수 정보와 기록'],
@@ -3112,8 +3115,7 @@ function wrAddHtml(){
   var a=WR.add||{},h='<button type="button" class="btn2" data-act="owcancel" style="margin:0 0 12px">← 목록으로</button>';
   h+='<div class="card"><h2>📷 오답 사진 올리기</h2>';
   h+=a.pv?'<img class="wbig" src="'+a.pv+'" alt="고른 사진 미리보기">':'<div class="card" style="text-align:center;color:var(--muted);border-style:dashed;margin:0"><div style="font-size:42px">📸</div>사진을 찍거나 갤러리에서 골라요<br><small>올릴 때 자동으로 작게 줄여서 저장해요</small></div>';
-  h+='<div class="brow"><button type="button" class="btn2" data-act="owcam">📷 카메라</button><button type="button" class="btn2" data-act="owgal">🖼️ 갤러리</button></div>';
-  h+='<input type="file" accept="image/*" capture="environment" id="owcamI" hidden><input type="file" accept="image/*" id="owgalI" hidden>';
+  h+='<div class="brow"><label class="btn2 wrl">📷 카메라<input type="file" accept="image/*" capture="environment" id="owcamI" class="wrf" aria-label="카메라로 찍기"></label><label class="btn2 wrl">🖼️ 갤러리<input type="file" accept="image/*" id="owgalI" class="wrf" aria-label="갤러리에서 고르기"></label></div>';
   h+='<div class="fl">과목</div><div class="seg">'+WR_SUBJ.map(function(s){return '<button type="button" class="btn2'+(a.s===s?' on':'')+'" data-act="owsub" data-s="'+s+'">'+s+'</button>'}).join('')+'</div>';
   h+='<label class="fl" for="owm">메모 (선택)</label><input id="owm" maxlength="40" placeholder="예: 받아내림에서 헷갈렸어요" value="'+esc(a.m||'')+'">';
   if(WR.err)h+='<p class="err" role="alert">'+esc(WR.err)+'</p>';
