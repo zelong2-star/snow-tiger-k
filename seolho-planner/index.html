@@ -83,6 +83,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -2246,9 +2247,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:240};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:241};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+['v2.41','오답 사진: ✏️ 풀이 흔적 지우기(올릴 때) · 🧠 풀이 만들기(풀이·정답·쉬운 비유·비슷한 연습문제)'],
 ['v2.40','오답 문제 사진을 눌러서 크게 볼 수 있어요 (＋－ 버튼, 두 손가락 확대, 두 번 탭)'],
 ['v2.39','폰 화면 아래 메뉴에서 ‘포인트’ 글자가 세로로 꺾이던 것 수정, 사라진 오답 문제 화면은 자동으로 목록으로 돌아가요'],
 ['v2.38','오답 사진 올리기: 갤러리·카메라 버튼을 누르면 사진 선택창이 더 확실하게 열려요'],
@@ -3089,7 +3091,7 @@ function playClick(e){
 var WR_LINK='https://claude.ai/artifact/L5UKfZVaQkTeNEo3ZdS3GQ';
 var WR_WEB=!!(window.claude&&window.claude.use);
 var WR_SUBJ=['수학','영어','국어','한자','기타'];
-var WR={list:null,as:null,sub:'전체',sf:'todo',v:'list',id:null,add:null,busy:false,err:'',edit:false,del:false,perr:false};
+var WR={list:null,as:null,sm:null,sb:null,serr:'',sub:'전체',sf:'todo',v:'list',id:null,add:null,busy:false,err:'',edit:false,del:false,perr:false};
 function wrImg(x){return x.u||(x.a?'/_blob/'+x.a:'')}
 function wrDate(t){var d=new Date(t||Date.now());return (d.getMonth()+1)+'/'+d.getDate()}
 function wrTodo(){return (WR.list||[]).filter(function(x){return (x.st||0)!==2}).length}
@@ -3102,6 +3104,57 @@ function wrShrink(file){return new Promise(function(res,rej){var u=URL.createObj
     cv.width=cw;cv.height=ch;var cx=cv.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,cw,ch);cx.drawImage(im,0,0,cw,ch);URL.revokeObjectURL(u);
     cv.toBlob(function(b){b?res(b):rej(new Error('blob'))},'image/jpeg',.82)};
   im.onerror=function(){URL.revokeObjectURL(u);rej(new Error('img'))};im.src=u})}
+
+function wrClean(blob,lv){return new Promise(function(res,rej){var u=URL.createObjectURL(blob),im=new Image();
+  im.onload=function(){try{var w=im.naturalWidth,h=im.naturalHeight,cv=document.createElement('canvas');cv.width=w;cv.height=h;var cx=cv.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,w,h);cx.drawImage(im,0,0);URL.revokeObjectURL(u);
+    var id=cx.getImageData(0,0,w,h),d=id.data,n=w*h,L=new Float32Array(n),sat=new Uint8Array(n),i,x,y;
+    for(i=0;i<n;i++){var r=d[i*4],g=d[i*4+1],b=d[i*4+2];L[i]=.299*r+.587*g+.114*b;sat[i]=Math.max(r,g,b)-Math.min(r,g,b)}
+    /* 종이 밝기: 블록별 상위 밝기를 잡아 그림자·조명 차이를 평평하게 */
+    var B=24,gw=Math.ceil(w/B),gh=Math.ceil(h/B),bg=new Float32Array(gw*gh);
+    for(var by=0;by<gh;by++)for(var bx=0;bx<gw;bx++){var hist=new Uint16Array(256),cnt=0;
+      for(y=by*B;y<Math.min(h,by*B+B);y+=2)for(x=bx*B;x<Math.min(w,bx*B+B);x+=2){hist[L[y*w+x]|0]++;cnt++}
+      var acc=0,t=cnt*.1,v=255;for(var k=255;k>=0;k--){acc+=hist[k];if(acc>=t){v=k;break}}bg[by*gw+bx]=Math.max(v,90)}
+    var T=lv===1?185:lv===3?125:155,SOFT=28,SAT=lv===1?9999:(lv===3?38:55);
+    for(y=0;y<h;y++){var gy=Math.min(gh-1,(y/B)|0);for(x=0;x<w;x++){i=y*w+x;var bv=bg[gy*gw+Math.min(gw-1,(x/B)|0)],nv=Math.min(255,L[i]/bv*255),o;
+      if(sat[i]>SAT&&nv>70)o=255;
+      else if(nv<=T-SOFT)o=nv<60?nv*0.6:nv;
+      else if(nv>=T)o=255;
+      else o=nv+(255-nv)*((nv-(T-SOFT))/SOFT);
+      d[i*4]=d[i*4+1]=d[i*4+2]=o}}
+    cx.putImageData(id,0,0);cv.toBlob(function(b){b?res(b):rej(new Error('blob'))},'image/jpeg',.85)}catch(e){rej(e)}};
+  im.onerror=function(){URL.revokeObjectURL(u);rej(new Error('img'))};im.src=u})}
+function wrApply(){var a=WR.add;if(!a||!a.raw)return;WR.busy=true;WR.err='';renderWrong();
+  (a.er?wrClean(a.raw,a.lv||2):Promise.resolve(a.raw)).then(function(b){if(WR.add!==a)return;if(a.pv)URL.revokeObjectURL(a.pv);a.blob=b;a.pv=URL.createObjectURL(b);WR.busy=false;renderWrong()})
+  .catch(function(){WR.busy=false;WR.err='흔적 지우기에 실패했어요. 끄고 다시 해 주세요';renderWrong()})}
+var SOL_PROMPT='당신은 초등학교 2학년 어린이를 가르치는 친절한 선생님입니다. 첨부 사진은 아이가 틀린 문제입니다(연필 흔적이나 아이가 쓴 풀이가 있을 수 있으나 무시하고 인쇄된 문제를 읽으세요). 아래 JSON 형식으로만 답하세요.\n{"read":"사진에서 읽은 문제를 그대로 옮김(읽기 어려운 부분은 ‘(잘 안 보임)’이라고 표시)","ans":"정답(짧게)","steps":["초2가 이해하는 쉬운 말로 한 단계씩 풀이, 3~6개"],"tip":"왜 헷갈리기 쉬운지 한두 문장","ex":"비유: 야구·간식·놀이터처럼 아이 생활에 빗댄 한두 문장 설명(롯데 자이언츠 야구 비유를 우선 사용)","prac":[{"q":"비슷한 연습문제(숫자만 바꾼 것)","a":"정답"},{"q":"비슷한 연습문제 2","a":"정답"}],"sure":"high|mid|low (문제를 정확히 읽고 풀었는지 자신도)"}\n규칙: 문장은 짧고 쉬운 한국어, 어려운 한자어 금지, 사진이 문제가 아니거나 도저히 읽을 수 없으면 read에 그 이유를 쓰고 sure는 low. 연습문제는 2개.';
+function wrSolImg(x){return new Promise(function(res,rej){var im=new Image();im.onload=function(){try{var k=Math.min(1,1200/Math.max(im.naturalWidth,im.naturalHeight)),cv=document.createElement('canvas');cv.width=Math.round(im.naturalWidth*k);cv.height=Math.round(im.naturalHeight*k);var cx=cv.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,cv.width,cv.height);cx.drawImage(im,0,0,cv.width,cv.height);cv.toBlob(function(b){b?res(b):rej(new Error('blob'))},'image/jpeg',.85)}catch(e){rej(e)}};im.onerror=function(){rej(new Error('img'))};im.src=wrImg(x)})}
+function wrSolve(id){var x=wrGet(id);if(!x||!WR.sm||WR.sb)return;WR.sb=id;WR.serr='';renderWrong();
+  wrSolImg(x).then(function(bl){return WR.sm.json(SOL_PROMPT+(x.s?'\n과목: '+x.s:'')+(x.m?'\n메모: '+x.m:''),{images:[bl],modelTier:'complex',cache:false})})
+  .then(function(j){var steps=(j&&j.steps&&j.steps.map)?j.steps.map(String).slice(0,8):[],prac=(j&&j.prac&&j.prac.map)?j.prac.slice(0,3).map(function(p){return {q:String((p&&p.q)||''),a:String((p&&p.a)||'')}}):[];
+    var sol={read:String((j&&j.read)||''),ans:String((j&&j.ans)||''),steps:steps,tip:String((j&&j.tip)||''),ex:String((j&&j.ex)||''),prac:prac,sure:(j&&j.sure)||'mid',t:Date.now(),ok:0};
+    if(!sol.read&&!sol.steps.length)throw new Error('empty');
+    return DB.doc('wrong/'+id).update({sol:sol})})
+  .then(function(){WR.sb=null;fx('hr');plToast('🧠 풀이를 만들었어요. 부모님이 한 번 확인해 주세요');renderWrong()})
+  .catch(function(e){WR.sb=null;WR.serr=(e&&e.code==='not_granted')?'풀이 만들기 사용을 허용하지 않으셨어요.':(e&&e.code==='rate_limited')?'잠시 뒤에 다시 해 주세요(요청이 많아요).':'풀이를 만들지 못했어요. 사진이 선명한지 확인하고 다시 해 주세요.';renderWrong()})}
+function wrSolHtml(x){
+  var h='<div class="card wsol" style="margin:14px 0 0"><h2 style="margin:0 0 6px">🧠 풀이와 정답</h2>';
+  if(!WR.sm&&!x.sol)return h+'<div class="lbl">이 화면에서는 풀이 만들기를 쓸 수 없어요. 가족 링크(웹)에서 열어 주세요.</div></div>';
+  var so=x.sol;
+  if(WR.sb===x.id)return h+'<div class="lbl" role="status">풀이를 만드는 중이에요… 잠깐만 기다려 주세요 (10~30초)</div></div>';
+  if(!so){h+='<div class="lbl">사진 속 문제를 읽고, 초2 눈높이로 풀이·비유·비슷한 연습문제를 만들어 줘요.</div>';
+    if(WR.serr)h+='<p class="err" role="alert">'+esc(WR.serr)+'</p>';
+    return h+'<button type="button" class="btn" data-act="owsol" style="margin:10px 0 0">🧠 풀이 만들기</button></div>'}
+  var lowc=so.sure==='low'?'<div class="warn" style="margin:0 0 10px">⚠️ 문제를 잘 못 읽었을 수 있어요. 아래 ‘읽은 문제’가 맞는지 꼭 확인해 주세요.</div>':'';
+  h+=lowc+'<div class="lbl" style="margin-bottom:4px">'+(so.ok?'<b style="color:var(--green)">✅ 부모님 확인 완료</b>':'⏳ 부모님 확인 전 — AI가 만든 풀이라 틀릴 수 있어요')+'</div>';
+  h+='<div class="kv" style="display:block"><b>📖 읽은 문제</b><div style="margin-top:4px;white-space:pre-wrap">'+esc(so.read)+'</div></div>';
+  h+='<div class="kv" style="display:block"><b>✅ 정답</b><div style="margin-top:4px;font-size:20px;font-weight:800">'+esc(so.ans)+'</div></div>';
+  h+='<div class="kv" style="display:block"><b>👣 풀이</b><ol style="margin:6px 0 0;padding-left:22px">'+so.steps.map(function(t){return '<li style="margin:4px 0">'+esc(t)+'</li>'}).join('')+'</ol></div>';
+  if(so.ex)h+='<div class="kv" style="display:block"><b>⚾ 쉬운 비유</b><div style="margin-top:4px">'+esc(so.ex)+'</div></div>';
+  if(so.tip)h+='<div class="kv" style="display:block"><b>💡 헷갈리기 쉬운 점</b><div style="margin-top:4px">'+esc(so.tip)+'</div></div>';
+  if(so.prac&&so.prac.length)h+='<div class="kv" style="display:block"><b>✏️ 비슷한 연습문제</b>'+so.prac.map(function(p,i){return '<div style="margin-top:8px">'+(i+1)+'. '+esc(p.q)+'<details style="margin-top:4px"><summary style="cursor:pointer;color:var(--muted)">정답 보기</summary><b>'+esc(p.a)+'</b></details></div>'}).join('')+'</div>';
+  if(WR.serr)h+='<p class="err" role="alert">'+esc(WR.serr)+'</p>';
+  h+='<div class="brow" style="margin-top:10px"><button type="button" class="btn2" data-act="owsolok" style="border:1px solid var(--line)">'+(so.ok?'확인 취소':'✅ 부모님 확인했어요')+'</button>'+(WR.sm?'<button type="button" class="btn2" data-act="owsol" style="border:1px solid var(--line)">🔄 다시 만들기</button>':'')+'</div></div>';
+  return h}
 function wrChips(){
   var h='<div class="seg">';
   ['전체'].concat(WR_SUBJ).forEach(function(s){h+='<button type="button" class="btn2'+(WR.sub===s?' on':'')+'" data-act="owf" data-k="sub" data-v="'+s+'">'+s+'</button>'});
@@ -3121,6 +3174,9 @@ function wrAddHtml(){
   h+='<div class="card"><h2>📷 오답 사진 올리기</h2>';
   h+=a.pv?'<img class="wbig" src="'+a.pv+'" alt="고른 사진 미리보기">':'<div class="card" style="text-align:center;color:var(--muted);border-style:dashed;margin:0"><div style="font-size:42px">📸</div>사진을 찍거나 갤러리에서 골라요<br><small>올릴 때 자동으로 작게 줄여서 저장해요</small></div>';
   h+='<div class="brow"><label class="btn2 wrl">📷 카메라<input type="file" accept="image/*" capture="environment" id="owcamI" class="wrf" aria-label="카메라로 찍기"></label><label class="btn2 wrl">🖼️ 갤러리<input type="file" accept="image/*" id="owgalI" class="wrf" aria-label="갤러리에서 고르기"></label></div>';
+  if(a.raw){h+='<div class="fl">풀이 흔적</div><div class="seg"><button type="button" class="btn2'+(a.er?' on':'')+'" data-act="owera" aria-pressed="'+(!!a.er)+'">✏️ 풀이 흔적 지우기 '+(a.er?'켜짐':'꺼짐')+'</button>';
+    if(a.er)h+=[[1,'약하게'],[2,'보통'],[3,'세게']].map(function(o){return '<button type="button" class="btn2'+((a.lv||2)===o[0]?' on':'')+'" data-act="owlv" data-v="'+o[0]+'">'+o[1]+'</button>'}).join('');
+    h+='</div><div class="lbl" style="margin:-4px 0 8px">연한 연필·색펜 자국을 흐리게 해요. 사진이 흑백으로 바뀌고, 문제 글씨와 겹친 흔적은 남을 수 있어요. 미리보기를 보고 ‘세게’로 올리거나 끄세요.</div>'}
   h+='<div class="fl">과목</div><div class="seg">'+WR_SUBJ.map(function(s){return '<button type="button" class="btn2'+(a.s===s?' on':'')+'" data-act="owsub" data-s="'+s+'">'+s+'</button>'}).join('')+'</div>';
   h+='<label class="fl" for="owm">메모 (선택)</label><input id="owm" maxlength="40" placeholder="예: 받아내림에서 헷갈렸어요" value="'+esc(a.m||'')+'">';
   if(WR.err)h+='<p class="err" role="alert">'+esc(WR.err)+'</p>';
@@ -3137,7 +3193,7 @@ function wrDetHtml(){
   h+='<div class="lbl">다시 풀어본 횟수 <b style="color:var(--ink)">'+(x.n||0)+'회</b>'+(x.l?' · 마지막 '+wrDate(x.l):'')+'</div>';
   h+='<div class="brow">'+(st===2?'<button type="button" class="btn2" data-act="owre">↩ 다시 복습하기</button>':'<button type="button" class="btn" data-act="owrev" style="background:var(--green);color:#fff">✅ 다시 풀어봤어요</button><button type="button" class="btn2" data-act="owgrad">🎓 졸업!</button>')+'<button type="button" class="btn2" data-act="owedit">✏️ 메모 고치기</button><button type="button" class="btn2" data-act="owdel">🗑️ 삭제</button></div>';
   if(WR.del)h+='<div class="warn" style="margin-top:12px">삭제하면 사진도 목록에서 사라져요. 부모님 확인 번호를 입력해 주세요.<div class="brow"><input id="owpin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" style="width:140px" aria-label="확인 번호"><button type="button" class="btn" data-act="owdelok" style="margin-top:0">삭제하기</button><button type="button" class="btn2" data-act="owdelno" style="margin-top:0">취소</button></div>'+(WR.perr?'<p class="err" role="alert">번호가 달라요</p>':'')+'</div>';
-  return h+'</div></div></div>'}
+  h+='</div></div>';h+=wrSolHtml(x);return h+'</div>'}
 
 /* ===== 포인트: 문제집 완료 적립(가격의 10%) · 사용 · 잔액 ===== */
 function ptGet(){if(!S.pts||!Array.isArray(S.pts.l))S.pts={l:[]};return S.pts.l}
@@ -3244,6 +3300,10 @@ function wrClick(e){
   if(a==='owadd'){WR.add={s:'수학',m:'',blob:null,pv:''};WR.err='';WR.v='add';fx('ck')}
   else if(a==='owsub'){if(WR.add)WR.add.s=b.dataset.s;fx('ck')}
   else if(a==='owsave'){wrSave();return}
+  else if(a==='owera'){if(WR.add){WR.add.er=!WR.add.er;wrApply()}return}
+  else if(a==='owlv'){if(WR.add){WR.add.lv=+b.dataset.v;wrApply()}return}
+  else if(a==='owsol'){wrSolve(WR.id);return}
+  else if(a==='owsolok'){var xs=wrGet(WR.id);if(xs&&xs.sol){var ns=Object.assign({},xs.sol,{ok:xs.sol.ok?0:1});wrUp(xs.id,{sol:ns})}return}
   else if(a==='owcancel'){if(WR.add&&WR.add.pv)URL.revokeObjectURL(WR.add.pv);WR.add=null;WR.v='list';WR.err=''}
   else if(a==='owf'){WR[b.dataset.k]=b.dataset.v;fx('ck')}
   else if(a==='owopen'){WR.v='det';WR.id=b.dataset.id;WR.edit=false;WR.del=false;WR.perr=false;fx('ck')}
@@ -3267,7 +3327,7 @@ function wrClick(e){
 function wrChange(e){var t=e.target;if(!t||(t.id!=='owcamI'&&t.id!=='owgalI')||!t.files||!t.files[0]||!WR.add)return;
   var f=t.files[0],m=document.getElementById('owm');if(m)WR.add.m=m.value;
   WR.err='';WR.busy=true;renderWrong();
-  wrShrink(f).then(function(b){if(WR.add&&WR.add.pv)URL.revokeObjectURL(WR.add.pv);WR.add.blob=b;WR.add.pv=URL.createObjectURL(b);WR.busy=false;renderWrong()})
+  wrShrink(f).then(function(b){var ad=WR.add;if(!ad){WR.busy=false;return}ad.raw=b;wrApply()})
   .catch(function(){WR.busy=false;WR.err='사진을 읽지 못했어요. 다른 사진으로 해 볼까요?';renderWrong()})}
 main.addEventListener('click',wrClick);main.addEventListener('change',wrChange);
 
@@ -3325,6 +3385,7 @@ if(vwScroll>0)[0,250,700,1500].forEach(function(ms){setTimeout(vwApply,ms)});
   DB.doc('settings/daymeta').onSnapshot(function(s){
     if(s.exists){var x=s.data()||{};S.meta=(x.m&&typeof x.m==='object')?x.m:{};saveLocal();render()}
   },function(){});
+  try{window.claude.use('sample').then(function(m){WR.sm=m||null;if(S.tab==='wrong')render()},function(){WR.sm=null})}catch(e){WR.sm=null}
   try{window.claude.use('assets').then(function(a){WR.as=a||null;if(S.tab==='wrong')render()},function(){WR.as=null})}catch(e){WR.as=null}
   DB.collection('wrong').onSnapshot(function(snap){
     WR.list=snap.docs.map(function(d){var x=d.data()||{};x.id=d.id;return x}).filter(function(x){return x.a||x.u});
