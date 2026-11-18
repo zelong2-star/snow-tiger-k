@@ -63,6 +63,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -2214,9 +2215,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:220};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:221};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+['v2.21','새 버전으로 다시 열려도 보던 화면(탭·선수 도감 위치·스크롤)으로 돌아오기'],
 ['v2.20','롯데 일러스트 카드 추가: 신동건(67번 투수)'],
 ['v2.19','선수 도감 ‘전체 열기(부모)’: 이 기기에서 유지되도록 안정화 · 번호 입력 중 화면이 새로고침돼도 입력이 지워지지 않게 · 엔터로 열기'],
 ['v2.18','휴식 시작 때 놀이터 안내 · 놀이터 3×2 배열 · 선수 도감에 내가 뽑은 카드만 모아 보는 ‘내 카드’ 탭 · 도감 구단 탭이 사라졌던 문제 복구'],
@@ -3127,7 +3129,22 @@ prefsLoad();applySkin();
 loadLocal();adoptShipped();
 try{var rs=JSON.parse(localStorage.getItem('seolho-resume')||'null');localStorage.removeItem('seolho-resume');
   if(rs&&Date.now()-rs.t<120000){if(rs.tab)S.tab=rs.tab;S.toast=rs.msg||'';toastT=setTimeout(function(){S.toast='';render()},5000)}}catch(e){}
+/* 새 버전으로 다시 열려도 보던 화면(탭·도감 위치·스크롤)으로 돌아온다 (이 기기, 6시간 이내) */
+var VW_OK=['today','week','play','wrong'],VW_PV=['hub','kbo','kview'],vwScroll=-1,vwUser=false;
+function viewSave(){try{if(VW_OK.indexOf(S.tab)<0){localStorage.removeItem('seolho-view');return}
+  localStorage.setItem('seolho-view',JSON.stringify({t:S.tab,pv:S.tab==='play'?S.pv:null,kb:S.kb||null,kd:S.kd||null,pu:S.plUntil||0,st:main.scrollTop,at:Date.now()}))}catch(e){}}
+try{var vw=JSON.parse(localStorage.getItem('seolho-view')||'null');
+  if(vw&&S.tab==='home'&&Date.now()-vw.at<6*3600000&&VW_OK.indexOf(vw.t)>=0){
+    S.tab=vw.t;
+    if(vw.t==='play'){if(vw.pu>Date.now())S.plUntil=vw.pu;if(VW_PV.indexOf(vw.pv)>=0&&(vw.pv!=='kview'||vw.kd)){S.pv=vw.pv;if(vw.kb)S.kb=vw.kb;if(vw.kd)S.kd=vw.kd}}
+    vwScroll=vw.st||0}}catch(e){}
+['pointerdown','wheel','touchstart','keydown'].forEach(function(ev){window.addEventListener(ev,function(){vwUser=true},{passive:true,capture:true})});
+setInterval(viewSave,1500);
+document.addEventListener('visibilitychange',function(){if(document.hidden)viewSave()});
+window.addEventListener('pagehide',viewSave);
+function vwApply(){if(vwScroll>0&&!vwUser)main.scrollTop=vwScroll}
 render();
+if(vwScroll>0)[0,250,700,1500].forEach(function(ms){setTimeout(vwApply,ms)});
 
 (async function(){
   try{
