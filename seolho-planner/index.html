@@ -86,6 +86,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -2249,9 +2250,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:243};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:244};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+['v2.44','오답 목록에서 문제를 눌러도 열리지 않던 문제 수정'],
 ['v2.43','풀이 흔적 지우기를 더 부드럽게: 사진 속 인쇄 글씨가 같이 지워지지 않도록 기본을 ‘약하게’로, 진한 글씨 기준으로 계산'],
 ['v2.42','오답 사진 고르기: 사진 선택창을 다녀오면 화면이 새로고침되며 선택이 사라지던 문제 수정'],
 ['v2.41','오답 사진: ✏️ 풀이 흔적 지우기(올릴 때) · 🧠 풀이 만들기(풀이·정답·쉬운 비유·비슷한 연습문제)'],
@@ -3398,7 +3400,7 @@ if(vwScroll>0)[0,250,700,1500].forEach(function(ms){setTimeout(vwApply,ms)});
   try{window.claude.use('sample').then(function(m){WR.sm=m||null;if(S.tab==='wrong')render()},function(){WR.sm=null})}catch(e){WR.sm=null}
   try{window.claude.use('assets').then(function(a){WR.as=a||null;if(S.tab==='wrong')render()},function(){WR.as=null})}catch(e){WR.as=null}
   DB.collection('wrong').onSnapshot(function(snap){
-    WR.list=snap.docs.map(function(d){var x=d.data()||{};x.id=d.id;return x}).filter(function(x){return x.a||x.u});
+    WR.list=snap.docs.map(function(d){var x=Object.assign({},d.data()||{});x.id=String(d.id!=null?d.id:(d.ref&&d.ref.id)||'');return x}).filter(function(x){return x.a||x.u});
     if(S.tab==='wrong')render();
   },function(){WR.list=WR.list||[];if(S.tab==='wrong')render()});
 })();
