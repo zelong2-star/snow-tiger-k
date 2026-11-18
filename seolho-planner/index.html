@@ -91,6 +91,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>설호 학습 플래너</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
@@ -1578,7 +1579,7 @@ function renderToday(c){
     list+='<div class="rw"><button class="row'+(d?' d':'')+'" data-i="'+i+'" aria-pressed="'+d+'"><span class="ck">'+ICON_CK+'</span><span class="tm">'+esc(it.t)+'</span><span class="nm">'+esc(it.n)+(partsOf(it.n)?'<span class="tg">'+(partsOf(it.n).filter(function(q){return subDone(ds,it.n,q,partsOf(it.n))}).join('·')||'눌러서 선택')+'</span>':'')+'</span></button>'+(ro?'':tmBtn(c.tk,it,i))+'</div>';
     var ps=partsOf(it.n);
     if(ps&&S.so===c.tk+':'+i)list+='<div class="subs" role="group" aria-label="'+esc(it.n)+' 세부 항목">'+ps.map(function(q,j){var sd=subDone(ds,it.n,q,ps);return '<button type="button" class="sub'+(sd?' d':'')+'" data-sub="'+i+':'+j+'" aria-pressed="'+sd+'">'+(sd?'✓ ':'')+esc(q)+'</button>'}).join('')+'</div>';
-    if((it.n==='READ IT(본문)'||it.n==='READ IT(복습)')&&i>0&&ds.has(its[i-1].n))list+=readGuide();
+    if(it.n.indexOf('READ IT')===0&&i>0&&ds.has(its[i-1].n))list+=readGuide();
   });
   var nextI=-1;for(var j=0;j<its.length;j++){if(!ds.has(its[j].n)){nextI=j;break}}
   function xl(name,got,tot,hit){return '<div class="xb'+(hit?' d':'')+'"><span>'+name+'</span><span>'+got+' / '+tot+(hit?' 달성!':'')+'</span></div>'}
@@ -2259,9 +2260,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:248};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-16',ver:249};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+['v2.49','영어 5단계 학습 규칙 안내가 READ IT(워크북)(화요일)에도 나와요'],
 ['v2.48','영어 5단계 학습 규칙 안내가 READ IT(복습)(수요일)에도 나와요'],
 ['v2.47','READ IT(본문) 바로 앞 과목을 끝내면, 그 아래에 ‘영어 듣기·말하기 5단계 학습 규칙’ 안내가 나와요'],
 ['v2.46','오답 사진 자르기: 올릴 때와 크게 보기에서 필요한 부분만 잘라 낼 수 있어요'],
