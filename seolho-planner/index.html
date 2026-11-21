@@ -186,6 +186,15 @@ h2{font-size:17px;font-weight:700;margin:0 0 10px}
 .tmb.pz{border-color:var(--amber);color:var(--amber);background:var(--amber-bg)}
 .tmb.on{background:var(--navy);border-color:var(--navy);color:var(--on-navy)}
 .tmb.on b{font-variant-numeric:tabular-nums}
+.fav{position:relative;margin:12px 16px 6px;border-radius:14px;overflow:hidden;background:#000;aspect-ratio:4/3}
+.fav video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:block}
+.fav::after{content:"";position:absolute;left:50%;top:50%;width:44%;aspect-ratio:3/4;transform:translate(-50%,-50%);border:3px dashed rgba(255,255,255,.9);border-radius:50%;box-shadow:0 0 0 999px rgba(0,0,0,.32)}
+.fas{padding:4px 16px;font-size:19.5px;font-weight:700;text-align:center;min-height:54px;display:flex;align-items:center;justify-content:center}
+.fas.ok{color:#1a8f3c}.fas.no{color:var(--red)}
+.fab{display:flex;gap:8px;padding:6px 16px 16px}
+.fads{display:flex;gap:6px;margin-top:8px}
+.fad{flex:1;text-align:center;padding:6px 0;border-radius:8px;border:1px solid var(--line);font-size:15px;color:var(--muted)}
+.fad.on{background:var(--navy);color:var(--on-navy);border-color:var(--navy);font-weight:700}
 .luo{position:fixed;inset:0;z-index:50;background:rgba(4,30,66,.6);display:flex;align-items:center;justify-content:center;padding:16px}
 .lub{width:100%;max-width:400px;max-height:92vh;display:flex;flex-direction:column;background:var(--panel);border-radius:18px;overflow:hidden;box-shadow:0 18px 48px rgba(0,0,0,.4)}
 .lut{background:var(--navy);color:var(--on-navy);padding:14px 18px 13px;position:relative;flex:none}
@@ -1624,7 +1633,7 @@ function renderToday(c){
    (S.rainAsk?'<div class="card" style="margin:0 0 12px"><div class="lbl">'+(inf.rain?'우천 취소를 해제할까요?':'급한 일로 오늘 일정을 못 하게 됐나요? 우천 취소로 처리하면 오늘은 타율·달성률·이용권 조건에서 빠져요.')+' 부모 비밀번호를 입력하세요.</div><div class="brow"><input id="rpin" type="password" inputmode="numeric" maxlength="8" placeholder="비밀번호" aria-label="부모 비밀번호" style="flex:1;min-width:120px"><button type="button" class="btn" data-act="rainok" style="margin:0">확인</button><button type="button" class="btn2" data-act="rainask" style="margin:0">닫기</button></div>'+(S.rainErr?'<div class="warn" style="margin:8px 0 0">비밀번호가 맞지 않아요.</div>':'')+'</div>':'')+
    (inf.rain?'<div class="warn" style="margin:0 0 12px">☔ 오늘은 우천 취소예요. 오늘 항목은 타율·달성률·이용권 조건에서 빠져요.</div>':'')+
    (S.toast?'<div class="win" role="status" style="margin:0 0 12px">'+esc(S.toast)+'</div>':'')+
-   '<div class="today"><div>'+(S.timer?tmPanel():'')+list+'</div><div class="side">'+
+   '<div class="today"><div>'+(S.timer?tmPanel():'')+list+'</div><div class="side">'+(ro?'':faCard())+
    '<div class="card"><div class="lbl">'+(ro?'이날의':'오늘의')+' 훈련</div><div class="big">'+n+' / '+total+'</div>'+scoreboard(its,ds)+diamondSvg(stage)+'<div class="stg">'+stageTxt+'</div><div class="lbl" style="margin-top:6px;text-align:center">'+msg+'</div></div>'+
    bat+((ro&&S.vo<0)?'<div class="card"><div class="lbl">체크를 빠뜨렸나요? 부모님 확인 번호로 이날 체크를 고칠 수 있어요.</div><div class="brow"><button type="button" class="btn2" data-act="pfix">🔒 이날 체크 고치기</button></div></div>':'')+note+
    '<div class="card"><div class="lbl">다음 할 일</div><div style="font-size:23px;font-weight:700">'+(nextI<0?'모두 완료':esc(its[nextI].n))+'</div></div>'+
@@ -1642,6 +1651,7 @@ function todayClick(e){
   if(S.rs&&e.target.classList&&e.target.classList.contains('luo')){S.rs=null;render();return}
   var b=e.target.closest('button[data-act]');if(!b)return;
   var a=b.dataset.act,c=ctx();
+  if(faAct(a))return;
   if(a==='tix'){var tt=b.dataset.t;if(S.tixArm!==tt){S.tixArm=tt;render();return}S.tixArm=null;var ck5=key(c.dates[tt==='b'?6:5]);setMeta(ck5,tt==='a'?{ua:1}:tt==='c'?{uc:1}:{ub:1});fx('ck');render();return}
   if(a==='pfix'){S.fixDate=viewCtx(c).tk;S.tab='log';S.vo=0;closePop();render();main.scrollTop=0;return}
   if(a==='dnav'){var dd=+b.dataset.d;S.vo=dd===0?0:Math.max(-7,Math.min(7,(S.vo||0)+dd));S.rainAsk=false;render();return}
@@ -2278,9 +2288,10 @@ function logClick(e){
   }
 }
 
-var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-21',ver:260};
+var APP={name:'설호 학습 플래너',maker:'재용',date:'2026-11-21',ver:261};
 function VS(n){n=+n||0;return 'v'+Math.floor(n/100)+'.'+String(n%100).padStart(2,'0')}
 var UPD_LOG=[
+  ['v2.61','📸 얼굴 인증 출석(설치한 앱 전용): 부모님이 설호 얼굴을 등록하면 오늘 탭에서 얼굴로 출석해요. 얼굴 정보·사진은 이 기기에만 저장돼요.'],
   ['v2.60','공부 끝 알람을 학교 종소리 2소절(딩동댕동 댕동딩동)로 늘렸어요.'],
   ['v2.59','공부 완료한 항목도 ‘완료 N개’ 줄 아래 ⏱ 버튼으로 타이머를 다시 켜서 시간을 더할 수 있어요 (틀린 문제 풀이 시간 등).'],
   ['v2.58','이지강 카드를 새 사진으로 바꾸고, 장시환 카드를 도감에 추가했어요.'],
@@ -2455,6 +2466,7 @@ function renderSet(c){
    '<div class="kv"><span>휴식</span><select id="tmbk" style="width:auto">'+[5,10,15,20].map(function(n){return '<option value="'+n+'"'+(S.tmBreak===n?' selected':'')+'>'+n+'분</option>'}).join('')+'</select></div>'+
    '<div class="how" style="margin-top:8px"><b>사용법</b> 오늘 탭에서 ⏱를 누르면 시작해요. 정지는 잠깐 멈춤, 다시 시작은 이어서, 완료는 끝내고 저장이에요. 항목을 체크하면 자동으로 완료돼요.</div></div>'+
    '</div><div>'+
+   '<div class="card"><h2>📸 얼굴 인증 출석</h2>'+faSetHtml()+'</div>'+
    '<div class="card"><h2>앱 정보</h2>'+
    '<div class="kv"><span>업데이트</span><span><b>'+VS(APP.ver)+' · '+APP.date+'</b></span></div>'+
    '<div class="kv"><span>개발자</span><span><b>'+esc(APP.maker)+'</b></span></div>'+
@@ -2475,6 +2487,7 @@ function setClick(e){
   var b=e.target.closest('button[data-act]');if(!b)return;
   var a=b.dataset.act,v=b.dataset.v;
   if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();
+  if(faAct(a))return;
   if(a==='psound'){S.sound=!S.sound;prefsSave();render();if(S.sound)fx('ck')}
   else if(a==='pvoice'){S.voice=!S.voice;prefsSave();render()}
   else if(a==='phap'){S.haptic=!S.haptic;prefsSave();render();vib('bt')}
@@ -3436,6 +3449,126 @@ try{var vw=JSON.parse(localStorage.getItem('seolho-view')||'null');
 ['pointerdown','wheel','touchstart','keydown'].forEach(function(ev){window.addEventListener(ev,function(){vwUser=true},{passive:true,capture:true})});
 setInterval(viewSave,1500);
 document.addEventListener('visibilitychange',function(){if(document.hidden)viewSave()});
+/* ===== 얼굴 인증 출석 (설치형 전용 · 얼굴 정보와 사진은 이 기기에만 저장) ===== */
+var FA={ok:!(window.claude&&window.claude.use)&&!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)&&location.protocol.indexOf('http')===0,lib:0,stream:null,timer:null,run:0,mode:'',after:'',samples:[],last:null,hit:0,TH:0.5,NEED:5};
+var FA_STEPS=['정면을 봐요','살짝 왼쪽을 봐요','살짝 오른쪽을 봐요','활짝 웃어요','조금 가까이 와요'];
+function faFace(){try{var f=JSON.parse(localStorage.getItem('seolho-face')||'null');return f&&f.d&&f.d.length?f:null}catch(e){return null}}
+function faAtt(){try{return JSON.parse(localStorage.getItem('seolho-att')||'{}')||{}}catch(e){return {}}}
+function faAttSave(a){var ks=Object.keys(a).sort();while(ks.length>60)delete a[ks.shift()];
+  try{localStorage.setItem('seolho-att',JSON.stringify(a))}catch(e){var k2=Object.keys(a).sort();k2.slice(0,-1).forEach(function(k){if(a[k])delete a[k].p});try{localStorage.setItem('seolho-att',JSON.stringify(a))}catch(e2){}}}
+function faStreak(a){var d=new Date(),n=0;if(!a[key(d)])d.setDate(d.getDate()-1);while(a[key(d)]){n++;d.setDate(d.getDate()-1)}return n}
+function faDots(a){var s='',d=new Date();for(var i=6;i>=0;i--){var x=new Date(d.getFullYear(),d.getMonth(),d.getDate()-i);s+='<span class="fad'+(a[key(x)]?' on':'')+'" title="'+key(x)+'">'+DOW[(x.getDay()+6)%7]+'</span>'}return '<div class="fads" aria-label="최근 7일 출석">'+s+'</div>'}
+function faCard(){
+  var a=faAtt(),tk=key(new Date()),got=a[tk],f=faFace(),body;
+  if(!FA.ok)return '<div class="card"><div class="lbl">📸 얼굴 출석</div><div class="lbl" style="margin-top:4px">설치한 앱(홈 화면 아이콘)에서만 쓸 수 있어요.</div></div>';
+  if(got)body='<div class="win" style="margin:8px 0">✅ '+esc(got.t)+' 출석 완료!</div>';
+  else if(!f)body='<div class="lbl" style="margin:6px 0">부모님이 설호 얼굴을 먼저 등록해요.</div><button type="button" class="btn2" data-act="faenroll" style="width:100%">🔒 얼굴 등록 (부모님)</button>';
+  else body='<button type="button" class="btn" data-act="faopen" style="width:100%;margin-top:8px">📸 얼굴로 출석하기</button>';
+  var n=faStreak(a);
+  return '<div class="card"><div class="lbl">📸 얼굴 출석</div>'+body+faDots(a)+(n>1?'<div class="lbl" style="margin-top:6px">🔥 '+n+'일 연속 출석!</div>':'')+'</div>';
+}
+function faSetHtml(){
+  if(!FA.ok)return '<p class="lbl" style="margin:0">얼굴 인증 출석은 설치한 앱(홈 화면 아이콘)에서만 쓸 수 있어요. 인터넷 주소로 연 화면에서는 카메라를 쓸 수 없어요.</p>';
+  var f=faFace(),a=faAtt(),ks=Object.keys(a).sort().reverse().slice(0,14);
+  var rows=ks.map(function(k){var e=a[k];return '<div class="kv"><span>'+k+'</span><span style="display:flex;align-items:center;gap:8px">'+(e.p?'<img src="'+e.p+'" alt="" style="width:30px;height:40px;object-fit:cover;border-radius:6px">':'')+esc(e.t)+'</span></div>'}).join('');
+  return '<p class="lbl" style="margin:0 0 8px">얼굴 정보와 출석 사진은 <b>이 기기에만</b> 저장돼요. 서버나 가족 공유 저장소로 올라가지 않아요. 등록과 삭제는 부모님 확인 번호가 필요해요.</p>'+
+   '<div class="kv" style="border-top:0"><span>얼굴 등록</span><b>'+(f?'등록됨 ('+f.d.length+'장)':'아직 안 했어요')+'</b></div>'+
+   '<div class="brow" style="margin-top:8px"><button type="button" class="btn2" data-act="faenroll" style="margin:0">🔒 '+(f?'다시 등록':'얼굴 등록')+'</button>'+
+   (f?'<button type="button" class="btn2" data-act="fadel" style="margin:0">🔒 얼굴 정보 삭제</button>':'')+
+   (ks.length?'<button type="button" class="btn2" data-act="faclr" style="margin:0">🔒 출석 사진 지우기</button>':'')+'</div>'+
+   (rows?'<div class="lbl" style="margin-top:12px">최근 출석 기록</div>'+rows:'')+
+   '<p class="lbl" style="margin:10px 0 0">※ 사진으로 속일 수 있는 간단한 본인 확인이에요. 보안 장치가 아니라 출석 습관을 돕는 용도예요.</p>';
+}
+function faMsg(t,c){var el=$('fast');if(el){el.className='fas'+(c?' '+c:'');el.textContent=t}}
+function faOv(title,inner){
+  var o=$('faov');if(!o){o=document.createElement('div');o.id='faov';o.className='luo';o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');document.body.appendChild(o);
+    o.addEventListener('click',function(e){if(e.target===o){faStop();return}var b=e.target.closest('button[data-fa]');if(b)faBtn(b.dataset.fa)})}
+  o.innerHTML='<div class="lub"><div class="lut"><small>ATTENDANCE</small><h3>'+title+'</h3></div>'+inner+'</div>';
+}
+function faStop(){clearTimeout(FA.timer);FA.timer=null;FA.run=0;if(FA.stream){FA.stream.getTracks().forEach(function(t){t.stop()});FA.stream=null}
+  var o=$('faov');if(o)o.remove();document.removeEventListener('visibilitychange',faVis)}
+function faVis(){if(document.hidden)faStop()}
+function faPinScr(){
+  var t={enroll:'얼굴 등록',del:'얼굴 정보 삭제',clr:'출석 사진 지우기'}[FA.after];
+  faOv('🔒 '+t,'<div style="padding:14px 18px"><p class="lbl" style="margin:0 0 8px">부모님 확인 번호를 입력해 주세요.</p><input id="fapin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="••••" aria-label="부모님 확인 번호"><div id="fast" class="fas" role="alert"></div><div class="fab"><button type="button" class="btn2" data-fa="x" style="margin:0;flex:1">취소</button><button type="button" class="btn" data-fa="pinok" style="margin:0;flex:1">확인</button></div></div>');
+  setTimeout(function(){var p=$('fapin');if(p)p.focus()},50);
+}
+function faLoad(){
+  if(FA.lib)return FA.lib;
+  var p=new Promise(function(res,rej){var s=document.createElement('script');s.src='face/face-api.js';s.onload=function(){res()};s.onerror=function(){rej(new Error('lib'))};document.head.appendChild(s)})
+   .then(function(){var f=window.faceapi;return f.tf.ready().then(function(){return Promise.all([f.nets.tinyFaceDetector.loadFromUri('face'),f.nets.faceLandmark68TinyNet.loadFromUri('face'),f.nets.faceRecognitionNet.loadFromUri('face')])})});
+  FA.lib=p;p.catch(function(){FA.lib=0});return p;
+}
+function faCamScr(){
+  var en=FA.mode==='enroll';
+  faOv(en?'🔒 얼굴 등록':'📸 얼굴로 출석','<div class="fav"><video id="favid" playsinline muted autoplay></video></div><div id="fast" class="fas" role="status">카메라를 켜는 중…</div><div class="fab">'+
+   '<button type="button" class="btn2" data-fa="x" style="margin:0;flex:1">닫기</button>'+(en?'<button type="button" class="btn" id="fashot" data-fa="shot" style="margin:0;flex:1" disabled>📷 찰칵</button>':'')+'</div>');
+  document.addEventListener('visibilitychange',faVis);
+  faMsg('얼굴 인식을 준비하고 있어요… (처음 한 번은 조금 걸려요)');
+  faLoad().then(function(){
+    if(!$('faov'))return;
+    return navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:640},height:{ideal:480}},audio:false}).then(function(s){
+      if(!$('faov')){s.getTracks().forEach(function(t){t.stop()});return}
+      FA.stream=s;var v=$('favid');v.srcObject=s;var pl=v.play();if(pl&&pl.catch)pl.catch(function(){});
+      FA.hit=0;FA.last=null;(function go(){if(!$('faov'))return;if(v.readyState>=2&&v.videoWidth>0){FA.run=1;faLoop()}else setTimeout(go,100)})();
+    },function(){faMsg('카메라를 쓸 수 있게 허락해 주세요. (브라우저·기기 설정 → 카메라)','no')});
+  },function(){faMsg('얼굴 인식 파일을 불러오지 못했어요. 인터넷을 확인하고 다시 열어 주세요.','no')});
+}
+function faDist(d){var f=faFace(),best=9;if(!f)return best;f.d.forEach(function(s){var q=0;for(var i=0;i<128;i++){var x=s[i]-d[i];q+=x*x}q=Math.sqrt(q);if(q<best)best=q});return best}
+function faThumb(){
+  var v=$('favid');if(!v||!v.videoWidth)return '';
+  try{var c=document.createElement('canvas');c.width=150;c.height=200;var x=c.getContext('2d'),vw=v.videoWidth,vh=v.videoHeight,sw=Math.min(vw,vh*0.75),sh=sw/0.75;
+    x.translate(150,0);x.scale(-1,1);x.drawImage(v,(vw-sw)/2,(vh-sh)/2,sw,sh,0,0,150,200);return c.toDataURL('image/jpeg',0.6)}catch(e){return ''}
+}
+function faLoop(){
+  if(!FA.run||!$('faov'))return;
+  var f=window.faceapi,v=$('favid'),en=FA.mode==='enroll';
+  f.detectAllFaces(v,new f.TinyFaceDetectorOptions({inputSize:224,scoreThreshold:0.5})).withFaceLandmarks(true).withFaceDescriptors().then(function(r){
+    if(!FA.run)return;
+    var sb=$('fashot');
+    if(!r.length){FA.hit=0;FA.last=null;if(sb)sb.disabled=true;faMsg(en?FA_STEPS[FA.samples.length]+' · 얼굴을 동그라미에 맞춰요':'얼굴을 동그라미 안에 맞춰 주세요 🙂')}
+    else if(r.length>1){FA.hit=0;FA.last=null;if(sb)sb.disabled=true;faMsg('한 명만 보여 주세요','no')}
+    else if(en){FA.last=r[0].descriptor;if(sb)sb.disabled=false;faMsg((FA.samples.length+1)+' / '+FA.NEED+' · '+FA_STEPS[FA.samples.length]+' → 찰칵!','ok')}
+    else{
+      var dd=faDist(r[0].descriptor);
+      if(dd<FA.TH){FA.hit++;faMsg('확인하는 중… '+FA.hit+' / 3','ok')}
+      else{FA.hit=0;faMsg('어? 등록된 얼굴이 아니에요. 다시 한 번 볼게요','no')}
+      if(FA.hit>=3){faDone();return}
+    }
+    FA.timer=setTimeout(faLoop,en?250:300);
+  }).catch(function(){if(FA.run){faMsg('얼굴 인식 중 문제가 생겼어요. 닫고 다시 해 주세요.','no');FA.run=0}});
+}
+function faDone(){
+  FA.run=0;var a=faAtt(),n=new Date(),th=faThumb();
+  a[key(n)]={t:pad(n.getHours())+':'+pad(n.getMinutes()),p:th};faAttSave(a);
+  faMsg('✅ 출석 완료! 오늘도 파이팅!','ok');fx('hr');
+  setTimeout(function(){faStop();render()},1500);
+}
+function faShot(){
+  if(!FA.last)return;FA.samples.push(Array.prototype.slice.call(FA.last));fx('ck');FA.last=null;
+  var sb=$('fashot');if(sb)sb.disabled=true;
+  if(FA.samples.length>=FA.NEED){
+    try{localStorage.setItem('seolho-face',JSON.stringify({d:FA.samples.map(function(s){return s.map(function(x){return Math.round(x*1e5)/1e5})}),at:Date.now()}))}catch(e){faMsg('저장하지 못했어요. 저장 공간을 확인해 주세요.','no');return}
+    FA.run=0;faMsg('✅ 얼굴 등록 완료!','ok');fx('hr');setTimeout(function(){faStop();render()},1300);return;
+  }
+  faMsg(FA_STEPS[FA.samples.length]+' · 준비되면 찰칵!');
+}
+function faBtn(a){
+  if(a==='x'){faStop();return}
+  if(a==='shot'){faShot();return}
+  if(a==='pinok'){
+    var p=$('fapin');
+    if(!p||p.value!==String(S.settings.pin)){faMsg('번호가 맞지 않아요.','no');return}
+    if(FA.after==='enroll'){FA.mode='enroll';FA.samples=[];faCamScr()}
+    else if(FA.after==='del'){try{localStorage.removeItem('seolho-face')}catch(e){}faStop();fx('un');render()}
+    else if(FA.after==='clr'){var at=faAtt();Object.keys(at).forEach(function(k){delete at[k].p});faAttSave(at);faStop();fx('un');render()}
+  }
+}
+function faAct(a){
+  if(a==='faopen'){if(!FA.ok||!faFace())return true;FA.mode='in';faCamScr();return true}
+  if(a==='faenroll'||a==='fadel'||a==='faclr'){if(!FA.ok)return true;FA.after=a==='faenroll'?'enroll':a==='fadel'?'del':'clr';faPinScr();return true}
+  return false;
+}
 window.addEventListener('pagehide',viewSave);
 function vwApply(){if(vwScroll>0&&!vwUser)main.scrollTop=vwScroll}
 render();
