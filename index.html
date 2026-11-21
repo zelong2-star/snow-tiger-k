@@ -298,6 +298,14 @@ input,textarea{-webkit-user-select:text;user-select:text}
 .abr.S{color:#c27a00}.abr.B{color:#1f8a4c}.abr.F{color:var(--muted)}.abr.E{color:var(--field)}
 .three{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
 .three .btn{font-size:15px;min-height:48px}
+.camp{margin-top:10px}
+.camslot{position:relative;border-radius:14px;overflow:hidden;background:#000;max-width:420px;margin:0 auto 10px;aspect-ratio:4/3}
+.camslot video{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;display:block}
+.camslot canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
+.camp .three{margin:0 0 8px}.camp .three .btn{font-size:13px;padding:0 4px}
+.camp .three .btn[aria-pressed="true"]{background:var(--field);color:var(--on-field);border-color:var(--field)}
+.hint.err{color:#c0392b;font-weight:700}
+.zone.mini{max-width:180px}
 .maker{text-align:center;margin:18px 0 8px;color:var(--muted);font-size:14px}
 .maker b{font-family:var(--disp,inherit);color:var(--navy);font-size:17px;margin-left:4px}
 .maker small{display:block;font-size:11.5px;margin-top:3px;letter-spacing:.04em}
@@ -322,7 +330,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
 <script>
 (function(){
 'use strict';
-var APP_VER='1.6.0',APP_DATE='2026-11-21';
+var APP_VER='1.7.0',APP_DATE='2026-11-21';
 var TEAMS=['롯데','기아','KT','삼성','LG','키움','SSG','두산','한화','NC'];
 var TSTYLE={
   '롯데':['롯','#101d35','#ffffff','#d71920'],'기아':['기','#c8102e','#ffffff','#8f0b21'],
@@ -611,7 +619,10 @@ function absTap(e,el){
   if(PRES)return;
   var r=el.getBoundingClientRect();if(!r.width)return;
   var x=clamp((e.clientX-r.left)/r.width*ZW,BR,ZW-BR),y=clamp((e.clientY-r.top)/r.height*ZH,BR,ZH-BR);
-  var st=judgeAt(x,y);PIT.push({x:x,y:y,r:st?'S':'B'});PLAST=st?'스트라이크!':'볼!';
+  absPitch(x,y,judgeAt(x,y));
+}
+function absPitch(x,y,st){
+  PIT.push({x:x,y:y,r:st?'S':'B'});PLAST=st?'스트라이크!':'볼!';
   var c=pcount();
   if(c.s>=3){
     PRES='삼진 아웃!';
@@ -629,6 +640,168 @@ function absUndo(){
   if(PKAB&&PRES==='삼진 아웃!'){var w=atk(getDraft());editDraft(function(d){d.ab[w]=clamp(d.ab[w]-1,0,99)})}
   PKAB=false;PRES='';PIT.pop();var l=PIT[PIT.length-1];PLAST=l?(l.r==='S'?'스트라이크!':l.r==='B'?'볼!':'파울!'):'';render();
 }
+
+/* ---------- 카메라 판정 ---------- */
+var CAM={on:false,mode:'tap',step:'zone',armed:false,stream:null,video:null,cv:null,work:null,wctx:null,
+  zone:{x:0.3,y:0.3,w:0.4,h:0.4},col:null,pr:0,track:[],miss:0,until:0,msg:'',err:'',WW:320,WH:240,last:null,drag:null,raf:0};
+try{var cj=JSON.parse(localStorage.getItem('stk-cam')||'null');if(cj){
+  if(cj.zone&&cj.zone.w>0.03)CAM.zone={x:clamp(num(cj.zone.x),0,1),y:clamp(num(cj.zone.y),0,1),w:clamp(num(cj.zone.w),0.03,1),h:clamp(num(cj.zone.h),0.03,1)};
+  if(cj.col&&typeof cj.col.h==='number')CAM.col={h:cj.col.h,s:cj.col.s,v:cj.col.v,white:!!cj.col.white};
+  CAM.pr=clamp(num(cj.pr),0,0.2)}}catch(e){}
+function camSave(){try{localStorage.setItem('stk-cam',JSON.stringify({zone:CAM.zone,col:CAM.col,pr:CAM.pr}))}catch(e){}}
+function hsv(r,g,b){
+  r/=255;g/=255;b/=255;var mx=Math.max(r,g,b),mn=Math.min(r,g,b),df=mx-mn,h=0;
+  if(df>0){if(mx===r)h=60*(((g-b)/df)%6);else if(mx===g)h=60*((b-r)/df+2);else h=60*((r-g)/df+4);if(h<0)h+=360}
+  return {h:h,s:mx?df/mx:0,v:mx};
+}
+function camBlobs(d,w,h,col){
+  var n=w*h,mask=new Uint8Array(n),i,p=0,H,hd;
+  for(i=0;i<n;i++,p+=4){
+    H=hsv(d[p],d[p+1],d[p+2]);
+    if(col.white){if(H.s<0.28&&H.v>=Math.max(0.55,col.v-0.2))mask[i]=1}
+    else if(H.s>=Math.max(0.3,col.s*0.55)&&H.v>=Math.max(0.25,col.v*0.5)){hd=Math.abs(H.h-col.h);if(hd>180)hd=360-hd;if(hd<=16)mask[i]=1}
+  }
+  var out=[],stack=[],x,y,k,c,sx,sy,x0,x1,y0,y1,q,qx,qy,nb;
+  for(i=0;i<n;i++){
+    if(mask[i]!==1)continue;
+    mask[i]=2;stack.length=0;stack.push(i);c=0;sx=0;sy=0;x0=w;x1=0;y0=h;y1=0;
+    while(stack.length){
+      q=stack.pop();qx=q%w;qy=(q-qx)/w;c++;sx+=qx;sy+=qy;
+      if(qx<x0)x0=qx;if(qx>x1)x1=qx;if(qy<y0)y0=qy;if(qy>y1)y1=qy;
+      if(qx>0&&mask[q-1]===1){mask[q-1]=2;stack.push(q-1)}
+      if(qx<w-1&&mask[q+1]===1){mask[q+1]=2;stack.push(q+1)}
+      if(qy>0&&mask[q-w]===1){mask[q-w]=2;stack.push(q-w)}
+      if(qy<h-1&&mask[q+w]===1){mask[q+w]=2;stack.push(q+w)}
+    }
+    var bw=x1-x0+1,bh=y1-y0+1,asp=bw/bh;
+    if(c>=5&&c<=n*0.12&&asp>0.45&&asp<2.2&&c/(bw*bh)>0.4)out.push({cx:sx/c,cy:sy/c,r:Math.sqrt(c/Math.PI),c:c});
+  }
+  return out;
+}
+function camStart(){
+  CAM.err='';
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){CAM.err='이 화면에서는 카메라를 쓸 수 없어요. 홈 화면에 설치한 앱(GitHub 주소)에서 열어 주세요.';render();return}
+  navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:640},height:{ideal:480},frameRate:{ideal:60}},audio:false}).then(function(st){
+    CAM.stream=st;
+    var v=document.createElement('video');v.muted=true;v.playsInline=true;v.setAttribute('playsinline','');v.autoplay=true;v.srcObject=st;
+    CAM.video=v;
+    var cv=document.createElement('canvas');cv.width=320;cv.height=240;CAM.cv=cv;
+    cv.addEventListener('pointerdown',camDown);cv.addEventListener('pointermove',camMove);cv.addEventListener('pointerup',camUp);cv.addEventListener('pointercancel',camUp);
+    var w=document.createElement('canvas');w.width=320;w.height=240;CAM.work=w;CAM.wctx=w.getContext('2d',{willReadFrequently:true});
+    CAM.on=true;CAM.armed=false;CAM.step=CAM.col?'ready':'zone';CAM.track=[];CAM.miss=0;CAM.msg='';
+    try{v.play()}catch(e){}
+    camLoop();render();
+  },function(){CAM.err='카메라를 켤 수 없어요. 카메라 사용을 허용했는지 확인해 주세요. (홈 화면에 설치한 앱에서 써 주세요)';render()});
+}
+function camStop(){
+  if(CAM.stream){try{CAM.stream.getTracks().forEach(function(t){t.stop()})}catch(e){}}
+  CAM.stream=null;CAM.video=null;CAM.cv=null;CAM.on=false;CAM.armed=false;CAM.track=[];CAM.miss=0;
+}
+function camLoop(){
+  if(!CAM.on||!CAM.video)return;
+  try{camFrame()}catch(e){}
+  var v=CAM.video;
+  if(v&&v.requestVideoFrameCallback)v.requestVideoFrameCallback(camLoop);else requestAnimationFrame(camLoop);
+}
+function camPos(e){var r=CAM.cv.getBoundingClientRect();return {x:clamp((e.clientX-r.left)/r.width,0,1),y:clamp((e.clientY-r.top)/r.height,0,1)}}
+function camDown(e){
+  if(CAM.armed)return;var p=camPos(e);e.preventDefault();
+  if(CAM.step==='zone'){CAM.drag={x:p.x,y:p.y};try{CAM.cv.setPointerCapture(e.pointerId)}catch(x){}}
+  else if(CAM.step==='color')camSample(p);
+}
+function camMove(e){
+  if(!CAM.drag)return;var p=camPos(e),d=CAM.drag;
+  CAM.zone={x:Math.min(d.x,p.x),y:Math.min(d.y,p.y),w:Math.max(0.03,Math.abs(p.x-d.x)),h:Math.max(0.03,Math.abs(p.y-d.y))};
+}
+function camUp(){if(CAM.drag){CAM.drag=null;camSave()}}
+function camSample(p){
+  var w=CAM.WW,h=CAM.WH,px=Math.round(p.x*w),py=Math.round(p.y*h),x0=clamp(px-5,0,w-11),y0=clamp(py-5,0,h-11);
+  var img=CAM.wctx.getImageData(0,0,w,h),r=0,g=0,b=0,c=0;
+  for(var y=y0;y<y0+11;y++)for(var x=x0;x<x0+11;x++){var i=(y*w+x)*4;r+=img.data[i];g+=img.data[i+1];b+=img.data[i+2];c++}
+  var H=hsv(r/c,g/c,b/c);
+  CAM.col={h:H.h,s:H.s,v:H.v,white:H.s<0.2};
+  var bl=camBlobs(img.data,w,h,CAM.col),best=null,bd=1e9;
+  bl.forEach(function(o){var d=Math.hypot(o.cx-px,o.cy-py);if(d<bd){bd=d;best=o}});
+  CAM.pr=best&&bd<30?best.r/w:0.03;
+  camSave();CAM.step='ready';CAM.msg='공 색과 크기를 기억했어요!';
+  sfxv(prefs.sfx,[12]);render();
+}
+function camFrame(){
+  var v=CAM.video;if(!v||v.readyState<2||!v.videoWidth)return;
+  var w=320,h=Math.max(60,Math.round(w*v.videoHeight/v.videoWidth));
+  if(CAM.work.height!==h){CAM.work.height=h;CAM.cv.height=h}
+  CAM.WW=w;CAM.WH=h;
+  CAM.wctx.drawImage(v,0,0,w,h);
+  var now=performance.now(),det=null;
+  if(CAM.armed&&CAM.col&&!PRES&&now>=CAM.until){
+    var img=CAM.wctx.getImageData(0,0,w,h),bl=camBlobs(img.data,w,h,CAM.col),last=CAM.track[CAM.track.length-1];
+    bl.sort(function(a,b){return b.c-a.c});
+    for(var i=0;i<bl.length;i++){
+      var o=bl[i];
+      if(!last||Math.hypot(o.cx/w-last.x,(o.cy/h-last.y)*h/w)<0.3){det=o;break}
+    }
+    if(det){CAM.track.push({x:det.cx/w,y:det.cy/h,r:det.r/w,t:now});CAM.miss=0;CAM.last=det}
+    else if(CAM.track.length){CAM.miss++;if(CAM.miss>=6||now-CAM.track[0].t>3500)camResolve()}
+  }
+  camDraw(det);
+}
+function camDraw(det){
+  var cv=CAM.cv;if(!cv||!cv.isConnected&&false)return;
+  var g=cv.getContext('2d'),w=cv.width,h=cv.height,z=CAM.zone;
+  g.clearRect(0,0,w,h);
+  g.lineWidth=3;g.strokeStyle=CAM.armed?'#35c46b':'#ffc233';g.fillStyle='rgba(255,194,51,.12)';
+  g.fillRect(z.x*w,z.y*h,z.w*w,z.h*h);g.strokeRect(z.x*w,z.y*h,z.w*w,z.h*h);
+  g.lineWidth=1;g.setLineDash([4,4]);g.strokeStyle='rgba(255,255,255,.55)';
+  for(var i=1;i<3;i++){g.beginPath();g.moveTo((z.x+z.w*i/3)*w,z.y*h);g.lineTo((z.x+z.w*i/3)*w,(z.y+z.h)*h);g.moveTo(z.x*w,(z.y+z.h*i/3)*h);g.lineTo((z.x+z.w)*w,(z.y+z.h*i/3)*h);g.stroke()}
+  g.setLineDash([]);
+  if(CAM.pr){g.strokeStyle='rgba(255,255,255,.8)';g.lineWidth=2;g.beginPath();g.arc((z.x+z.w/2)*w,(z.y+z.h/2)*h,CAM.pr*w,0,6.2832);g.stroke()}
+  if(CAM.track.length){
+    g.strokeStyle='#ff6a00';g.lineWidth=2;g.beginPath();
+    CAM.track.forEach(function(p,i){if(i)g.lineTo(p.x*w,p.y*h);else g.moveTo(p.x*w,p.y*h)});g.stroke();
+  }
+  if(det){g.strokeStyle='#fff';g.lineWidth=2;g.beginPath();g.arc(det.cx,det.cy,det.r+3,0,6.2832);g.stroke()}
+}
+function camResolve(){
+  var tr=CAM.track;CAM.track=[];CAM.miss=0;CAM.until=performance.now()+1200;
+  if(tr.length<4)return;
+  var pr=CAM.pr||0.03,p=null,i;
+  for(i=0;i<tr.length;i++){
+    if(tr[i].r>=pr){
+      if(i===0)p=tr[0];
+      else{var a=tr[i-1],b=tr[i],k=(pr-a.r)/Math.max(1e-6,b.r-a.r);p={x:a.x+(b.x-a.x)*k,y:a.y+(b.y-a.y)*k}}
+      break;
+    }
+  }
+  if(!p){p=tr[0];tr.forEach(function(q){if(q.r>p.r)p=q})}
+  var z=CAM.zone,asp=CAM.WH/CAM.WW,
+      dx=Math.max(z.x-p.x,0,p.x-(z.x+z.w)),dy=Math.max(z.y-p.y,0,p.y-(z.y+z.h))*asp,
+      st=Math.sqrt(dx*dx+dy*dy)<=pr,
+      zr=zoneRect(),sx=clamp(zr.x+(p.x-z.x)/z.w*zr.w,BR,ZW-BR),sy=clamp(zr.y+(p.y-z.y)/z.h*zr.h,BR,ZH-BR);
+  absPitch(sx,sy,st);
+}
+function mountCam(){
+  var slot=document.getElementById('camslot');
+  if(!slot||!CAM.on||!CAM.video)return;
+  slot.appendChild(CAM.video);slot.appendChild(CAM.cv);
+  var v=CAM.video;if(v.videoWidth)slot.style.aspectRatio=v.videoWidth+'/'+v.videoHeight;
+  try{var pl=v.play();if(pl&&pl.catch)pl.catch(function(){})}catch(e){}
+}
+function camPanel(){
+  if(CAM.mode!=='cam')return '';
+  var st=CAM.step,ins=CAM.armed?'판정 중! 투수가 던지면 자동으로 판정해요. 공이 배경과 잘 구분되어야 해요.':
+    st==='zone'?'화면을 손가락으로 끌어서 스트라이크 존 네모를 그려요. (타자 무릎~가슴 높이, 홈플레이트 위)':
+    st==='color'?'공을 홈플레이트 위 존 한가운데에 들고, 화면 속 공을 눌러요. 공 색과 크기를 기억해요.':'준비 끝! 판정 시작을 눌러요.';
+  if(!CAM.on)return '<div class="camp"><button class="btn primary" type="button" data-act="camon" data-nosfx style="width:100%">카메라 켜기</button>'+
+    (CAM.err?'<p class="hint err">'+esc(CAM.err)+'</p>':'')+
+    '<p class="hint">① 휴대폰을 홈플레이트 뒤(포수 자리)에 세우고 투수 쪽을 보게 해요. ② 존을 그리고 공 색을 한 번 맞춰요. ③ 투구하면 공이 존을 지나는 자리를 자동으로 판정해요. 주황·노랑·분홍처럼 눈에 띄는 색 공이 가장 잘 맞아요.</p></div>';
+  return '<div class="camp"><div class="camslot" id="camslot"></div>'+
+    '<div class="three"><button class="btn" type="button" data-act="camstep" data-v="zone" data-nosfx aria-pressed="'+(st==='zone'&&!CAM.armed)+'">① 존 그리기</button>'+
+    '<button class="btn" type="button" data-act="camstep" data-v="color" data-nosfx aria-pressed="'+(st==='color'&&!CAM.armed)+'">② 공 색 맞추기</button>'+
+    '<button class="btn'+(CAM.armed?' primary':'')+'" type="button" data-act="camarm" data-nosfx>③ '+(CAM.armed?'판정 중지':'판정 시작')+'</button></div>'+
+    '<p class="hint">'+esc(CAM.msg||ins)+'</p>'+
+    '<button class="btn ghost" type="button" data-act="camoff" data-nosfx style="width:100%">카메라 끄기</button></div>';
+}
+
 function cntRow(){
   var c=pcount();
   function lamps(n,max,cls){var o='';for(var i=0;i<max;i++)o+='<i class="lp '+cls+(i<n?' on':'')+'"></i>';return o}
@@ -640,11 +813,12 @@ function absCard(){
   var grid='';for(var i=1;i<3;i++){grid+='<line x1="'+(z.x+z.w*i/3).toFixed(1)+'" y1="'+z.y.toFixed(1)+'" x2="'+(z.x+z.w*i/3).toFixed(1)+'" y2="'+(z.y+z.h).toFixed(1)+'"/><line x1="'+z.x.toFixed(1)+'" y1="'+(z.y+z.h*i/3).toFixed(1)+'" x2="'+(z.x+z.w).toFixed(1)+'" y2="'+(z.y+z.h*i/3).toFixed(1)+'"/>'}
   var msg=PRES||PLAST;
   return '<section class="card abs" aria-label="ABS 판정"><h3>ABS 판정<small>볼 '+c.b+' · 스트라이크 '+Math.min(c.s,3)+'</small></h3>'+
-    '<svg class="zone" viewBox="0 0 '+ZW+' '+ZH+'" data-act="abs" role="button" aria-label="스트라이크 존. 공이 지나간 자리를 눌러요">'+
+    '<div class="seg" role="group" aria-label="판정 방식"><button type="button" data-act="absmode" data-v="tap" data-nosfx aria-pressed="'+(CAM.mode==='tap')+'">탭 판정</button><button type="button" data-act="absmode" data-v="cam" data-nosfx aria-pressed="'+(CAM.mode==='cam')+'">카메라 판정</button></div>'+camPanel()+
+    '<svg class="zone'+(CAM.mode==='cam'?' mini':'')+'" viewBox="0 0 '+ZW+' '+ZH+'"'+(CAM.mode==='tap'?' data-act="abs" role="button" aria-label="스트라이크 존. 공이 지나간 자리를 눌러요"':' role="img" aria-label="투구 위치 기록"')+'>'+
     '<rect class="bgz" x="0" y="0" width="'+ZW+'" height="'+ZH+'" rx="14"/>'+
     '<rect class="zr" x="'+z.x.toFixed(1)+'" y="'+z.y.toFixed(1)+'" width="'+z.w.toFixed(1)+'" height="'+z.h.toFixed(1)+'"/><g class="zg">'+grid+'</g>'+
     '<path class="plate" d="M70 236 L150 236 L150 248 L110 260 L70 248Z"/>'+dots+'</svg>'+
-    '<p class="abr '+(PRES?'E':PIT.length&&PIT[PIT.length-1].r)+'" role="status">'+(msg||'공이 지나간 자리를 눌러 보세요')+'</p>'+
+    '<p class="abr '+(PRES?'E':PIT.length&&PIT[PIT.length-1].r)+'" role="status">'+(msg||(CAM.mode==='cam'?'카메라로 판정해요':'공이 지나간 자리를 눌러 보세요'))+'</p>'+
     '<div class="seg" role="group" aria-label="존 크기"><button type="button" data-act="zsz" data-v="s" aria-pressed="'+(S.live.zone==='s')+'">존 작게</button><button type="button" data-act="zsz" data-v="m" aria-pressed="'+(S.live.zone==='m')+'">보통</button><button type="button" data-act="zsz" data-v="l" aria-pressed="'+(S.live.zone==='l')+'">존 크게</button></div>'+
     '<div class="three"><button class="btn" type="button" data-act="absf" data-nosfx>파울</button><button class="btn" type="button" data-act="absu" data-nosfx>되돌리기</button><button class="btn'+(PRES?' primary':'')+'" type="button" data-act="absn" data-nosfx>다음 타자</button></div>'+
     '<p class="hint">공이 존 선에 조금이라도 닿으면 스트라이크예요. 3스트라이크는 삼진, 4볼은 볼넷이에요.'+(S.live.link?' 삼진은 타수에 자동으로 더해져요.':'')+'</p></section>';
@@ -812,6 +986,8 @@ function render(){
   h=r==='home'?viewHome():r==='log'?viewLog():r==='today'?viewToday():r==='board'?viewBoard():r==='hit'?viewHit():viewSet();
   holdScreen(r==='board');
   $app.innerHTML=h;
+  if(r!=='board'&&CAM.on)camStop();
+  mountCam();
   document.querySelectorAll('.tab').forEach(function(a){
     if(a.getAttribute('data-r')===(r==='board'?'today':r))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
   });
@@ -833,6 +1009,15 @@ $app.addEventListener('click',function(e){
   if(act==='pf'){S.pf=!S.pf;render()}
   else if(act==='set'){S[b.getAttribute('data-key')]=b.getAttribute('data-v');render()}
   else if(act==='abs'){absTap(e,b)}
+  else if(act==='absmode'){var mv=b.getAttribute('data-v');if(mv!==CAM.mode){CAM.mode=mv;if(mv==='tap')camStop();render()}}
+  else if(act==='camon'){camStart()}
+  else if(act==='camoff'){camStop();render()}
+  else if(act==='camstep'){CAM.armed=false;CAM.step=b.getAttribute('data-v');CAM.msg='';render()}
+  else if(act==='camarm'){
+    if(CAM.armed){CAM.armed=false;CAM.track=[];CAM.msg='';render()}
+    else if(!CAM.col){CAM.step='color';CAM.msg='먼저 ② 공 색 맞추기를 해 주세요.';render()}
+    else{CAM.armed=true;CAM.track=[];CAM.until=0;CAM.msg='';render()}
+  }
   else if(act==='absf'){absFoul()}
   else if(act==='absu'){absUndo()}
   else if(act==='absn'){clearBat();render()}
