@@ -279,6 +279,25 @@ input,textarea{-webkit-user-select:text;user-select:text}
 .live .nx{width:100%;margin-top:12px}
 .live .fl{margin-top:14px}
 .live .sw small{display:block;font-size:11.5px;color:var(--muted);font-weight:400}
+.cnt{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;font:800 13px/1 var(--num);color:#9fb0c3}
+.cnt span{margin-left:10px}.cnt span:first-child{margin-left:0}
+.lp{display:inline-block;width:14px;height:14px;border-radius:50%;background:#243246}
+.lp.on.b{background:#35c46b;box-shadow:0 0 8px #35c46b88}
+.lp.on.s{background:#ffc233;box-shadow:0 0 8px #ffc23388}
+.abs{margin-top:12px}
+.zone{display:block;width:100%;max-width:300px;margin:10px auto 0;touch-action:manipulation;cursor:crosshair;-webkit-tap-highlight-color:transparent}
+.zone .bgz{fill:var(--field-soft)}
+.zone .zr{fill:rgb(255 255 255 / .55);stroke:var(--field);stroke-width:3}
+.zone .zg line{stroke:var(--field-rule);stroke-width:1;stroke-dasharray:4 4}
+.zone .plate{fill:#fff;stroke:var(--field-rule);stroke-width:2}
+.zone .pd circle{stroke:#111;stroke-width:1.5}
+.zone .pd text{font:800 10px var(--num);pointer-events:none}
+.zone .pd.S circle{fill:#ffc233}.zone .pd.S text{fill:#111}
+.zone .pd.B circle{fill:#2e9e5b;stroke:#0d3a21}.zone .pd.B text{fill:#fff}
+.abr{margin:10px 0;text-align:center;font:800 26px/1.2 var(--num);color:var(--muted)}
+.abr.S{color:#c27a00}.abr.B{color:#1f8a4c}.abr.F{color:var(--muted)}.abr.E{color:var(--field)}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.three .btn{font-size:15px;min-height:48px}
 .maker{text-align:center;margin:18px 0 8px;color:var(--muted);font-size:14px}
 .maker b{font-family:var(--disp,inherit);color:var(--navy);font-size:17px;margin-left:4px}
 .maker small{display:block;font-size:11.5px;margin-top:3px;letter-spacing:.04em}
@@ -303,7 +322,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
 <script>
 (function(){
 'use strict';
-var APP_VER='1.5.0',APP_DATE='2026-11-15';
+var APP_VER='1.6.0',APP_DATE='2026-11-21';
 var TEAMS=['롯데','기아','KT','삼성','LG','키움','SSG','두산','한화','NC'];
 var TSTYLE={
   '롯데':['롯','#101d35','#ffffff','#d71920'],'기아':['기','#c8102e','#ffffff','#8f0b21'],
@@ -317,8 +336,8 @@ var S={settings:{name:'설호',age:9,myTeam:'롯데',dadTeam:'LG',innings:9},gam
   ready:false,slow:false,mode:'mem',readOnly:false,err:'',
   pf:false,lb:'hit',period:'week',who:'me',hk:'hit',sel:{w:'me',i:0},open:null,del:null};
 var $app=document.getElementById('app');
-S.live={i:0,half:'top',first:'me',link:true};
-try{var lj=JSON.parse(localStorage.getItem('stk-live')||'null');if(lj){S.live.i=clamp(Math.round(num(lj.i)),0,8);S.live.half=lj.half==='bot'?'bot':'top';S.live.first=lj.first==='dad'?'dad':'me';S.live.link=lj.link!==false}}catch(e){}
+S.live={i:0,half:'top',first:'me',link:true,zone:'m'};
+try{var lj=JSON.parse(localStorage.getItem('stk-live')||'null');if(lj){S.live.i=clamp(Math.round(num(lj.i)),0,8);S.live.half=lj.half==='bot'?'bot':'top';S.live.first=lj.first==='dad'?'dad':'me';S.live.link=lj.link!==false;S.live.zone=(lj.zone==='s'||lj.zone==='l')?lj.zone:'m'}}catch(e){}
 function saveLive(){try{localStorage.setItem('stk-live',JSON.stringify(S.live))}catch(e){}}
 var db=null,chain=Promise.resolve(),draftTimer=0,setTimer=0,toastTimer=0;
 
@@ -581,6 +600,55 @@ function viewToday(){
     '<button class="btn primary" type="button" data-act="save" data-nosfx style="width:100%;margin-top:14px"'+(ro?' disabled':'')+'>경기 끝! 저장</button>'+
     (S.draft?'<button class="btn ghost" type="button" data-act="reset" style="width:100%;margin-top:8px">처음부터 다시</button>':'');
 }
+var PIT=[],PRES='',PLAST='',PKAB=false;
+var ZS={s:0.8,m:1,l:1.25},BR=9,ZW=220,ZH=270;
+function clearBat(){PIT=[];PRES='';PLAST='';PKAB=false}
+function pcount(){var b=0,s2=0;PIT.forEach(function(p){if(p.r==='B')b++;else if(p.r==='S')s2++;else if(p.r==='F'&&s2<2)s2++});return {b:b,s:s2}}
+function zoneRect(){var k=ZS[S.live.zone]||1,w=100*k,h=120*k;return {x:ZW/2-w/2,y:122-h/2,w:w,h:h}}
+function judgeAt(x,y){var z=zoneRect(),dx=Math.max(z.x-x,0,x-(z.x+z.w)),dy=Math.max(z.y-y,0,y-(z.y+z.h));return Math.sqrt(dx*dx+dy*dy)<=BR}
+function sfxv(n,v){if(prefs.sound)playSfx(n);if(prefs.haptic)buzz(v)}
+function absTap(e,el){
+  if(PRES)return;
+  var r=el.getBoundingClientRect();if(!r.width)return;
+  var x=clamp((e.clientX-r.left)/r.width*ZW,BR,ZW-BR),y=clamp((e.clientY-r.top)/r.height*ZH,BR,ZH-BR);
+  var st=judgeAt(x,y);PIT.push({x:x,y:y,r:st?'S':'B'});PLAST=st?'스트라이크!':'볼!';
+  var c=pcount();
+  if(c.s>=3){
+    PRES='삼진 아웃!';
+    if(S.live.link){PKAB=true;var w=atk(getDraft());editDraft(function(d){d.ab[w]=clamp(d.ab[w]+1,0,99)})}
+    sfxv('bat',[30,40,30]);
+  }else if(c.b>=4){PRES='볼넷! 1루로 출루';sfxv('clap',[20,30,20])}
+  else sfxv(st?'mitt':'thud',st?[25]:[10]);
+  render();
+}
+function absFoul(){
+  if(PRES)return;PIT.push({x:null,y:null,r:'F'});PLAST='파울!';sfxv('clap',[10]);render();
+}
+function absUndo(){
+  if(!PIT.length)return;
+  if(PKAB&&PRES==='삼진 아웃!'){var w=atk(getDraft());editDraft(function(d){d.ab[w]=clamp(d.ab[w]-1,0,99)})}
+  PKAB=false;PRES='';PIT.pop();var l=PIT[PIT.length-1];PLAST=l?(l.r==='S'?'스트라이크!':l.r==='B'?'볼!':'파울!'):'';render();
+}
+function cntRow(){
+  var c=pcount();
+  function lamps(n,max,cls){var o='';for(var i=0;i<max;i++)o+='<i class="lp '+cls+(i<n?' on':'')+'"></i>';return o}
+  return '<div class="cnt" aria-label="볼카운트 볼 '+c.b+' 스트라이크 '+Math.min(c.s,3)+'"><span>B</span>'+lamps(Math.min(c.b,3),3,'b')+'<span>S</span>'+lamps(Math.min(c.s,2),2,'s')+'</div>';
+}
+function absCard(){
+  var z=zoneRect(),c=pcount();
+  var dots=PIT.map(function(p,i){return p.x==null?'':'<g class="pd '+p.r+'"><circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+BR+'"/><text x="'+p.x.toFixed(1)+'" y="'+(p.y+4).toFixed(1)+'" text-anchor="middle">'+(i+1)+'</text></g>'}).join('');
+  var grid='';for(var i=1;i<3;i++){grid+='<line x1="'+(z.x+z.w*i/3).toFixed(1)+'" y1="'+z.y.toFixed(1)+'" x2="'+(z.x+z.w*i/3).toFixed(1)+'" y2="'+(z.y+z.h).toFixed(1)+'"/><line x1="'+z.x.toFixed(1)+'" y1="'+(z.y+z.h*i/3).toFixed(1)+'" x2="'+(z.x+z.w).toFixed(1)+'" y2="'+(z.y+z.h*i/3).toFixed(1)+'"/>'}
+  var msg=PRES||PLAST;
+  return '<section class="card abs" aria-label="ABS 판정"><h3>ABS 판정<small>볼 '+c.b+' · 스트라이크 '+Math.min(c.s,3)+'</small></h3>'+
+    '<svg class="zone" viewBox="0 0 '+ZW+' '+ZH+'" data-act="abs" role="button" aria-label="스트라이크 존. 공이 지나간 자리를 눌러요">'+
+    '<rect class="bgz" x="0" y="0" width="'+ZW+'" height="'+ZH+'" rx="14"/>'+
+    '<rect class="zr" x="'+z.x.toFixed(1)+'" y="'+z.y.toFixed(1)+'" width="'+z.w.toFixed(1)+'" height="'+z.h.toFixed(1)+'"/><g class="zg">'+grid+'</g>'+
+    '<path class="plate" d="M70 236 L150 236 L150 248 L110 260 L70 248Z"/>'+dots+'</svg>'+
+    '<p class="abr '+(PRES?'E':PIT.length&&PIT[PIT.length-1].r)+'" role="status">'+(msg||'공이 지나간 자리를 눌러 보세요')+'</p>'+
+    '<div class="seg" role="group" aria-label="존 크기"><button type="button" data-act="zsz" data-v="s" aria-pressed="'+(S.live.zone==='s')+'">존 작게</button><button type="button" data-act="zsz" data-v="m" aria-pressed="'+(S.live.zone==='m')+'">보통</button><button type="button" data-act="zsz" data-v="l" aria-pressed="'+(S.live.zone==='l')+'">존 크게</button></div>'+
+    '<div class="three"><button class="btn" type="button" data-act="absf" data-nosfx>파울</button><button class="btn" type="button" data-act="absu" data-nosfx>되돌리기</button><button class="btn'+(PRES?' primary':'')+'" type="button" data-act="absn" data-nosfx>다음 타자</button></div>'+
+    '<p class="hint">공이 존 선에 조금이라도 닿으면 스트라이크예요. 3스트라이크는 삼진, 4볼은 볼넷이에요.'+(S.live.link?' 삼진은 타수에 자동으로 더해져요.':'')+'</p></section>';
+}
 function atk(d){var L=S.live,o=L.first==='me'?'dad':'me';return L.half==='top'?L.first:o}
 function viewBoard(){
   var d=getDraft(),n=d.innings,L=S.live,w=atk(d),a=runs(d,'me'),b=runs(d,'dad'),who=S.settings.name,ro=S.readOnly;
@@ -605,10 +673,10 @@ function viewBoard(){
   }
   return '<header class="mast"><h2>전광판 <em>모드</em></h2><a class="go2" href="#today">입력 화면</a></header>'+banner()+
     '<section class="board" aria-label="전광판"><div class="bst"><span><svg viewBox="0 0 12 12" aria-hidden="true">'+(L.half==='top'?'<path d="M6 1.5 11 10H1z"/>':'<path d="M6 10.5 1 2h10z"/>')+'</svg>'+(L.i+1)+'회 '+(L.half==='top'?'초':'말')+' <em>· '+esc(nmw(w))+' 공격</em></span></div><div class="bigs">'+side('me',a)+'<span class="colon">:</span>'+side('dad',b)+'</div>'+
-    '<table class="bt" aria-label="이닝별 점수">'+cols(n)+head+row(order[0],0)+row(order[1],1)+'</table></section>'+
+    '<table class="bt" aria-label="이닝별 점수">'+cols(n)+head+row(order[0],0)+row(order[1],1)+'</table>'+cntRow()+'</section>'+
     '<section class="live"><div class="stat"><button type="button" class="nv" data-act="binn" data-d="-1" aria-label="이전 이닝">◀</button><div><b>'+(L.i+1)+'회 '+(L.half==='top'?'초':'말')+'</b><span>'+esc(nmw(w))+' 공격 · '+esc(tm(w))+'</span></div><button type="button" class="nv" data-act="binn" data-d="1" aria-label="다음 이닝">▶</button></div>'+
     '<div class="seg" role="group" aria-label="공격 순서"><button type="button" data-act="half" data-v="top" aria-pressed="'+(L.half==='top')+'">초 공격</button><button type="button" data-act="half" data-v="bot" aria-pressed="'+(L.half==='bot')+'">말 공격</button></div>'+
-    '<div class="scbox"><div><span class="k">이번 회 점수</span><b>'+d.inn[w][L.i]+'</b></div><div class="tb2"><button type="button" data-act="rec" data-k="score" data-d="-1" aria-label="점수 1 빼기">−</button>'+
+    absCard()+'<div class="scbox"><div><span class="k">이번 회 점수</span><b>'+d.inn[w][L.i]+'</b></div><div class="tb2"><button type="button" data-act="rec" data-k="score" data-d="-1" aria-label="점수 1 빼기">−</button>'+
       '<button type="button" class="plus" data-act="rec" data-k="score" data-d="1" aria-label="점수 1 더하기"'+(ro?' disabled':'')+'>＋</button></div></div>'+
     '<div class="tiles">'+tile('hit','안타',d.hit[w])+tile('hr','홈런',d.hr[w])+tile('ab','타수',d.ab[w])+'</div>'+
     '<button class="btn primary nx" type="button" data-act="bnext">공격 교대 ▶</button>'+
@@ -764,11 +832,16 @@ $app.addEventListener('click',function(e){
   var act=b.getAttribute('data-act');
   if(act==='pf'){S.pf=!S.pf;render()}
   else if(act==='set'){S[b.getAttribute('data-key')]=b.getAttribute('data-v');render()}
-  else if(act==='half'){S.live.half=b.getAttribute('data-v');saveLive();render()}
-  else if(act==='first'){S.live.first=b.getAttribute('data-v');saveLive();render()}
-  else if(act==='binn'){var nn=getDraft().innings;S.live.i=clamp(S.live.i+(+b.getAttribute('data-d')),0,nn-1);saveLive();render()}
+  else if(act==='abs'){absTap(e,b)}
+  else if(act==='absf'){absFoul()}
+  else if(act==='absu'){absUndo()}
+  else if(act==='absn'){clearBat();render()}
+  else if(act==='zsz'){S.live.zone=b.getAttribute('data-v');saveLive();render()}
+  else if(act==='half'){clearBat();S.live.half=b.getAttribute('data-v');saveLive();render()}
+  else if(act==='first'){clearBat();S.live.first=b.getAttribute('data-v');saveLive();render()}
+  else if(act==='binn'){clearBat();var nn=getDraft().innings;S.live.i=clamp(S.live.i+(+b.getAttribute('data-d')),0,nn-1);saveLive();render()}
   else if(act==='bnext'){
-    var nn2=getDraft().innings;
+    clearBat();var nn2=getDraft().innings;
     if(S.live.half==='top'){S.live.half='bot'}
     else if(S.live.i<nn2-1){S.live.i++;S.live.half='top'}
     else{toast('마지막 이닝이에요. 끝났으면 저장해요!')}
@@ -792,7 +865,7 @@ $app.addEventListener('click',function(e){
   else if(act==='save'){
     if(S.readOnly)return;
     var g=JSON.parse(JSON.stringify(getDraft()));g.id=newId();g.createdAt=Date.now();
-    var prevG=S.games.slice(),pre=achieve(prevG);addGame(g);clearDraft();S.sel={w:'me',i:0};S.live.i=0;S.live.half='top';saveLive();S.open=g.id;S.period='week';
+    var prevG=S.games.slice(),pre=achieve(prevG);addGame(g);clearDraft();clearBat();S.sel={w:'me',i:0};S.live.i=0;S.live.half='top';saveLive();S.open=g.id;S.period='week';
     toast('저장했어요!'+newMsg(prevG,pre,g));feedback('fanfare');
     if(location.hash==='#log')render();else location.hash='#log';
   }
@@ -997,6 +1070,7 @@ function applyTheme(){
 
 function recBoard(k,dd){
   var L=S.live,w=atk(getDraft());
+  if(dd>0&&k!=='score')clearBat();
   editDraft(function(x){
     var lk=L.link;
     function add(f,v){x[f][w]=clamp(x[f][w]+v,0,99)}
